@@ -3,8 +3,8 @@
 function has_folder_permission($folder_id, $access = 'READ') use ($app) {
 	$result = false;
 	
-	if (($access != 'CREATE') || ($access != 'UPDATE') || ($access != 'READ') || ($access != 'DELETE')) {
-		throw new Exception ('variable access only allowed: CREATE, UPDATE, READ, DELETE');
+	if (($access != 'CREATE') || ($access != 'UPDATE') || ($access != 'READ') || ($access != 'DELETE') || ($access != 'ADD') || ($access != 'REMOVE')) {
+		throw new Exception ('variable access only allowed: CREATE, UPDATE, READ, DELETE, ADD, REMOVE');
 	}
 	
 	if (isset($app['user'])) {
