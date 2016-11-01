@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% block title %}Forms{% endblock %}
+
+{% block content %}
+	<div class="row row-offcanvas row-offcanvas-right">
+
+		<div id="form_content" class="col-xs-12 col-sm-9 form-content">
+		<!-- item -->
+		<!-- item -->
+		</div>
+
+		<div class="col-xs-6 col-sm-3 sidebar-offcanvas folder-list " id="sidebar">
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#tools">Tools</a></li>
+				<li><a data-toggle="tab" href="#properties">Properties</a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="tools" class="tab-pane fade in active list-group control-list">
+				</div>
+				<div id="properties" class="tab-pane fade">
+				</div>
+			</div>
+		</div><!--/.sidebar-offcanvas-->
+	</div><!--/row-->
+
+	<div id="dialog-form" style="display: none">
+		<fieldset>
+			<label for="name">Name</label>
+			<textarea name="name" id="txt_name" style="width: 100%;" class="text ui-widget-content ui-corner-all txt-name"></textarea>
+			<br />
+			<br />
+			<input type="button" value="save" class="btn btn-xs save" onclick="$form.saveFunction()">
+			<input type="button" value="cancel" class="btn btn-xs cancel" onclick="$form.cancelFunction()">
+		</fieldset>
+	</div>
+	
+{% endblock %}
+{% block scripts %}
+	<script>
+		var $form = {};
+		var controlCount = 0;
+		$form.items = {};
+		$form.showProperties = {};
+		$form.currentControl = null;
+		$(function () {
+			$( "#form_content" ).sortable({
+				revert: true
+			});
+			
+			$(document).on('mousedown', '.row.form-item', function () {
+				if (!$(this).hasClass("active")){
+					$(".row.form-item").removeClass("active");
+					$(this).addClass("active");
+					
+					if ($(this).attr("data-type")){
+						$('a[href="#properties"]').tab('show');
+						if ($form.showProperties[$(this).attr("data-type")]){
+							$form.currentControl = $(this);
+							$form.showProperties[$(this).attr("data-type")]();
+							generatePropertyItem('', 
+								$('<input />')
+								.attr('id','p-text')
+								.attr('type','button')
+								.val('delete')
+								.on('click', function () {
+								console.log('1');
+									if ($form.currentControl){
+										var index = -1;
+										console.log($form.items);
+										console.log($form.items.length);
+										for (var i = 0; i < $form.items.length; i++){
+											console.log($form.items[i]);
+											console.log($form.currentControl);
+											if ($form.items[i] == $form.currentControl){
+												index = i;
+												break;
+											}
+										}
+										if (index >= 0){
+											$form.items.splice(index, 1);
+											$form.currentControl = null;
+										}
+									}
+								})
+							);
+						}
+					}
+				}
+			});
+			
+		    $( ".list-group-item" ).disableSelection();
+		});
+		var generateItem = function (item, helper, finishCallback) {
+			item.draggable({
+				addClasses: true,
+				connectToSortable: "#form_content",
+				helper: helper,
+				delay: 100,
+				revert: "invalid",
+				cursor: "move",
+				stop: function( event, ui ) {
+					ui.helper.css('width', '').css('height', '');
+					ui.helper.attr("id", "item-" + (controlCount++));
+					
+					if (finishCallback){
+						finishCallback();
+					}
+				}
+			});		
+		};
+		
+		var generatePropertyItem = function (text, control) {
+			var container = $("#properties");
+			var div = $("<div />").addClass('property-row').appendTo(container);
+			if (text != '' && text != null){
+				div.append(
+					$("<label />").html(text)
+				)
+			}
+			div.append(
+				control
+			);
+		};
+	</script>
+	<script src="{{ base_url() }}/js/controls/description.js"></script>
+	<script src="{{ base_url() }}/js/controls/singleline.js"></script>
+	<script src="{{ base_url() }}/js/controls/multiline.js"></script>
+	<script src="{{ base_url() }}/js/controls/radiobutton.js"></script>
+	<script src="{{ base_url() }}/js/controls/checkbox.js"></script>
+	<script src="{{ base_url() }}/js/controls/dropdown.js"></script>
+{% endblock %}

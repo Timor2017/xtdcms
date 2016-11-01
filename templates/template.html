@@ -1,0 +1,180 @@
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<h1>21項</h1>
+<form action="{{ path_for('form.create.submit') }}" method="post">
+	<div class="form">
+		<div class="form_item">
+			<label>涉外时间</label>
+			<div class="form_field">
+				<input type="date" name="sw_time" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>引导人QY/JS</label>
+			<div class="form_field">
+				<input type="text" name="guider_qy" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>引导人姓名</label>
+			<div class="form_field">
+				<input type="text" name="guider_name" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>引导人电话</label>
+			<div class="form_field">
+				<input type="tel" name="guider_phone" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>管理者姓名</label>
+			<div class="form_field">
+				<input type="text" name="manager_name" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>管理者电话</label>
+			<div class="form_field">
+				<input type="tel" name="manager_phone" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子姓名</label>
+			<div class="form_field">
+				<input type="text" name="fruit_name" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子状态</label>
+			<div class="form_field">
+				<select name="fruit_status" class="fruit-status">
+					<option value="">--- 请选择 ---</option>
+					<option value="sw">涉外</option>
+					<option value="st">试听</option>
+					<option value="gd"> 耕地 </option>
+					<option value="ff">福房</option>
+					<option value="cj">初级</option>
+					<option value="zj">中级</option>
+					<option value="gj">高级</option>
+					<option value="rj">入教</option>
+					<option value="hmd">黑名单</option>
+				</select>
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>脱落阶段</label>
+			<div class="form_field">
+				<input type="text" name="tl_level" maxlength="20" />
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>脱落原因</label>
+			<div class="form_field">
+				<input type="text" name="tl_reason" maxlength="500" />
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>是否有抵挡</label>
+			<div class="form_field">
+				<input type="radio" name="tl_withstand" id="withstand_yes" value="1" /> <label for="withstand_yes">是</label>
+				<input type="radio" name="tl_withstand" id="withstand_no" value="0" /> <label for="withstand_no">否</label>
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>抵挡方式</label>
+			<div class="form_field">
+				<input type="text" name="tl_withstand_method" maxlength="500" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子电话</label>
+			<div class="form_field">
+				<input type="tel" name="fruit_phone" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子微信</label>
+			<div class="form_field">
+				<input type="text" name="fruit_wechat" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子QQ</label>
+			<div class="form_field">
+				<input type="text" name="fruit_qq" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子部署</label>
+			<div class="form_field">
+				<input type="text" name="fruit_dept" maxlength="50" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>涉外类型</label>
+			<div class="form_field">
+				<select name="sw_type">
+					<option value="">--- 请选择 ---</option>
+					<option value="td">田地</option>
+					<option value="wl">网络</option>
+					<option value="zr">知人</option>
+					<option value="lf">路访</option>
+					<option value="qt">其他</option>
+				</select>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>涉外田地</label>
+			<div class="form_field">
+				<input type="text" name="sw_place" maxlength="300" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>性别</label>
+			<div class="form_field">
+				<input type="radio" name="fruit_gender" id="gender_male" value="M" /> <label for="gender_male">男</label>
+				<input type="radio" name="fruit_gender" id="gender_female" value="F" /> <label for="gender_female">女</label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>出生年月</label>
+			<div class="form_field">
+				<input type="date" name="fruit_birthday" />
+			</div>
+		</div>
+		<div class="form_item">
+			<label>其他备注</label>
+			<div class="form_field">
+				<textarea name="remark" cols="30" rows="5"></textarea>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>提交人</label>
+			<div class="form_field">
+				<input type="text" name="submitter" maxlength="50" />
+			</div>
+		</div>
+	</div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	$(".fruit-status").change(function () {
+		if ($(this).val() == "hmd"){
+			$(".tl_item").removeClass("hide");
+		} else {
+			if (!$(".tl_item").hasClass("hide")) {
+				$(".tl_item").addClass("hide");
+			}
+		}
+	});
+</script>
+{% endblock %}

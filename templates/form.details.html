@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<h1>21項</h1>
+	<div class="form">
+		<div class="form_item">
+			<label>涉外时间</label>
+			<div class="form_field">
+				<label name="sw_time" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>引导人QY/JS</label>
+			<div class="form_field">
+				<label name="guider_qy" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>引导人姓名</label>
+			<div class="form_field">
+				<label name="guider_name" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>引导人电话</label>
+			<div class="form_field">
+				<label name="guider_phone" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>管理者姓名</label>
+			<div class="form_field">
+				<label name="manager_name" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>管理者电话</label>
+			<div class="form_field">
+				<label name="manager_phone" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子姓名</label>
+			<div class="form_field">
+				<label name="fruit_name" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子状态</label>
+			<div class="form_field">
+				<label name="fruit_status" ></label>
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>脱落阶段</label>
+			<div class="form_field">
+				<label name="tl_level" ></label>
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>脱落原因</label>
+			<div class="form_field">
+				<label name="tl_reason" ></label>
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>是否有抵挡</label>
+			<div class="form_field">
+				<label name="tl_withstand"></label>
+			</div>
+		</div>
+		<div class="form_item tl_item hide">
+			<label>抵挡方式</label>
+			<div class="form_field">
+				<label name="tl_withstand_method" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子电话</label>
+			<div class="form_field">
+				<label name="fruit_phone" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子微信</label>
+			<div class="form_field">
+				<label name="fruit_wechat" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子QQ</label>
+			<div class="form_field">
+				<label name="fruit_qq" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>果子部署</label>
+			<div class="form_field">
+				<label name="fruit_dept" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>涉外类型</label>
+			<div class="form_field">
+				<label name="sw_type"></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>涉外田地</label>
+			<div class="form_field">
+				<label name="sw_place" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>性别</label>
+			<div class="form_field">
+				<label name="fruit_gender"></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>出生年月</label>
+			<div class="form_field">
+				<label name="fruit_birthday" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>其他备注</label>
+			<div class="form_field">
+				<label name="remark" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label>提交人</label>
+			<div class="form_field">
+				<label name="submitter" ></label>
+			</div>
+		</div>
+		<div class="form_item">
+			<label></label>
+			<div class="form_field">
+				<input type="button" id="btn-edit" value="编辑" />
+			</div>
+		</div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	$("#btn-edit").click(function() {
+		location.href="{{ path_for('form.edit', {'id': id}) }}";
+	});
+	$(".fruit-status").change(function () {
+		if ($(this).val() == "hmd"){
+			$(".tl_item").removeClass("hide");
+		} else {
+			if (!$(".tl_item").hasClass("hide")) {
+				$(".tl_item").addClass("hide");
+			}
+		}
+	});
+	
+	$("document").ready(function () {
+{% for key, item in data %}
+		set_value("{{key}}", "{{item}}");
+{% endfor %}
+	});
+	
+	var set_value = function (key, value) {
+		var item = $("[name=" + key + "]");
+		if (item) {
+			if (item.size() == 1) {
+				item.html(value); 
+				
+				if (key == "fruit_status") {
+					if (value == "hmd") {
+						$(".tl_item").removeClass("hide");
+					}
+				}
+			} else if (item.size() > 1) {
+				$("[name="+key+"][value="+value+"]").prop("checked", true); 
+			}
+		}
+	}
+</script>
+{% endblock %}

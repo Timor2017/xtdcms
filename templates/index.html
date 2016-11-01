@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<h1>21項</h1>
+<form action="{{ path_for('form.create.submit') }}" method="post">
+	<div id="form-container" class="form">
+	</div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="./js/xtd.sdk.js"></script>
+<script src="./js/xtd.item.js"></script>
+<script src="./js/controls/xtd.controls.singleline.js"></script>
+<script>
+	var formData = {};
+	$(document).ready(function () {
+		$.getJSON( "form.json", function(data) {
+			formData = data;
+			for(var i = 0; i < formData.items.length; i++) {
+				formData.items[i].handler = new XTD.controls[formData.items[i].properties.type](formData.items[i]);
+			}
+			
+			 renderAll();
+		});
+	});
+	
+	function renderAll() {
+		$("#form-container").empty();
+		for(var i = 0; i < formData.items.length; i++) {
+				console.log(formData.items[i]);
+			$("#form-container").append($(formData.items[i].handler.render()));
+		}
+	}
+</script>
+{% endblock %}

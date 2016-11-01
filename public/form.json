@@ -1,0 +1,45 @@
+{
+	"properties": {
+		"__id": "1",
+		"display": "21項",
+		"description": "21項",
+		"placeholder": "",
+		"validation": []
+	},
+	"items": [
+		{
+			"properties": {
+				"__id": "1",
+				"name": "name",
+				"display": "姓名",
+				"description": "姓名",
+				"type": "singleline",
+				"value_type": "string",
+				"default_value": "",
+				"placeholder": "姓名, 如: 金約翰",
+				"mandatory": 1,
+				"validation": [
+					{
+						"name": "requireValidator",
+						"type": "requireValidator",
+						"rule": "",
+						"message": "姓名不能為空",
+						"sequence": 1
+					}
+				]
+			},
+			"settings": [
+				
+			],
+			"style": [
+				{ "name": "width", "value": "100px" }
+			]
+		}		
+	],
+	"settings": [
+		
+	],
+	"style": [
+		{ "name": "width", "value": "100px" }
+	]
+}
