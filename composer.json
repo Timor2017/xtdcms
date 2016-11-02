@@ -18,6 +18,7 @@
         "monolog/monolog": "^1.17",
 		"slim/pdo": "~1.9",
         "slim/twig-view": "^2.1",
+		"illuminate/events": "*",
 		"illuminate/database": "*",
 		"mrclay/minify":"*"
     }

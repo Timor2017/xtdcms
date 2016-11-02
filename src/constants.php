@@ -32,3 +32,9 @@ define('STATUS_PENDING',			'PENDING');
 define('STATUS_SUSPENDED',	'SUSPENDED');
 
 define('ERR_INVALID_USER',		'0010001');
+define('ERR_GROUP_NAME_EMPTY',		'0020001');
+define('ERR_GROUP_NOT_FOUND',		'0020002');
+define('ERR_GROUP_ID_EMPTY',		'0020003');
+
+
+

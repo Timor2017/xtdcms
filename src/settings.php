@@ -76,7 +76,7 @@ return [
 			'id' => null,
 			'isLoggedIn' => false,
 			'info' => [],
-			'group' => [],
+			'groups' => [],
 		]
     ],
 ];

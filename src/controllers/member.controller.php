@@ -19,6 +19,12 @@ class MemberController extends BaseController {
 		$this->app->post('/profile/{id}', 'App\Controllers\MemberController:updateProfile')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
 	}
 
+	public function group()  {
+		$this->app->post('[/]', 'App\Controllers\MemberController:createGroup')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+		$this->app->put('/{id}', 'App\Controllers\MemberController:updateGroup')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+		$this->app->delete('/{id}', 'App\Controllers\MemberController:deleteGroup')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+	}
+
 	public function login($request, $response, $args)  {
 		$parsedBody = $request->getParsedBody();
 		
@@ -113,5 +119,82 @@ class MemberController extends BaseController {
 		} else {
 			$this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
-	}	
+	}
+	
+	public function createGroup($request, $response, $args)  {
+		$parsedBody = $request->getParsedBody();
+		$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';
+		$name = isset($parsedBody['name']) ? $parsedBody['name'] : '';
+		
+		if (!empty($name)) {
+			$model = new \App\Models\Groups();
+			$model->parent_id=$parent_id;
+			$model->name=$name;
+			$model->status=STATUS_ACTIVE;
+			$model->save();
+			
+			
+			unset($model->created_date);
+			unset($model->created_by);
+			unset($model->last_modified_date);
+			unset($model->last_modified_by);
+			unset($model->concurrent_id);
+			$this->toJSON($model);
+		} else {
+			$this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
+		}
+	}
+	
+	public function updateGroup($request, $response, $args)  {
+		$id = $args['id'];
+		
+		if (!empty($id)) {
+			$parsedBody = $request->getParsedBody();
+			$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';
+			$name = isset($parsedBody['name']) ? $parsedBody['name'] : '';
+			
+			if (!empty($name)) {
+				$model = \App\Models\Groups::find($id);
+				if (!empty($model)) {
+				
+					$model->parent_id=$parent_id;
+					$model->name=$name;
+					$model->status=STATUS_ACTIVE;
+					$model->save();
+					
+					
+					unset($model->created_date);
+					unset($model->created_by);
+					unset($model->last_modified_date);
+					unset($model->last_modified_by);
+					unset($model->concurrent_id);
+					$this->toJSON($model);
+				} else {
+					$this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
+				}
+			} else {
+				$this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
+			}
+		} else {
+			$this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
+		}
+	}
+	
+	public function deleteGroup($request, $response, $args)  {
+		$id = $args['id'];
+		
+		if (!empty($id)) {
+			$model = \App\Models\Groups::find($id);
+			if (!empty($model)) {
+				$model->status=STATUS_DELETED;
+				$model->save();
+				$this->toJSON(true);
+			} else {
+				$this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
+			}
+		} else {
+			$this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
+		}
+	}
+	
 }

@@ -52,6 +52,7 @@ $container['db'] = function ($c) {
 		$capsule->addConnection($container['settings']['db']);
 	}
 	$capsule->setAsGlobal();
+	$capsule->setEventDispatcher(new Illuminate\Events\Dispatcher(new Illuminate\Container\Container));
 	$capsule->bootEloquent();
 	
 	return $capsule;
@@ -59,7 +60,15 @@ $container['db'] = function ($c) {
 
 // user
 $container['user'] = function ($c) {
-	$user = $c->get('settings')['user'];
+	$user = (object)$c->get('settings')['user'];
+	if ($c['auth.manager']->isAuthenticatedUser()) {
+		$member = \App\Models\Members::where('token','=',$c['auth.manager']->getToken())->first();
+		$groups = \App\Models\GroupMembers::where('member_id','=',$member->id)->get();
+		$user->id = $member->id;
+		$user->isLoggedIn = true;
+		$user->info = $member->toArray();
+		$user->groups = $groups->toArray();
+	}
 	return $user;
 };
 

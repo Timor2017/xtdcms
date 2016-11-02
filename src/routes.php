@@ -1,11 +1,23 @@
 <?php
 // Routes
 
+// API will all redirect to api controller
 $app->group('/api', 'App\Controllers\ApiController')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
 
-$app->get('/min/{f}', function ($request, $response, $args) use ($app, $container) {
-	
+// minify the static file (css, js) and add cache header
+$app->get('/min/{f:.*}', function ($request, $response, $args) use ($app, $container) {
+	$_GET['f'] = $args['f'];
+	$_GET['b'] = substr(dirname($_SERVER['SCRIPT_NAME']), 1);
+
+	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
 });
+
+
+
+
+
+
+
 
 $app->get('/forms/[{folder_id}]', function ($request, $response, $args) use ($app, $container) {
 
