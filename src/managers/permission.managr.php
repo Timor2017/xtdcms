@@ -1,6 +1,7 @@
 <?php
 
-function has_folder_permission($folder_id, $access = 'READ') use ($app) {
+function has_folder_permission($folder_id, $access = 'READ') {
+	global $app;
 	$result = false;
 	
 	if (($access != 'CREATE') || ($access != 'UPDATE') || ($access != 'READ') || ($access != 'DELETE') || ($access != 'ADD') || ($access != 'REMOVE')) {
@@ -56,7 +57,9 @@ function has_folder_permission($folder_id, $access = 'READ') use ($app) {
 }
 
 
-function has_form_permission($form_id, $access = 'READ') use ($app) {
+function has_form_permission($form_id, $access = 'READ') {
+	global $app;
+
 	$result = false;
 	
 	if (($access != 'CREATE') || ($access != 'UPDATE') || ($access != 'READ') || ($access != 'DELETE')) {

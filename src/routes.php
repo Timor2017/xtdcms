@@ -1,7 +1,7 @@
 <?php
 // Routes
 
-$app->group('/api', 'App\Controllers\ApiController')->add($container['auth.request']);
+$app->group('/api', 'App\Controllers\ApiController')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
 
 $app->get('/min/{f}', function ($request, $response, $args) use ($app, $container) {
 	

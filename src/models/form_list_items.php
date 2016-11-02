@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class FormListItems extends Model {
+class FormListItems extends BaseModel {
 	protected $connection = 'form_definition';
 	protected $table = 'form_list_items';
 }

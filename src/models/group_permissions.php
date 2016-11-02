@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class GroupPermissions extends Model {
+class GroupPermissions extends BaseModel {
 	protected $connection = 'form_definition';
 	protected $table = 'group_permissions';
 }

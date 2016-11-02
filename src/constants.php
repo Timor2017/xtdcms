@@ -30,3 +30,5 @@ define('STATUS_ACTIVE',				'ACTIVE');
 define('STATUS_DELETED',			'DELETED');
 define('STATUS_PENDING',			'PENDING');
 define('STATUS_SUSPENDED',	'SUSPENDED');
+
+define('ERR_INVALID_USER',		'0010001');

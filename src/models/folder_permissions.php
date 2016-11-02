@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class FolderPermissions extends Model {
+class FolderPermissions extends BaseModel {
 	protected $connection = 'form_definition';
 	protected $table = 'folder_permissions';
 }

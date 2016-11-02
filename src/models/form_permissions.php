@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class FormPermissions extends Model {
+class FormPermissions extends BaseModel {
 	protected $connection = 'form_definition';
 	protected $table = 'form_permissoins';
 }

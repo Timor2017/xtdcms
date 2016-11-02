@@ -10,21 +10,22 @@ foreach (glob(__DIR__ . './controllers/*.controller.php') as $filename) {
 }
 
 //load models
+require_once __DIR__ . './models/base.model.php';
 foreach (glob(__DIR__ . './models/*.php') as $filename) {
     require_once $filename;
 }
 
-//load middleware
-foreach (glob(__DIR__ . './middlewares/*.php') as $filename) {
+//load middlewares
+foreach (glob(__DIR__ . './middlewares/*.middleware.php') as $filename) {
     require_once $filename;
 }
 
-$container['auth.request'] =  function ($c) {
-	$middleware = new AuthRequest();
-    return $middleware;
-};
+//load managers
+foreach (glob(__DIR__ . './managers/*.manager.php') as $filename) {
+    require_once $filename;
+}
 
-$container['auth.user'] =  function ($c) {
-	$middleware = new AuthUser();
+$container['auth.manager'] =  function ($c) {
+	$middleware = new \App\Managers\AuthenticateManager();
     return $middleware;
 };

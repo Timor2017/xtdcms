@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Groups extends Model {
+class Groups extends BaseModel {
 	protected $connection = 'membership';
 	protected $table = 'groups';
 }

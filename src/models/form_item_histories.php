@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class FormItemHistories extends Model {
+class FormItemHistories extends BaseModel {
 	protected $connection = 'archive';
 	protected $table = 'form_item_histories';
 }

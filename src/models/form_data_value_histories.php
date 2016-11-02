@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class FormDataValueHistories extends Model {
+class FormDataValueHistories extends BaseModel {
 	protected $connection = 'archive';
 	protected $table = 'form_data_value_histories';
 }

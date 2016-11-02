@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Applications extends Model {
+class Applications extends BaseModel {
   protected $connection = 'core';
   protected $table = 'applications';
 }
