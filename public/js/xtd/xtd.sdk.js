@@ -16,11 +16,12 @@ try {
         for (var i = 0; i < sandboxWhitelist.length; i++) {
             global[sandboxWhitelist[i]] = bindContext(window[sandboxWhitelist[i]], window);
         }
-		(function() {
+		return (function() {
             var self = window;
             var __DEV__ = 0;
             var undefined;
 			var appCode = null;
+			var apiUrl = 'api';
 			var config = {
 				appId: '',
 				version: '1.0',
@@ -46,7 +47,7 @@ try {
 			
 			this.api = function (p, m, o, cb) {
 				var req = $.ajax({
-					url: p,
+					url: apiUrl+p,
 					type: m,
 					data: o,
 					beforeSend: function(xhr){
@@ -57,7 +58,10 @@ try {
 					},
 				});
 				req.done(function (ro) {
-					if (typeof cb == 'function') {
+					if (typeof cb === 'function') {
+						if (typeof ro === 'string' || myVar instanceof String) {
+							ro = JSON.parse(ro);
+						}
 						cb(ro);
 					}
 				});
@@ -67,29 +71,34 @@ try {
 			};
 			
 			this.getLoginStatus = function (cb) {
-				__checkAuthResponse(cb);
+				this.__checkAuthResponse(cb);
 			};
 			
-			this.login = function (o) {
-				api('/me/login', method.POST, o, function (r) {
-					if (r.appCode){
-						appCode = r.appCode;
-						delete r.appCode;
+			this.login = function (o, cb) {
+				this.api('/me/login', method.POST, o, function (r) {
+					if (r.result){
+						appCode = r.result;
+						r.result = true;
 						setCookie('appCode', appCode, 7);
+					}
+					if (cb) {
+						if (typeof cb === 'function') {
+							cb(r);
+						};
 					}
 				});
 			};
 			
 			this.logout = function () {
-				api('/me/logout', method.POST, null, function (r) {
+				this.api('/me/logout', method.POST, null, function (r) {
 					setCookie('appCode', '', -7);
 				});
 			};
 			
 			this.__checkAuthResponse = function (cb) {
-				api('/me/getLoginStatus', method.POST, o, function (r) {
+				this.api('/me/getLoginStatus', method.POST, null, function (r) {
 					if (cb) {
-						if (typeof cb == 'function') {
+						if (typeof cb === 'function') {
 							cb(r);
 						};
 					}
@@ -118,6 +127,7 @@ try {
 				return "";
 			}
 			window.XTD = this;
+			
         }).call(global);
     })(window.inDapIF ? parent.window : window);
 } catch (e) {

@@ -8,33 +8,71 @@
 {% block content %}
 <h1>21項</h1>
 <form action="{{ path_for('form.create.submit') }}" method="post">
-	<div id="form-container" class="form">
-	</div>
+	<div id="form-container" class="form"></div>
+	<div id="form-properties-container" class="form"></div>
 </form>
 {% endblock %}
 
 {% block scripts %}
-<script src="./js/xtd.sdk.js"></script>
-<script src="./js/xtd.item.js"></script>
-<script src="./js/controls/xtd.controls.singleline.js"></script>
+<script src="./js/xtd/xtd.sdk.js"></script>
+<script src="./js/xtd/xtd.sequencegenerator.js"></script>
+<script src="./js/xtd/xtd.collection.js"></script>
+<script src="./js/xtd/xtd.baseitem.js"></script>
+<script src="./js/xtd/xtd.item.js"></script>
+<script src="./js/xtd/xtd.editableitem.js"></script>
+<script src="./js/xtd/xtd.property.js"></script>
+<script src="./js/xtd/xtd.properties.textbox.js"></script>
+<script src="./js/xtd/xtd.controls.singleline.js"></script>
+<script src="./js/xtd/xtd.validators.mandatory.js"></script>
 <script>
 	var formData = {};
 	$(document).ready(function () {
-		$.getJSON( "form.json", function(data) {
-			formData = data;
-			for(var i = 0; i < formData.items.length; i++) {
-				formData.items[i].handler = new XTD.controls[formData.items[i].properties.type](formData.items[i]);
+		XTD.init({
+				appId: '6d25b55d-987a-41dd-87b3-4db79b81f86c',
+				version: '1.0',
+				secret: '8861b2e14d94'
+				});
+		XTD.getLoginStatus(function (data) {
+			if (!data.result) {
+				XTD.login({'username':'admin','password':'admin'}, function (data) {
+					consolelog(data);
+				});
+			} else {
+				consolelog('login success');
 			}
-			
-			 renderAll();
 		});
+		
+		formData.items = [];
+		formData.items.push(XTD.factories["Singleline"+"Factory"].create());
+
+		//$.getJSON( "form.json", function(data) {
+		//	formData = data;
+		//	for(var i = 0; i < formData.items.length; i++) {
+		//		formData.items[i].handler = new XTD.controls[formData.items[i].properties.type](formData.items[i]);
+		//	}
+		//	
+			 renderAll();
+		//});
 	});
+	
+	var debug = 0;
+	function consolelog(msg) {
+		if (debug) {
+			console.log(msg);
+		}
+	}
 	
 	function renderAll() {
 		$("#form-container").empty();
 		for(var i = 0; i < formData.items.length; i++) {
-				console.log(formData.items[i]);
-			$("#form-container").append($(formData.items[i].handler.render()));
+		consolelog(formData.items[i]);
+			$("#form-container").append($(formData.items[i].render()));
+			consolelog(formData.items[i].properties)
+			formData.items[i].properties.each(function (property) {
+				$("#form-properties-container").append($(property.render()));
+			});
+			//for(var i = 0; i < formData.items[i].properties.length; i++) {
+			
 		}
 	}
 </script>

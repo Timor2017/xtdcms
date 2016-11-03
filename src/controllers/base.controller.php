@@ -24,7 +24,7 @@ class BaseController {
 		} else {
 			$result = new \App\Models\ResponseData($data, array('code'=>$code, 'message'=>$message));
 		}
-		$this->container->response->withJson($result);
+		$this->container->response = $this->container->response->withJson($result);
 	}
 
 }

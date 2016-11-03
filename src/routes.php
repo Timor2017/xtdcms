@@ -12,11 +12,16 @@ $app->get('/min/{f:.*}', function ($request, $response, $args) use ($app, $conta
 	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
 });
 
+$app->get('/cmlist', function ($request, $response, $args) use ($app, $container) {
+	$modules = array(
+										'singleline' => 'modules/singeline',
+									);
+	$response->withJson($modules);
+})->add('\App\Middlewares\AuthenticateMiddleware::authHeader')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 
-
-
-
-
+$app->get('/modules/{file}', function ($request, $response, $args) use ($app, $container) {
+	echo 'a';
+});
 
 
 $app->get('/forms/[{folder_id}]', function ($request, $response, $args) use ($app, $container) {

@@ -38,9 +38,9 @@ class MemberController extends BaseController {
 			$member->login_ip = $_SERVER['REMOTE_ADDR'];
 			$member->login_time = date('Y-m-d H:i:s');
 			$member->save();
-			$this->toJSON($token);
+			return $this->toJSON($token);
 		} else {
-			$this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
 	}
 	
@@ -51,9 +51,9 @@ class MemberController extends BaseController {
 			$member = $members[0];
 			$member->token = '';
 			$member->save();
-			$this->toJSON(true);
+			return $this->toJSON(true);
 		} else {
-			$this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
 	}
 
@@ -62,9 +62,9 @@ class MemberController extends BaseController {
 		
 		$members = \App\Models\Members::where('token','=',$token)->get();
 		if ($members->count() == 1) {
-			$this->toJSON(true);
+			return $this->toJSON(true);
 		} else {
-			$this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
 	}	
 	
@@ -89,9 +89,9 @@ class MemberController extends BaseController {
 			unset($member->last_modified_date);
 			unset($member->last_modified_by);
 			unset($member->concurrent_id);
-			$this->toJSON($member);
+			return $this->toJSON($member);
 		} else {
-			$this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
 	}	
 	
@@ -115,9 +115,9 @@ class MemberController extends BaseController {
 			$member->status = $parseBody['status'];
 			$member->save();
 			
-			$this->toJSON(true);
+			return $this->toJSON(true);
 		} else {
-			$this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
 	}
 	
@@ -139,9 +139,9 @@ class MemberController extends BaseController {
 			unset($model->last_modified_date);
 			unset($model->last_modified_by);
 			unset($model->concurrent_id);
-			$this->toJSON($model);
+			return $this->toJSON($model);
 		} else {
-			$this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
+			return $this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
 		}
 	}
 	
@@ -168,15 +168,15 @@ class MemberController extends BaseController {
 					unset($model->last_modified_date);
 					unset($model->last_modified_by);
 					unset($model->concurrent_id);
-					$this->toJSON($model);
+					return $this->toJSON($model);
 				} else {
-					$this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
+					return $this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
 				}
 			} else {
-				$this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
+				return $this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
 			}
 		} else {
-			$this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
+			return $this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
 		}
 	}
 	
@@ -188,12 +188,12 @@ class MemberController extends BaseController {
 			if (!empty($model)) {
 				$model->status=STATUS_DELETED;
 				$model->save();
-				$this->toJSON(true);
+				return $this->toJSON(true);
 			} else {
-				$this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
+				return $this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
 			}
 		} else {
-			$this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
+			return $this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
 		}
 	}
 	
