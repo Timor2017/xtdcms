@@ -1,8 +1,9 @@
 try {
 	XTD.definitions = XTD.definitions || {};
 	XTD.definitions.EditableItem = function (name, display) {
-		this.name = name;
-		this.display = display;
+		this.__proto__ = new XTD.definitions.Item(name, display);
+		//this.name = name;
+		//this.display = display;
 		this.handlers = [];
 		this.subscribe = function(fn) {
 			this.handlers.push(fn);
@@ -28,7 +29,7 @@ try {
 		
 		return this;
 	}
-	XTD.definitions.EditableItem.prototype = new XTD.definitions.Item();
+	//XTD.definitions.EditableItem.prototype = new XTD.definitions.Item();
 } catch (e) {
     console.log(e);
 }

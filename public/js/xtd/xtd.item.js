@@ -1,8 +1,9 @@
 try {
 	XTD.definitions = XTD.definitions || {};
 	XTD.definitions.Item = function (name, display) {
-		this.name = name;
-		this.display = display;
+		this.__proto__ = new XTD.definitions.BaseItem(name, display);
+		//this.name = name;
+		//this.display = display;
 		this._value = '';
 		
 		this.setValue = function (value) {
@@ -16,7 +17,7 @@ try {
 		};
 		return this;
 	}
-	XTD.definitions.Item.prototype = new XTD.definitions.BaseItem();
+	//XTD.definitions.Item.prototype = new XTD.definitions.BaseItem();
 } catch (e) {
     console.log(e);
 }
