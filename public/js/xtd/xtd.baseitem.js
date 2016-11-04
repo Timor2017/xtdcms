@@ -10,6 +10,20 @@ try {
 		this.validators = new XTD.definitions.Collection();
 		this.__basic_validators = new XTD.definitions.Collection();
 		this.render = function () {};
+		this.setName = function(name) {
+			this.name = name;
+			return this;
+		};
+		this.getName = function() {
+			return this.name;
+		};
+		this.setDisplay = function(display) {
+			this.display = display;
+			return this;
+		};
+		this.getDisplay = function() {
+			return this.display;
+		};
 		this.setParent = function (parent) {
 			this.parent = parent;
 			return this;

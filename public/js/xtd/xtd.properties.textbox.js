@@ -7,14 +7,15 @@ try {
 		this.display = display;
 		
 		this.render = function () {
-			$this = this;
+			var $this = this;
 			return $("<div />").addClass("property-item")
 							.append(
 								$("<label />").addClass("property-item-label").html(this.display)
 							).append(
 								$("<div />").addClass("property-item-control")
 								.append(
-									$("<input />").attr('id', 'txt_'+this.__id).attr('data-id', this.__id).attr('data-parent-id', this.parent.__id).addClass("property-item-label").attr("type", "text").val(this.value).bind('input', function () {
+									$("<input />").attr('id', 'txt_'+this.__id).attr('data-id', this.__id).attr('data-parent-id', this.parent.__id).addClass("property-item-label").attr("type", "text").val(this._value).bind('input', function () {
+										$this.setValue($(this).val());
 										$this.fire($(this).val(), this);
 									})
 								)
@@ -23,7 +24,6 @@ try {
 		
 		return this;
 	}
-	//XTD.definitions.properties.TextBox.prototype = new XTD.definitions.Property();
 } catch (e) {
     console.log(e);
 }

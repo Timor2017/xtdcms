@@ -1,45 +1,83 @@
 {
+	"id": "1",
 	"properties": {
-		"__id": "1",
-		"display": "21項",
-		"description": "21項",
-		"placeholder": "",
-		"validation": []
+		"name": "21項",
+		"common" : {
+			"display": "21項",
+			"description": "21項",
+			"default_value": "",
+			"placeholder": "",
+			"tooltips": ""
+		},
+		"layout": { 
+			"width": "100px",
+			"height": "23px",
+			"horizontalAlignment": "left",
+			"verticalAlignment": "top",
+			"marginTop": "0px",
+			"marginRight": "0px",
+			"marginBottom": "0px",
+			"marginLeft": "0px"
+		},
+		"brush": {
+			"backgroundColor": "",
+			"backgroundImage": "",
+			"foregroundColor": "#000000"
+		},
+		"text": {
+			"size": "12px",
+			"weight": "normal",
+			"textDecoration": "none",
+			"style": "normal"
+		}
 	},
+	"validation": [
+	],
 	"items": [
 		{
+			"id": "1",
 			"properties": {
-				"__id": "1",
 				"name": "name",
-				"display": "姓名",
-				"description": "姓名",
-				"type": "singleline",
+				"type": "Singleline",
 				"value_type": "string",
-				"default_value": "",
-				"placeholder": "姓名, 如: 金約翰",
-				"mandatory": 1,
-				"validation": [
-					{
-						"name": "requireValidator",
-						"type": "requireValidator",
-						"rule": "",
-						"message": "姓名不能為空",
-						"sequence": 1
-					}
-				]
+				"common" : {
+					"display": "姓名",
+					"description": "姓名",
+					"default_value": "",
+					"placeholder": "姓名, 如: 金約翰",
+					"tooltips": ""
+				},
+				"layout": { 
+					"width": "100px",
+					"height": "23px",
+					"horizontalAlignment": "left",
+					"verticalAlignment": "top",
+					"marginTop": "0px",
+					"marginRight": "0px",
+					"marginBottom": "0px",
+					"marginLeft": "0px"
+				},
+				"brush": {
+					"backgroundColor": "",
+					"backgroundImage": "",
+					"foregroundColor": "#000000"
+				},
+				"text": {
+					"size": "inherit",
+					"weight": "inherit",
+					"textDecoration": "inherit",
+					"style": "inherit"
+				}
 			},
-			"settings": [
-				
-			],
-			"style": [
-				{ "name": "width", "value": "100px" }
+			"validation": [
+				{
+					"name": "Mandatory",
+					"type": "Mandatory",
+					"rule": "",
+					"message": "姓名不能為空",
+					"sequence": 1
+				}
 			]
-		}		
-	],
-	"settings": [
-		
-	],
-	"style": [
-		{ "name": "width", "value": "100px" }
+		}
 	]
 }
