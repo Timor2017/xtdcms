@@ -46,6 +46,18 @@ try {
 			};
 			
 			this.api = function (p, m, o, cb) {
+				if (typeof o === 'function') {
+					cb = o;
+					o = null;
+				}
+				if (typeof m === 'function') {
+					cb = m;
+					m = method.GET;
+				}
+				if (!m)
+				{
+					m = method.GET;
+				}
 				var req = $.ajax({
 					url: apiUrl+p,
 					type: m,

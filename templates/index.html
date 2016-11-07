@@ -45,6 +45,10 @@
 			}
 		});
 		
+		XTD.api('/form/def/1', function (data) {
+		console.log(data);
+		});
+		
 		$.getJSON( "form.json", function(data) {
 			fda = new XTD.FDA(data, true).setItemContainerId('form-items-container').setPropertyContainerId('form-properties-container');
 			fda.renderAll();

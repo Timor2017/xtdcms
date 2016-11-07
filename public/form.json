@@ -3,32 +3,32 @@
 	"properties": {
 		"name": "21項",
 		"common" : {
-			"display" : { "group": "common", "name": "display", "value": "21項" },
-			"description" : { "group": "common", "name": "description", "value": "21項" },
-			"default_value" : { "group": "common", "name": "default_value", "value": "" },
-			"placeholder" : { "group": "common", "name": "placeholder", "value": "" },
-			"tooltips" : { "group": "common", "name": "tooltips", "value": "" }
+			"display" : { "group": "common", "name": "display", "value": "21項", "type": "TextBox" },
+			"description" : { "group": "common", "name": "description", "value": "21項", "type": "TextBox" },
+			"default_value" : { "group": "common", "name": "default_value", "value": "", "type": "TextBox" },
+			"placeholder" : { "group": "common", "name": "placeholder", "value": "", "type": "TextBox" },
+			"tooltips" : { "group": "common", "name": "tooltips", "value": "", "type": "TextBox" }
 		},
 		"layout": { 
-			"width" : { "group": "layout", "name": "width", "value": "100px" },
-			"height" :{ "group": "layout", "name": "height", "value": "23px" },
-			"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left" },
-			"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top" },
-			"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px" },
-			"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px" },
-			"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px" },
-			"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px" }
+			"width" : { "group": "layout", "name": "width", "value": "100px", "type": "TextBox" },
+			"height" :{ "group": "layout", "name": "height", "value": "23px", "type": "TextBox" },
+			"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left", "type": "TextBox" },
+			"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top", "type": "TextBox" },
+			"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px", "type": "TextBox" },
+			"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px", "type": "TextBox" },
+			"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px", "type": "TextBox" },
+			"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px", "type": "TextBox" }
 		},
 		"brush": {
-			"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "" },
-			"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "" },
-			"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000" }
+			"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "", "type": "TextBox" },
+			"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "", "type": "TextBox" },
+			"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000", "type": "TextBox" }
 		},
 		"text": {
-			"size" : { "group": "text", "name": "size", "value": "12px" },
-			"weight" : { "group": "text", "name": "weight", "value": "normal" },
-			"textDecoration" : { "group": "text", "name": "textDecoration", "value": "none" },
-			"style" : { "group": "text", "name": "style", "value": "normal" }
+			"size" : { "group": "text", "name": "size", "value": "12px", "type": "TextBox" },
+			"weight" : { "group": "text", "name": "weight", "value": "normal", "type": "TextBox" },
+			"textDecoration" : { "group": "text", "name": "textDecoration", "value": "none", "type": "TextBox" },
+			"style" : { "group": "text", "name": "style", "value": "normal", "type": "TextBox" }
 		}
 	},
 	"validation": [
@@ -37,41 +37,129 @@
 		{
 			"id": "1",
 			"properties": {
-				"name": "name",
+				"name": "sw_time",
 				"type": "Singleline",
 				"value_type": "string",
 				"common" : {
-					"display" : { "group": "common", "name": "display", "value": "姓名" },
-					"description" : { "group": "common", "name": "description", "value": "姓名" },
-					"default_value" : { "group": "common", "name": "default_value", "value": "" },
-					"placeholder" : { "group": "common", "name": "placeholder", "value": "姓名, 如: 金約翰" },
-					"tooltips" : { "group": "common", "name": "tooltips", "value": "" }
+					"display" : { "group": "common", "name": "display", "value": "涉外时间", "type": "TextBox" },
+					"description" : { "group": "common", "name": "description", "value": "涉外时间", "type": "TextBox" },
+					"default_value" : { "group": "common", "name": "default_value", "value": "", "type": "TextBox" },
+					"placeholder" : { "group": "common", "name": "placeholder", "value": "涉外时间, 如: 2015-12-25", "type": "TextBox" },
+					"tooltips" : { "group": "common", "name": "tooltips", "value": "", "type": "TextBox" }
 				},
 				"layout": { 
-					"width" : { "group": "layout", "name": "width", "value": "100px" },
-					"height" : { "group": "layout", "name": "height", "value": "23px" },
-					"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left" },
-					"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top" },
-					"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px" },
-					"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px" },
-					"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px" },
-					"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px" }
+					"width" : { "group": "layout", "name": "width", "value": "100px", "type": "TextBox" },
+					"height" : { "group": "layout", "name": "height", "value": "23px", "type": "TextBox" },
+					"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left", "type": "TextBox" },
+					"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top", "type": "TextBox" },
+					"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px", "type": "TextBox" },
+					"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px", "type": "TextBox" },
+					"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px", "type": "TextBox" },
+					"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px", "type": "TextBox" }
 				},
 				"brush": {
-					"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "" },
-					"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "" },
-					"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000" }
+					"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "", "type": "TextBox" },
+					"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "", "type": "TextBox" },
+					"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000", "type": "TextBox" }
 				},
 				"text": {
-					"size" : { "group": "text", "name": "size", "value": "inherit" },
-					"weight" : { "group": "text", "name": "weight", "value": "inherit" },
-					"textDecoration" : { "group": "text", "name": "textDecoration", "value": "inherit" },
-					"style" : { "group": "text", "name": "style", "value": "inherit" }
+					"size" : { "group": "text", "name": "size", "value": "inherit", "type": "TextBox" },
+					"weight" : { "group": "text", "name": "weight", "value": "inherit", "type": "TextBox" },
+					"textDecoration" : { "group": "text", "name": "textDecoration", "value": "inherit", "type": "TextBox" },
+					"style" : { "group": "text", "name": "style", "value": "inherit", "type": "TextBox" }
 				}
 			},
 			"validation": [
 				{
-					"name": "Mandatory",
+					"type": "Mandatory",
+					"rule": "",
+					"message": "姓名不能為空",
+					"sequence": 1
+				}
+			]
+		},
+		{
+			"id": "2",
+			"properties": {
+				"name": "guider_qy",
+				"type": "Singleline",
+				"value_type": "string",
+				"common" : {
+					"display" : { "group": "common", "name": "display", "value": "引导人QY/JS", "type": "TextBox" },
+					"description" : { "group": "common", "name": "description", "value": "引导人QY/JS", "type": "TextBox" },
+					"default_value" : { "group": "common", "name": "default_value", "value": "", "type": "TextBox" },
+					"placeholder" : { "group": "common", "name": "placeholder", "value": "引导人QY/JS, 如: 青年", "type": "TextBox" },
+					"tooltips" : { "group": "common", "name": "tooltips", "value": "", "type": "TextBox" }
+				},
+				"layout": { 
+					"width" : { "group": "layout", "name": "width", "value": "100px", "type": "TextBox" },
+					"height" : { "group": "layout", "name": "height", "value": "23px", "type": "TextBox" },
+					"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left", "type": "TextBox" },
+					"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top", "type": "TextBox" },
+					"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px", "type": "TextBox" },
+					"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px", "type": "TextBox" },
+					"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px", "type": "TextBox" },
+					"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px", "type": "TextBox" }
+				},
+				"brush": {
+					"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "", "type": "TextBox" },
+					"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "", "type": "TextBox" },
+					"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000", "type": "TextBox" }
+				},
+				"text": {
+					"size" : { "group": "text", "name": "size", "value": "inherit", "type": "TextBox" },
+					"weight" : { "group": "text", "name": "weight", "value": "inherit", "type": "TextBox" },
+					"textDecoration" : { "group": "text", "name": "textDecoration", "value": "inherit", "type": "TextBox" },
+					"style" : { "group": "text", "name": "style", "value": "inherit", "type": "TextBox" }
+				}
+			},
+			"validation": [
+				{
+					"type": "Mandatory",
+					"rule": "",
+					"message": "QY/JS不能為空",
+					"sequence": 1
+				}
+			]
+		},
+		{
+			"id": "3",
+			"id": "3",
+			"properties": {
+				"name": "guider_name",
+				"type": "Singleline",
+				"value_type": "string",
+				"common" : {
+					"display" : { "group": "common", "name": "display", "value": "引导人姓名", "type": "TextBox" },
+					"description" : { "group": "common", "name": "description", "value": "引导人姓名", "type": "TextBox" },
+					"default_value" : { "group": "common", "name": "default_value", "value": "", "type": "TextBox" },
+					"placeholder" : { "group": "common", "name": "placeholder", "value": "姓名, 如: 金約翰", "type": "TextBox" },
+					"tooltips" : { "group": "common", "name": "tooltips", "value": "", "type": "TextBox" }
+				},
+				"layout": { 
+					"width" : { "group": "layout", "name": "width", "value": "100px", "type": "TextBox" },
+					"height" : { "group": "layout", "name": "height", "value": "23px", "type": "TextBox" },
+					"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left", "type": "TextBox" },
+					"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top", "type": "TextBox" },
+					"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px", "type": "TextBox" },
+					"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px", "type": "TextBox" },
+					"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px", "type": "TextBox" },
+					"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px", "type": "TextBox" }
+				},
+				"brush": {
+					"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "", "type": "TextBox" },
+					"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "", "type": "TextBox" },
+					"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000", "type": "TextBox" }
+				},
+				"text": {
+					"size" : { "group": "text", "name": "size", "value": "inherit", "type": "TextBox" },
+					"weight" : { "group": "text", "name": "weight", "value": "inherit", "type": "TextBox" },
+					"textDecoration" : { "group": "text", "name": "textDecoration", "value": "inherit", "type": "TextBox" },
+					"style" : { "group": "text", "name": "style", "value": "inherit", "type": "TextBox" }
+				}
+			},
+			"validation": [
+				{
 					"type": "Mandatory",
 					"rule": "",
 					"message": "姓名不能為空",

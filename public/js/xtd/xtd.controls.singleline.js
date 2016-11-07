@@ -20,82 +20,79 @@ try {
 		this.__id = this.definition.id;
 		var $this = this;
 		this.initialize = function () {
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.common.display = value;
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
-			//this.properties.add(new XTD.definitions.properties.TextBox('common.description', 'description').setParent(this).setValue(this.definition.properties.common.description).subscribe(function (value) {
-			//	$('#txt_'+$(this).attr('data-parent-id')).html(value);
-			//}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.common.default_value = value;
 				$('#txt_'+$(this).attr('data-parent-id')).val(value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.common.placeholder = value;
 				$('#txt_'+$(this).attr('data-parent-id')).attr('placeholder', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.common.tooltips = value;
 				$('#txt_'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.layout.width = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('width', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.layout.height = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('height', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.horizontalAlignment = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.layout.verticalAlignment = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('vertical-align', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.layout.marginTop = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-top', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.layout.marginRight = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-right', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.layout.marginBottom = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.layout.marginLeft = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-left', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.brush.backgroundColor = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('background-color', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.brush.backgroundImage = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('background-image', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.brush.foregroundColor = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('color', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.text.size = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('font-size', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.text.weight = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('font-weight', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.text.textDecoration = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('text-decoration', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
 				//$this.definition.properties.text.style = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
