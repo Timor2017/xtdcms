@@ -15,7 +15,7 @@ try {
 	
 	XTD.controls = XTD.controls || {};
 	XTD.controls.Singleline = function(definition) {
-		this.__proto__ = new XTD.definitions.Item(definition.properties.name, definition.properties.common.display);
+		this.__proto__ = new XTD.definitions.Item(definition.name, definition.properties.common.display);
 		this.definition = definition;
 		this.__id = this.definition.id;
 		var $this = this;
@@ -137,7 +137,7 @@ try {
 		return this;
 	};
 	XTD.controls.EditableSingleline = function(definition) {
-		this.__proto__ = new XTD.definitions.EditableItem(definition.properties.name, definition.properties.common.display);
+		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
 		this.control = new XTD.controls.Singleline(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();

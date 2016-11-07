@@ -71,9 +71,11 @@ try {
 				});
 				req.done(function (ro) {
 					if (typeof cb === 'function') {
-						if (typeof ro === 'string' || myVar instanceof String) {
-							ro = JSON.parse(ro);
-						}
+						try {
+							if (typeof ro === 'string' || myVar instanceof String) {
+								ro = JSON.parse(ro);
+							}
+						} catch (e) { console.log(ro); console.log(e); }
 						cb(ro);
 					}
 				});

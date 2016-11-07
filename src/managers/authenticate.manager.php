@@ -63,7 +63,7 @@ if (__IS_DEBUG){
 																								['version','=', $this->getVersion()],
 																								['status','=',STATUS_ACTIVE]
 																							])->get();
-																							
+		
 		if ($model->count() > 0){
 			return true;
 		}
@@ -84,9 +84,8 @@ if (__IS_DEBUG){
 					$time = strtotime($time);
 				}
 				
-				//$token = md5(session_id() . $t . time() . $_SERVER['REMOTE_ADDR'] . $this->getAppID() . $this->getSecret() . $this->getVersion());
-				$token = $this->getCurrentToken($username, $time);
-				if ($token == $this->getToken()) {
+				$check_token = $this->getCurrentToken($username, $time);
+				if ($token == $check_token) {
 					return true;
 				}
 			}

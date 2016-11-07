@@ -58,10 +58,11 @@ class MemberController extends BaseController {
 	}
 
 	public function getLoginStatus($request, $response, $args)  {
-		$token = $this->container['auth.manager']->getToken();
+		//$token = $this->container['auth.manager']->getToken();
 		
-		$members = \App\Models\Members::where('token','=',$token)->get();
-		if ($members->count() == 1) {
+		//$members = \App\Models\Members::where('token','=',$token)->get();
+		$result = $this->container['auth.manager']->isAuthenticatedUser();
+		if ($result) {
 			return $this->toJSON(true);
 		} else {
 			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);

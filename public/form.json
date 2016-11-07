@@ -5,6 +5,7 @@
 		"common" : {
 			"display" : { "group": "common", "name": "display", "value": "21項", "type": "TextBox" },
 			"description" : { "group": "common", "name": "description", "value": "21項", "type": "TextBox" },
+			"is_featured" : { "group": "common", "name": "is_featured", "value": "0", "type": "TextBox" },
 			"default_value" : { "group": "common", "name": "default_value", "value": "", "type": "TextBox" },
 			"placeholder" : { "group": "common", "name": "placeholder", "value": "", "type": "TextBox" },
 			"tooltips" : { "group": "common", "name": "tooltips", "value": "", "type": "TextBox" }
@@ -31,7 +32,7 @@
 			"style" : { "group": "text", "name": "style", "value": "normal", "type": "TextBox" }
 		}
 	},
-	"validation": [
+	"validations": [
 	],
 	"items": [
 		{
@@ -69,7 +70,7 @@
 					"style" : { "group": "text", "name": "style", "value": "inherit", "type": "TextBox" }
 				}
 			},
-			"validation": [
+			"validations": [
 				{
 					"type": "Mandatory",
 					"rule": "",
@@ -113,7 +114,7 @@
 					"style" : { "group": "text", "name": "style", "value": "inherit", "type": "TextBox" }
 				}
 			},
-			"validation": [
+			"validations": [
 				{
 					"type": "Mandatory",
 					"rule": "",
@@ -158,7 +159,7 @@
 					"style" : { "group": "text", "name": "style", "value": "inherit", "type": "TextBox" }
 				}
 			},
-			"validation": [
+			"validations": [
 				{
 					"type": "Mandatory",
 					"rule": "",

@@ -9,7 +9,7 @@ class AuthenticateMiddleware {
 		} else {
 			$response->withStatus(403)
 								->withHeader('Content-type', 'text/html')
-								->write('Forbidden access the page');
+								->write('Forbidden access the page for invalid header');
 		}
 		return $response;
 	}
@@ -21,7 +21,7 @@ class AuthenticateMiddleware {
 		} else {
 			$response->withStatus(403)
 								->withHeader('Content-type', 'text/html')
-								->write('Forbidden access the page');
+								->write('Forbidden access the page for invalid user');
 		}
 		return $response;
 	}

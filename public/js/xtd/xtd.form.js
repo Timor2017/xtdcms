@@ -79,7 +79,7 @@ try {
 		
 		this.__addItem = function (item) {
 			//this.items.add(XTD.factories[item.properties.type+"Factory"].createEditable(item).subscribe(this.changeControlHandler));
-			this.items.add(XTD.factories[item.properties.type+"Factory"].create(item));
+			this.items.add(XTD.factories[item.type+"Factory"].create(item));
 		};
 		
 		this.render = function () {
@@ -97,12 +97,12 @@ try {
 		return this;
 	};
 	XTD.definitions.EditableForm = function(definition) {
-		this.__proto__ = new XTD.definitions.EditableItem(definition.properties.name, definition.properties.common.display);
+		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
 		var $this = this;
 		this.definition = definition;
 		this.control = new XTD.definitions.Form(this.definition).setParent(this);
 		this.control.__addItem = function (item) {
-			$this.control.items.add(XTD.factories[item.properties.type+"Factory"].createEditable(item).subscribe($this.changeControlHandler));
+			$this.control.items.add(XTD.factories[item.type+"Factory"].createEditable(item).subscribe($this.changeControlHandler));
 		};
 		this.render = function () {
 			var output = this.control.render();
