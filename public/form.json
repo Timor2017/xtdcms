@@ -3,32 +3,32 @@
 	"properties": {
 		"name": "21項",
 		"common" : {
-			"display": "21項",
-			"description": "21項",
-			"default_value": "",
-			"placeholder": "",
-			"tooltips": ""
+			"display" : { "group": "common", "name": "display", "value": "21項" },
+			"description" : { "group": "common", "name": "description", "value": "21項" },
+			"default_value" : { "group": "common", "name": "default_value", "value": "" },
+			"placeholder" : { "group": "common", "name": "placeholder", "value": "" },
+			"tooltips" : { "group": "common", "name": "tooltips", "value": "" }
 		},
 		"layout": { 
-			"width": "100px",
-			"height": "23px",
-			"horizontalAlignment": "left",
-			"verticalAlignment": "top",
-			"marginTop": "0px",
-			"marginRight": "0px",
-			"marginBottom": "0px",
-			"marginLeft": "0px"
+			"width" : { "group": "layout", "name": "width", "value": "100px" },
+			"height" :{ "group": "layout", "name": "height", "value": "23px" },
+			"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left" },
+			"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top" },
+			"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px" },
+			"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px" },
+			"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px" },
+			"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px" }
 		},
 		"brush": {
-			"backgroundColor": "",
-			"backgroundImage": "",
-			"foregroundColor": "#000000"
+			"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "" },
+			"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "" },
+			"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000" }
 		},
 		"text": {
-			"size": "12px",
-			"weight": "normal",
-			"textDecoration": "none",
-			"style": "normal"
+			"size" : { "group": "text", "name": "size", "value": "12px" },
+			"weight" : { "group": "text", "name": "weight", "value": "normal" },
+			"textDecoration" : { "group": "text", "name": "textDecoration", "value": "none" },
+			"style" : { "group": "text", "name": "style", "value": "normal" }
 		}
 	},
 	"validation": [
@@ -41,32 +41,32 @@
 				"type": "Singleline",
 				"value_type": "string",
 				"common" : {
-					"display": "姓名",
-					"description": "姓名",
-					"default_value": "",
-					"placeholder": "姓名, 如: 金約翰",
-					"tooltips": ""
+					"display" : { "group": "common", "name": "display", "value": "姓名" },
+					"description" : { "group": "common", "name": "description", "value": "姓名" },
+					"default_value" : { "group": "common", "name": "default_value", "value": "" },
+					"placeholder" : { "group": "common", "name": "placeholder", "value": "姓名, 如: 金約翰" },
+					"tooltips" : { "group": "common", "name": "tooltips", "value": "" }
 				},
 				"layout": { 
-					"width": "100px",
-					"height": "23px",
-					"horizontalAlignment": "left",
-					"verticalAlignment": "top",
-					"marginTop": "0px",
-					"marginRight": "0px",
-					"marginBottom": "0px",
-					"marginLeft": "0px"
+					"width" : { "group": "layout", "name": "width", "value": "100px" },
+					"height" : { "group": "layout", "name": "height", "value": "23px" },
+					"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left" },
+					"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top" },
+					"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px" },
+					"marginRight" : { "group": "layout", "name": "marginRight", "value": "0px" },
+					"marginBottom" : { "group": "layout", "name": "marginBottom", "value": "0px" },
+					"marginLeft" : { "group": "layout", "name": "marginLeft", "value": "0px" }
 				},
 				"brush": {
-					"backgroundColor": "",
-					"backgroundImage": "",
-					"foregroundColor": "#000000"
+					"backgroundColor" : { "group": "brush", "name": "backgroundColor", "value": "" },
+					"backgroundImage" : { "group": "brush", "name": "backgroundImage", "value": "" },
+					"foregroundColor" : { "group": "brush", "name": "foregroundColor", "value": "#000000" }
 				},
 				"text": {
-					"size": "inherit",
-					"weight": "inherit",
-					"textDecoration": "inherit",
-					"style": "inherit"
+					"size" : { "group": "text", "name": "size", "value": "inherit" },
+					"weight" : { "group": "text", "name": "weight", "value": "inherit" },
+					"textDecoration" : { "group": "text", "name": "textDecoration", "value": "inherit" },
+					"style" : { "group": "text", "name": "style", "value": "inherit" }
 				}
 			},
 			"validation": [

@@ -11,7 +11,7 @@ try {
 		add: function (item) {
 			if (!this._items[item.name]) {
 				this._items[item.name] = item;
-				this._keys.push(item.name);
+				this._keys[this._count] = item.name;
 				++this._count;
 			}
 		},
@@ -28,15 +28,15 @@ try {
 			}
 		},
 		removeAll: function () {
-			while (this._count > 0) {
-				this.removeAt(0);
-			};
+			for (var i = this._count - 1; i >= 0; i--){
+				this.removeAt(i);
+			}
 		},
 		removeAt: function (index) {
-			if ((index >= 0) && (index < count)) {
-				delete this._items[this._keys[i]];
-				delete this._keys[i];
-				--count;
+			if ((index >= 0) && (index < this._count)) {
+				delete this._items[this._keys[index]];
+				delete this._keys[index];
+				--this._count;
 			}
 		},
 		get: function (name) {

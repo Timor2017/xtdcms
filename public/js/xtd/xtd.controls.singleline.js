@@ -17,66 +17,86 @@ try {
 	XTD.controls.Singleline = function(definition) {
 		this.__proto__ = new XTD.definitions.Item(definition.properties.name, definition.properties.common.display);
 		this.definition = definition;
-		this.__id = definition.id;
+		this.__id = this.definition.id;
+		var $this = this;
 		this.initialize = function () {
-			this.properties.add(new XTD.definitions.properties.TextBox('display', 'display').setParent(this).setValue(definition.properties.common.display).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.common.display = value;
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
-			//this.properties.add(new XTD.definitions.properties.TextBox('common.description', 'description').setParent(this).setValue(definition.properties.common.description).subscribe(function (value) {
+			//this.properties.add(new XTD.definitions.properties.TextBox('common.description', 'description').setParent(this).setValue(this.definition.properties.common.description).subscribe(function (value) {
 			//	$('#txt_'+$(this).attr('data-parent-id')).html(value);
 			//}));
-			this.properties.add(new XTD.definitions.properties.TextBox('common.default_value', 'default_value').setParent(this).setValue(definition.properties.common.default_value).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.common.default_value = value;
 				$('#txt_'+$(this).attr('data-parent-id')).val(value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('common.placeholder', 'placeholder').setParent(this).setValue(definition.properties.common.placeholder).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.common.placeholder = value;
 				$('#txt_'+$(this).attr('data-parent-id')).attr('placeholder', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('common.tooltips', 'tooltips').setParent(this).setValue(definition.properties.common.tooltips).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.common.tooltips = value;
 				$('#txt_'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.width', 'width').setParent(this).setValue(definition.properties.layout.width).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.layout.width = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('width', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.height', 'height').setParent(this).setValue(definition.properties.layout.height).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.layout.height = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('height', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.horizontalAlignment', 'horizontalAlignment').setParent(this).setValue(definition.properties.layout.horizontalAlignment).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.horizontalAlignment = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.verticalAlignment', 'verticalAlignment').setParent(this).setValue(definition.properties.layout.verticalAlignment).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.layout.verticalAlignment = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('vertical-align', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.marginTop', 'marginTop').setParent(this).setValue(definition.properties.layout.marginTop).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.layout.marginTop = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-top', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.marginRight', 'marginRight').setParent(this).setValue(definition.properties.layout.marginRight).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.layout.marginRight = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-right', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.marginBottom', 'marginBottom').setParent(this).setValue(definition.properties.layout.marginBottom).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.layout.marginBottom = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('layout.marginLeft', 'marginLeft').setParent(this).setValue(definition.properties.layout.marginLeft).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.layout.marginLeft = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('margin-left', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('brush.backgroundColor', 'backgroundColor').setParent(this).setValue(definition.properties.brush.backgroundColor).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.brush.backgroundColor = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('background-color', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('brush.backgroundImage', 'backgroundImage').setParent(this).setValue(definition.properties.brush.backgroundImage).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.brush.backgroundImage = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('background-image', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('brush.foregroundColor', 'foregroundColor').setParent(this).setValue(definition.properties.brush.foregroundColor).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.brush.foregroundColor = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('color', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('text.size', 'size').setParent(this).setValue(definition.properties.text.size).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.text.size = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('font-size', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('text.weight', 'weight').setParent(this).setValue(definition.properties.text.weight).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.text.weight = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('font-weight', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('text.textDecoration', 'textDecoration').setParent(this).setValue(definition.properties.text.textDecoration).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.text.textDecoration = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('text-decoration', value);
 			}));
-			this.properties.add(new XTD.definitions.properties.TextBox('text.style', 'style').setParent(this).setValue(definition.properties.text.style).subscribe(function (value) {
+			this.properties.add(new XTD.definitions.properties.TextBox(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
+				//$this.definition.properties.text.style = value;
 				$('#txt_'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
 			
@@ -84,7 +104,7 @@ try {
 		this.render = function () {
 			return $('<div />').attr('id', 'container_'+this.__id)
 							.append(
-								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('display').getValue()) 
+								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
 							.append(
 								$('<div />').addClass('item-control')
@@ -111,6 +131,9 @@ try {
 								)
 							);
 		};
+		
+		//this.serialize = function () {
+		//};
 
 		this.initialize();
 		
