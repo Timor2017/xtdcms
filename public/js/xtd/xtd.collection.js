@@ -9,22 +9,26 @@ try {
 
 	XTD.definitions.Collection.prototype = {
 		add: function (item) {
-			if (!this._items[item.name]) {
-				this._items[item.name] = item;
-				this._keys[this._count] = item.name;
-				++this._count;
+			if (item && item.name) {
+				if (!this._items[item.name]) {
+					this._items[item.name] = item;
+					this._keys[this._count] = item.name;
+					++this._count;
+				}
 			}
 		},
 		remove: function (item) {
-			if (this._items[item.name]) {
-				delete this._items[item.name];
-				for (var i = 0; i < this._count; i++) {
-					if (this._keys[i] == item.name) {
-						delete this._keys[i];
-						break;
+			if (item && item.name) {
+				if (this._items[item.name]) {
+					delete this._items[item.name];
+					for (var i = 0; i < this._count; i++) {
+						if (this._keys[i] == item.name) {
+							delete this._keys[i];
+							break;
+						}
 					}
+					--this._count;
 				}
-				--count;
 			}
 		},
 		removeAll: function () {

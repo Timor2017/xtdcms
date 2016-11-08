@@ -125,7 +125,6 @@
 		},
 		{
 			"id": "3",
-			"id": "3",
 			"properties": {
 				"name": "guider_name",
 				"type": "Singleline",

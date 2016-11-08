@@ -292,6 +292,11 @@ $app->delete('/member/{id}', function ($request, $response, $args) use ($app, $c
 
 $app->get('/', function ($request, $response, $args) {
 	$args['route'] = 'dashboard';
+	
+	//for test permission
+	//has_folder_permission(6, PERMISSION_READ);
+	
+	
 	return $this->view->render($response, 'index.html', $args);
 })->setName("dashboard");
 

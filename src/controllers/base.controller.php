@@ -26,5 +26,12 @@ class BaseController {
 		}
 		$this->container->response = $this->container->response->withJson($result);
 	}
+	
+	public function retrieveValue($value, $defaultValue = '') {
+		if (isset($value)) {
+			return $value;
+		}
+		return $defaultValue;
+	}
 
 }

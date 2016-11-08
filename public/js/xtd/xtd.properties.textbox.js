@@ -3,8 +3,9 @@ try {
 	XTD.definitions.properties = XTD.definitions.properties || {};
 	XTD.definitions.properties.TextBox = function (property) {
 		this.__proto__ = new XTD.definitions.Property(property);
-		this.setValue(this.property.value);
-		
+		if (this.property && this.property.value) {
+			this.setValue(this.property.value);
+		}
 		this.render = function () {
 			var $this = this;
 			return $("<div />").addClass("property-item")
