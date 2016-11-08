@@ -304,6 +304,11 @@ $app->get('/', function ($request, $response, $args) {
 	//$folder->permissions()->save($permission);
 	//echo 'done';
 	//exit;
+	//$folder= \App\Models\Folders::find(6);
+	//foreach ($folder->permissions as $permission){
+	//	print_r($permission);
+	//}
+	//exit;
 	
 	return $this->view->render($response, 'index.html', $args);
 })->setName("dashboard");

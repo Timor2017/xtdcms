@@ -37,7 +37,7 @@ function has_permission($permissions, $created_by, $access = 'READ') {
 	$container = $app->getContainer();
 	$result = false;
 	
-	if (($access != PERMISSION_CREATE) && ($access != PERMISSION_UPDATE) && ($access != PERMISSION_READ) && ($access != PERMISSION_DELETE) && ($access != PERMISSION_ADD) && ($access != PERMISSION_REMOVE)) {
+	if (($access != PERMISSION_CREATE) && ($access != PERMISSION_UPDATE) && ($access != PERMISSION_READ) && ($access != PERMISSION_DELETE) && ($access != PERMISSION_ADD) && ($access != PERMISSION_REMOVE) && ($access != PERMISSION_EXECUTE)) {
 		throw new Exception ('variable access only allowed: CREATE, UPDATE, READ, DELETE, ADD, REMOVE');
 	}
 	$user = (object)[ 'id' => '' ];

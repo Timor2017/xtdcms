@@ -1,19 +1,14 @@
 <?php
 namespace App\Models;
 
-class FormItems extends BaseModel {
+class ItemProperties extends BaseModel {
 	protected $connection = 'form_definition';
-	protected $table = 'form_items';
+	protected $table = 'item_properties';
 	
-	public function permissions()
-	{
-		return $this->morphMany('\App\Models\Permissions', 'target')->where('status',STATUS_ACTIVE)->get();
-	}	
-	
-	public function all_permissions()
-	{
-		return $this->morphMany('\App\Models\Permissions', 'target');
-	}	
+	public function target()
+    {
+        return $this->morphTo();
+    }
 	
 	public function properties()
 	{
@@ -24,4 +19,5 @@ class FormItems extends BaseModel {
 	{
 		return $this->morphMany('\App\Models\ItemProperties', 'target');
 	}	
-}
+	
+}		

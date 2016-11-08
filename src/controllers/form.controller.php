@@ -86,7 +86,7 @@ class FormController extends BaseController {
 		$form->is_featured = 	$this->retrieveValue($parsedBody['properties']['common']['is_featured']['value'], '0');
 		$form->save();
 		
-		$this->extractProperties($form, $parsedBody, \App\Models\FormProperties::class, $form->id);
+		$this->extractProperties($form, $parsedBody);
 		foreach ($parsedBody['items'] as $sequence => $item) {
 			$new_properties = [];
 			$form_item = new \App\Models\FormItems();
@@ -104,7 +104,7 @@ class FormController extends BaseController {
 			$form_item->sequence =								$sequence;
 			$form_item->save();
 			
-			$this->extractProperties($form_item, $item, \App\Models\FormItemProperties::class, $form->id);
+			$this->extractProperties($form_item, $item);
 		}
 		$args['id'] = $form->id;
 
@@ -124,7 +124,7 @@ class FormController extends BaseController {
 			$form->is_featured = $this->retrieveValue($parsedBody['properties']['common']['is_featured']['value'] , '0');
 			$form->save();
 			
-			$this->extractProperties($form, $parsedBody, \App\Models\FormProperties::class, $form->id);
+			$this->extractProperties($form, $parsedBody);
 			foreach ($parsedBody['items'] as $sequence => $item) {
 				$new_properties = [];
 				$item_id = $item['id'];
@@ -150,7 +150,7 @@ class FormController extends BaseController {
 				$form_item->sequence =								$sequence;
 				$form_item->save();
 				
-				$this->extractProperties($form_item, $item, \App\Models\FormItemProperties::class, $form->id);
+				$this->extractProperties($form_item, $item);
 			}
 
 			return  $this->loadForm($request, $response, $args);
@@ -158,7 +158,7 @@ class FormController extends BaseController {
 		return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 	}
 	
-	private function extractProperties($item, $properties, $class, $form_id) {
+	private function extractProperties($item, $properties) {
 		foreach ($item->properties as $property) {
 			if (!isset($properties['properties'][$property->group][$property->name])) {
 				$property->status = STATUS_DELETED;
@@ -174,8 +174,8 @@ class FormController extends BaseController {
 		foreach ($properties['properties'] as $group_name => $group) {
 			if (is_array($group)) {
 				foreach ($group as $name => $prop) {
-					$property = new $class();
-					$property->form_id = $form_id;
+					$property = new \App\Models\ItemProperties();
+					//$property->form_id = $form_id;
 					$property->name = $name;
 					$property->group = $group_name;
 					$property->value = $prop['value'];
@@ -190,9 +190,9 @@ class FormController extends BaseController {
 			foreach ($properties['validations'] as $validation_sequence => $validation) {
 				$property = $item->properties()->where(array('sequence' => $validation_sequence, 'group' => 'validations'))->first();
 				if (empty($property)) {
-					$property = new $class();
+					$property = new \App\Models\ItemProperties();
 				}
-				$property->form_id = $form_id;
+				//$property->form_id = $form_id;
 				$property->name = '';
 				$property->group = 'validations';
 				$property->rule = $validation['rule'];
