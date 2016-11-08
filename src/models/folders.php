@@ -7,7 +7,7 @@ class Folders extends BaseModel {
 	
 	public function permissions()
 	{
-		return $this->hasMany('App\Models\FormPermissions', 'folder_id', 'id');
+		return $this->morphMany('\App\Models\Permissions', 'target');
 	}	
 	
 	public function forms()

@@ -63,11 +63,11 @@ $container['user'] = function ($c) {
 	$user = (object)$c->get('settings')['user'];
 	if ($c['auth.manager']->isAuthenticatedUser()) {
 		$member = \App\Models\Members::where('token','=',$c['auth.manager']->getToken())->first();
-		$groups = \App\Models\GroupMembers::where('member_id','=',$member->id)->get();
+		$groups = \App\Models\GroupMembers::where(['member_id'=>$member->id, 'status'=>STATUS_ACTIVE])->get();
 		$user->id = $member->id;
 		$user->isLoggedIn = true;
-		$user->info = $member->toArray();
-		$user->groups = $groups->toArray();
+		$user->info = $member;
+		$user->groups = $groups;
 	}
 	return $user;
 };

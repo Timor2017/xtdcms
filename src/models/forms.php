@@ -5,6 +5,11 @@ class Forms extends BaseModel {
 	protected $connection = 'form_definition';
 	protected $table = 'forms';
 	
+	public function permissions()
+	{
+		return $this->morphMany('\App\Models\Permissions', 'target');
+	}	
+	
 	public function properties()
 	{
 		return $this->hasMany('App\Models\FormProperties', 'form_id', 'id');

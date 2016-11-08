@@ -1,119 +1,119 @@
 <?php
 
-function has_folder_permission($folder_id, $access = PERMISSION_READ) {
+function has_group_permission($id, $access = PERMISSION_READ) {
+	$item = \App\Models\Groups::find($id);
+	$permissions = $item->permissions;
+	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+
+	return $result;
+}
+
+function has_folder_permission($id, $access = PERMISSION_READ) {
+	$item = \App\Models\Folders::find($id);
+	$permissions = $item->permissions;
+	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+
+	return $result;
+}
+
+function has_form_permission($id, $access = 'READ') {
+	$item = \App\Models\Forms::find($id);
+	$permissions = $item->permissions;
+	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+	
+	return $result;
+}
+
+function has_form_item_permission($id, $access = 'READ') {
+	$item = \App\Models\FormItems::find($id);
+	$permissions = $item->permissions;
+	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+	
+	return $result;
+}
+
+function has_permission($permissions, $created_by, $access = 'READ') {
 	global $app;
+	$container = $app->getContainer();
 	$result = false;
 	
 	if (($access != PERMISSION_CREATE) && ($access != PERMISSION_UPDATE) && ($access != PERMISSION_READ) && ($access != PERMISSION_DELETE) && ($access != PERMISSION_ADD) && ($access != PERMISSION_REMOVE)) {
 		throw new Exception ('variable access only allowed: CREATE, UPDATE, READ, DELETE, ADD, REMOVE');
 	}
-	
-	if (isset($app->user)) {
-		if (isset($app->user->groups)) {
-			$permissions = $app->db->select()
-									->from('folder_permissions')
-									->where('folder_id', '=', $folder_id)
-									->where('status', '=', STATUS_ACTIVE)
-									->execute()
-									->fetchAll();
-			$position = 0;
-			switch ($access) {
-				case PERMISSION_DELETE:
-					$position = ACCESS_RIGHT_DELETE;
-				break;
-				case PERMISSION_READ:
-					$position = ACCESS_RIGHT_READ;
-				break;
-				case PERMISSION_UPDATE:
-					$position = ACCESS_RIGHT_UPDATE;
-				break;
-				case PERMISSION_CREATE:
-					$position = ACCESS_RIGHT_CREATE;
-				break;
-				case PERMISSION_ADD:
-					$position = ACCESS_RIGHT_ADD;
-				break;
-				case PERMISSION_REMOVE:
-					$position = ACCESS_RIGHT_REMOVE;
-				break;			
-			}
-			
-			foreach ($permissions as $permission) {
-				$access_right = $permission['permission'];
-				//$check_access_right = $access_right >> $position;
-				
-				if ($check_access_right & ACCESS_MEMBER_PUBLIC == ACCESS_MEMBER_PUBLIC) {
-					$result = true;
-					break;
-				}
-				else if ($check_access_right & ACCESS_MEMBER_GROUP == ACCESS_MEMBER_GROUP && $permission['group_id'] == app['user']['group']['id']) {
-					$result = true;
-					break;
-				}
-				else if ($check_access_right & ACCESS_MEMBER_SELF == ACCESS_MEMBER_SELF && $permission['owner_id'] == app['user']['id']) {
-					$result = true;
-					break;
-				}
-				
-			}
+	$user = (object)[ 'id' => '' ];
+	$groups = [(object)[ 'id' => '' ]];
+	if (isset($container->user)) {
+		$user = $container->user;
+		if (isset($container->user->groups)) {
+			$groups = $container->user->groups;
 		}
 	}
-	echo $result; exit;
+	
+	$position = 0;
+	switch ($access) {
+		case PERMISSION_DELETE:
+			$position = ACCESS_RIGHT_DELETE;
+		break;
+		case PERMISSION_READ:
+			$position = ACCESS_RIGHT_READ;
+		break;
+		case PERMISSION_UPDATE:
+			$position = ACCESS_RIGHT_UPDATE;
+		break;
+		case PERMISSION_CREATE:
+			$position = ACCESS_RIGHT_CREATE;
+		break;
+		case PERMISSION_ADD:
+			$position = ACCESS_RIGHT_ADD;
+		break;
+		case PERMISSION_REMOVE:
+			$position = ACCESS_RIGHT_REMOVE;
+		break;			
+	}
+			
+	foreach ($permissions as $permission) {
+		$access_right = $permission['permission'];
+
+		if ((($access_right & ACCESS_MEMBER_PUBLIC) == ACCESS_MEMBER_PUBLIC) && ($access_right & $position == $position)) {
+			$result = true;
+			break;
+		}
+		else if ((($access_right & ACCESS_MEMBER_GROUP) == ACCESS_MEMBER_GROUP) && ($access_right & $position == $position) && (in_same_group($permission['group_id'], $groups))) {
+			$result = true;
+			break;
+		}
+		else if ((($access_right & ACCESS_MEMBER_SELF) == ACCESS_MEMBER_SELF) && ($access_right & $position == $position) && ($permission['owner_id'] == $user->id)) {
+			$result = true;
+			break;
+		}
+	}
+	$result |= ($created_by == $user->id && $created_by !== 0);
+	$result |= is_admin($groups);
+	
 	return $result;
 }
 
 
-function has_form_permission($form_id, $access = 'READ') {
-	global $app;
-
+function is_admin($groups) {
 	$result = false;
-	
-	if (($access != 'CREATE') || ($access != 'UPDATE') || ($access != 'READ') || ($access != 'DELETE')) {
-		throw new Exception ('variable access only allowed: CREATE, UPDATE, READ, DELETE');
+	foreach ($groups as $group) {
+		if ($group->name == '__admin') {
+			
+			$result = true;
+			break;
+		}
 	}
 	
-	if (isset($app['user'])) {
-		if (isset($app['user']['group'])) {
-			$permissions = $app->db->select()
-									->from('form_permissions')
-									->where('form_id', '=', $form_id)
-									->where('status', '=', STATUS_ACTIVE)
-									->execute()
-									->fetchAll();
-			$position = 0;
-			switch ($access) {
-				case 'DELETE':
-					$position = ACCESS_RIGHT_DELETE;
-				break;
-				case 'READ':
-					$position = ACCESS_RIGHT_READ;
-				break;
-				case 'UPDATE':
-					$position = ACCESS_RIGHT_UPDATE;
-				break;
-				case 'CREATE':
-					$position = ACCESS_RIGHT_CREATE;
-				break;
-			}
+	return $result;
+}
+
+function in_same_group($group_id, $groups) {
+	$result = false;
+	foreach ($groups as $group) {
+		if ($group->group_id == $group_id) {
 			
-			foreach ($permissions as $permission) {
-				$access_right = $permission['permission'];
-				$check_access_right = $access_right >> $position;
-				
-				if ($check_access_right & ACCESS_MEMBER_PUBLIC == ACCESS_MEMBER_PUBLIC) {
-					$result = true;
-					break;
-				}
-				else if ($check_access_right & ACCESS_MEMBER_GROUP == ACCESS_MEMBER_GROUP && $permission['group_id'] == app['user']['group']['id']) {
-					$result = true;
-					break;
-				}
-				else if ($check_access_right & ACCESS_MEMBER_SELF == ACCESS_MEMBER_SELF && $permission['owner_id'] == app['user']['id']) {
-					$result = true;
-					break;
-				}
-				
-			}
+			$result = true;
+			break;
 		}
 	}
 	

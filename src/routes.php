@@ -294,8 +294,16 @@ $app->get('/', function ($request, $response, $args) {
 	$args['route'] = 'dashboard';
 	
 	//for test permission
-	//has_folder_permission(6, PERMISSION_READ);
-	
+	//echo has_folder_permission(6, PERMISSION_READ);
+	//echo has_form_permission(1, PERMISSION_READ);
+	//$folder= \App\Models\Folders::find(6);
+	//$permission = new \App\Models\Permissions();
+	//$permission->group_id = 8;
+	//$permission->permission = ACCESS_MEMBER_GROUP + ACCESS_RIGHT_READ + ACCESS_RIGHT_UPDATE + ACCESS_RIGHT_CREATE + ACCESS_RIGHT_DELETE;
+	//$permission->status = STATUS_ACTIVE;
+	//$folder->permissions()->save($permission);
+	//echo 'done';
+	//exit;
 	
 	return $this->view->render($response, 'index.html', $args);
 })->setName("dashboard");
