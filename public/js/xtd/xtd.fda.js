@@ -33,6 +33,11 @@ if (XTD) {
 			$('#' + $this.__itemContainerId).empty().append($($this.form.render()));
 		};
 		
+		this.addItem = function (definition) {
+			//console.log($this.form);
+			$this.form.control.__addItem(definition);
+		};
+		
 		this.serializeItem = function () {
 			return this.form.definition;
 		};

@@ -7,19 +7,19 @@ class FormItems extends BaseModel {
 	
 	public function permissions()
 	{
-		return $this->morphMany('\App\Models\Permissions', 'target')->where('status',STATUS_ACTIVE)->get();
+		return $this->morphMany('\App\Models\Permissions', 'target')->where('status',STATUS_ACTIVE);
 	}	
 	
 	public function all_permissions()
 	{
 		return $this->morphMany('\App\Models\Permissions', 'target');
 	}	
-	
+
 	public function properties()
 	{
-		return $this->morphMany('\App\Models\ItemProperties', 'target')->where('status',STATUS_ACTIVE)->get();
+		return $this->morphMany('\App\Models\ItemProperties', 'target')->where('status', STATUS_ACTIVE);
 	}	
-	
+
 	public function all_properties()
 	{
 		return $this->morphMany('\App\Models\ItemProperties', 'target');

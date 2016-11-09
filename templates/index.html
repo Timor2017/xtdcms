@@ -3,6 +3,38 @@
 {% block title %}Index{% endblock %}
 {% block head %}
     {{ parent() }}
+<style>
+	#form-items-container {
+		background-color: #f00;
+	}
+	#form-properties-container {
+		background-color: #0f0;
+		position: absolute;
+		right: 100px;
+		top: 51px;
+		bottom: 0;
+		padding: 10px 0;
+		width: 200px;
+		color: #000;
+		overflow-y: auto;
+	}
+	#form-controls-container {
+		background-color: #00f;
+		position: absolute;
+		right: 0;
+		top: 51px;
+		bottom: 0;
+		padding: 0px 0;
+		width: 100px;
+		color: #000;
+		overflow: auto;
+	}
+	.control-item {
+		border: 1px solid #888;
+		background-color: #ddd;
+		padding: 5px;
+	}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -10,6 +42,7 @@
 	<input type="button" value="serialize" onclick="serializeItem();" />
 	<div id="form-items-container"></div>
 	<div id="form-properties-container" class="form"></div>
+	<div id="form-controls-container" class="form"></div>
 </form>
 {% endblock %}
 
@@ -47,12 +80,39 @@
 		});
 		
 		XTD.api('/form/def/1', function (data) {
-			console.log(data.result);
+			//console.log(data.result);
 			fda = new XTD.FDA(data.result, true).setItemContainerId('form-items-container').setPropertyContainerId('form-properties-container');
 			fda.renderAll();
 			//console.log(data);
+			dragula([document.getElementById('form-controls-container'), $('#form-items-container').children()[0]], {
+				moves: function (item, source, handle, nextEl) {
+					return $(item).attr('id') != 'form_title';
+				},
+				copy: function (el, source) {
+					return source === document.getElementById('form-controls-container')
+				},
+				accepts: function (el, target) {
+					return target !== document.getElementById('form-controls-container')
+				}
+			})
+			.on('drop', function (el) {
+				var item = $(el);
+				if (item.attr('data-factory')) {
+					//var element = XTD.factories[item.attr('data-factory')].createEditable();
+					fda.addItem(new XTD.properties.DefaultDefinition(item.html(), item.html(), item.attr('data-factory').toString().replace('Factory','')));
+					fda.renderAll();
+					//var layout = element.render();
+					//item.replaceWith(layout);
+				}
+			});
 		});
 		
+		$controlContainer = $("#form-controls-container");
+		for (var name in XTD.factories) {
+			if (XTD.factories[name].name) {
+				$("<div />").addClass("control-item").attr('data-factory', name).html(XTD.factories[name].display).appendTo($controlContainer);
+			}
+		}
 		//$.getJSON( "form.json", function(data) {
 		//	fda = new XTD.FDA(data, true).setItemContainerId('form-items-container').setPropertyContainerId('form-properties-container');
 		//	fda.renderAll();
