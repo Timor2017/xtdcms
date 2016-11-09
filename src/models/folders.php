@@ -17,7 +17,7 @@ class Folders extends BaseModel {
 	
 	public function forms()
 	{
-		return $this->hasMany('App\Models\Forms', 'folder_id', 'id');->where('status', STATUS_ACTIVE)
+		return $this->hasMany('App\Models\Forms', 'folder_id', 'id')->where('status', STATUS_ACTIVE);
 	}	
 	
 	public function all_forms()
