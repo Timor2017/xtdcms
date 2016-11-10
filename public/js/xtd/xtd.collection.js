@@ -17,6 +17,18 @@ try {
 				}
 			}
 		},
+		insert: function (index, item) { 
+			if (item && item.name) {
+				if (!this._items[item.name]) {
+					this._items[item.name] = item;
+					for (var i = this._count - 1; i >= index; i--) {
+						this._keys[i+1] = this._keys[i];
+					}
+					this._keys[index] = item.name;
+					++this._count;
+				}
+			}
+		},
 		remove: function (item) {
 			if (item && item.name) {
 				if (this._items[item.name]) {
@@ -43,6 +55,9 @@ try {
 				--this._count;
 			}
 		},
+		at: function (index) {
+			return this._items[this._keys[index]];
+		},
 		get: function (name) {
 			return this._items[name];
 		},
@@ -54,7 +69,7 @@ try {
 			return this.next();
 		},
 		last: function() {
-			this._index = this._count - 1;
+			this._index = this._count - 1 ;
 			return this.next();
 		},
 		previous: function() {

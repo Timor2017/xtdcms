@@ -35,11 +35,16 @@ if (XTD) {
 		
 		this.addItem = function (definition) {
 			//console.log($this.form);
-			$this.form.control.__addItem(definition);
+			$this.form.control.addItem(definition);
+		};
+		
+		this.insertItem = function (index, definition) {
+			//console.log($this.form);
+			$this.form.control.insertItem(index, definition);
 		};
 		
 		this.serializeItem = function () {
-			return this.form.definition;
+			return this.form.control.definition;
 		};
 		
 		this.serializeValue = function () {

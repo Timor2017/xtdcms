@@ -78,18 +78,24 @@ try {
 		};
 		
 		this.__addItem = function (item) {
-			//this.items.add(XTD.factories[item.properties.type+"Factory"].createEditable(item).subscribe(this.changeControlHandler));
+			//this.items.add(XTD.factories[item.type+"Factory"].createEditable(item).subscribe(this.changeControlHandler));
 			this.items.add(XTD.factories[item.type+"Factory"].create(item));
+		};
+		
+		this.__insertItem = function (index, item) {
+			//this.items.add(XTD.factories[item.type+"Factory"].createEditable(item).subscribe(this.changeControlHandler));
+			this.items.insert(index, XTD.factories[item.type+"Factory"].create(item));
 		};
 		
 		this.render = function () {
 			var style = '';
-			var container = $('<div />').attr('id', 'container_'+this.__id);
-			$('<h1 />').attr('id','form_title').html(this.definition.properties.common.display.value).appendTo(container);
+			var container = $('<div />');
+			//$('<h1 />').attr('id','form_title').html(this.definition.properties.common.display.value).appendTo(container);
+			$('#form_title').html(this.definition.properties.common.display.value);
 			this.items.each(function (item) {
 				$(item.render()).appendTo(container);
 			});
-			return container;
+			return container.children();
 		};
 
 		this.initialize();
@@ -99,16 +105,30 @@ try {
 	XTD.definitions.EditableForm = function(definition) {
 		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
 		var $this = this;
-		this.definition = definition;
-		this.control = new XTD.definitions.Form(this.definition).setParent(this);
+		//this.definition = definition;
+		this.control = new XTD.definitions.Form(definition).setParent(this);
 		this.control.__addItem = function (item) {
 			$this.control.items.add(XTD.factories[item.type+"Factory"].createEditable(item).subscribe($this.changeControlHandler));
 		};
+		this.control.addItem = function (item) {
+			$this.control.items.add(XTD.factories[item.type+"Factory"].createEditable(item).subscribe($this.changeControlHandler));
+			$this.control.definition.items.push($this.control.items.at($this.control.items._count - 1).control.definition);
+		};
+		
+		this.control.__insertItem = function (index, item) {
+			$this.control.items.insert(index, XTD.factories[item.type+"Factory"].createEditable(item).subscribe($this.changeControlHandler));
+		};
+		
+		this.control.insertItem = function (index, item) {
+			$this.control.items.insert(index, XTD.factories[item.type+"Factory"].createEditable(item).subscribe($this.changeControlHandler));
+			$this.control.definition.items.push($this.control.items.at(index).control.definition);
+		};
+		
 		this.render = function () {
-			var output = this.control.render();
+			var output = $(this.control.render());
 			var properties = this.control.properties;
 			var $this = this;
-			output.find("#form_title").bind('click', function () {
+			$("#form_title").bind('click', function () {
 				$this.fire(properties);
 			});
 			

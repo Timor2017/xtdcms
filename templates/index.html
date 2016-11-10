@@ -40,6 +40,7 @@
 {% block content %}
 <form action="{{ path_for('form.create.submit') }}" method="post">
 	<input type="button" value="serialize" onclick="serializeItem();" />
+	<h1 id="form_title"></h1>
 	<div id="form-items-container"></div>
 	<div id="form-properties-container" class="form"></div>
 	<div id="form-controls-container" class="form"></div>
@@ -84,26 +85,30 @@
 			fda = new XTD.FDA(data.result, true).setItemContainerId('form-items-container').setPropertyContainerId('form-properties-container');
 			fda.renderAll();
 			//console.log(data);
-			dragula([document.getElementById('form-controls-container'), $('#form-items-container').children()[0]], {
+			dragula([document.getElementById('form-controls-container'), document.getElementById('form-items-container')], {
 				moves: function (item, source, handle, nextEl) {
 					return $(item).attr('id') != 'form_title';
 				},
 				copy: function (el, source) {
 					return source === document.getElementById('form-controls-container')
 				},
-				accepts: function (el, target) {
-					return target !== document.getElementById('form-controls-container')
+				accepts: function (el,target) {
+					return target !== document.getElementById('form-controls-container');
 				}
 			})
-			.on('drop', function (el) {
-				var item = $(el);
+			.on('drop', function (item, target, _source, _currentSibling) {
+				var index = Array.prototype.indexOf.call(target.childNodes, _currentSibling) - 1; //-1 for 1 based array, -1 for header
+				var item = $(item);
 				if (item.attr('data-factory')) {
-					//var element = XTD.factories[item.attr('data-factory')].createEditable();
-					fda.addItem(new XTD.properties.DefaultDefinition(item.html(), item.html(), item.attr('data-factory').toString().replace('Factory','')));
+					fda.insertItem(index, new XTD.properties.DefaultDefinition(XTD.SequenceGenerator.getNextCounter() , item.html(), item.attr('data-factory').toString().replace('Factory','')));
 					fda.renderAll();
-					//var layout = element.render();
-					//item.replaceWith(layout);
 				}
+			});
+			
+			$(".control-item").click(function () {
+				var item = $(this);
+				fda.addItem(new XTD.properties.DefaultDefinition(XTD.SequenceGenerator.getNextCounter() , item.html(), item.attr('data-factory').toString().replace('Factory','')));
+				fda.renderAll();
 			});
 		});
 		
@@ -124,9 +129,10 @@
 	});
 	
 	function serializeItem() {
-		XTD.api('/form/def/1', 'PUT', fda.serializeItem(), function (data) {
-			console.log(data);
-		});
+		console.log(fda.serializeItem());
+		//XTD.api('/form/def/1', 'PUT', fda.serializeItem(), function (data) {
+		//	console.log(data);
+		//});
 	}
 	
 	var debug = 0;
