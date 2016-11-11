@@ -15,7 +15,7 @@ try {
 	
 	XTD.controls = XTD.controls || {};
 	XTD.controls.Singleline = function(definition) {
-		this.__proto__ = new XTD.definitions.Item(definition.name, definition.properties.common.display);
+		this.__proto__ = new XTD.definitions.Item(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
 		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');
 		this.definition.properties.common.default_value = this.definition.properties.common.default_value || new XTD.properties.DefaultPropertyDefinition('common', 'default_value', 'default_value', 'TextBox');
