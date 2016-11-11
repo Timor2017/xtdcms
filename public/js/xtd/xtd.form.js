@@ -1,7 +1,7 @@
 try {
 	XTD.definitions = XTD.definitions || {};
 	XTD.definitions.Form = function (definition) {
-		this.__proto__ = new XTD.definitions.Item(definition.properties.name, definition.properties.common.display);
+		this.__proto__ = new XTD.definitions.Item(definition.properties.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
 		this.__id = this.definition.id;
 		var $this = this;
@@ -103,7 +103,7 @@ try {
 		return this;
 	};
 	XTD.definitions.EditableForm = function(definition) {
-		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
+		this.__proto__ = new XTD.definitions.EditableItem(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		var $this = this;
 		//this.definition = definition;
 		this.control = new XTD.definitions.Form(definition).setParent(this);

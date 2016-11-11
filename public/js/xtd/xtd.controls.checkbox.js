@@ -118,7 +118,7 @@ try {
 		return this;
 	};
 	XTD.controls.EditableCheckbox = function(definition) {
-		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
+		this.__proto__ = new XTD.definitions.EditableItem(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.control = new XTD.controls.Checkbox(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
