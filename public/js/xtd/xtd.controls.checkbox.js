@@ -17,7 +17,9 @@ try {
 	XTD.controls.Checkbox = function(definition) {
 		this.__proto__ = new XTD.definitions.Item(definition.name, definition.properties.common.display);
 		this.definition = definition;
-		this.__id = this.definition.id;
+		if (this.definition.id) {
+			this.__id = this.definition.id;
+		}
 		var $this = this;
 		this.initialize = function () {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
