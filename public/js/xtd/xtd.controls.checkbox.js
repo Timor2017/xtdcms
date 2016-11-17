@@ -89,7 +89,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<input />').attr('type','checkbox').attr('name', this.__id).attr('id', 'txt_'+this.__id)
+									$('<input />').attr('type','checkbox').attr('name', 'form[fields]').attr('id', 'txt_'+this.__id)
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
