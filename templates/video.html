@@ -1,0 +1,182 @@
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<h1>Video</h1>
+<div id="videocontainer">
+<video id="v0" controls></video>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function b64toBlob(b64Data, contentType, sliceSize) {
+  contentType = contentType || '';
+  sliceSize = sliceSize || 512;
+
+  var byteCharacters = atob(b64Data);
+  var byteArrays = [];
+
+  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    var byteNumbers = new Array(slice.length);
+    for (var i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    var byteArray = new Uint8Array(byteNumbers);
+
+    byteArrays.push(byteArray);
+  }
+
+  var blob = new Blob(byteArrays, {type: contentType});
+  return blob;
+}
+
+function db64(b64Data, sliceSize) {
+  sliceSize = sliceSize || 512;
+
+  var byteCharacters = atob(b64Data);
+  //console.log(byteCharacters);
+  var byteArrays = [];
+
+  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    var byteNumbers = new Array(slice.length);
+    for (var i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    var byteArray = new Uint8Array(byteNumbers);
+
+    byteArrays.push(byteArray);
+  }
+
+  return byteArrays;
+}
+var BlobBuilder = function(contentType) {
+  this.parts = [];
+  this.contentType = contentType;
+}
+
+BlobBuilder.prototype.append = function(part) {
+  this.parts = this.parts.concat(part);
+  this.blob = undefined;
+};
+
+BlobBuilder.prototype.getBlob = function() {
+  if (!this.blob) {
+    this.blob = new Blob(this.parts, { type: this.contentType });
+  }
+  return this.blob;
+};
+
+$(document).ready(function () {
+	var vdo = document.getElementById("v0");
+	vdo.src = "./playlist";
+
+return;
+	var lastBlobData = null;
+	var lastBlob = null;
+	var bbuilder = null;
+	var lastEndTime = 0;
+	var duration = 0;
+	console.log(window);
+	//var currentPlaying = 0;
+	$.get("./playlist", function (content) {
+		var data = $.parseJSON(content);
+		var vdo = $("#v0");
+		vdo.attr('width', data.video.width);
+		vdo.attr('height', data.video.height);
+		//var vdo2 = $("#v1");
+		//vdo2.attr('width', data.video.width);
+		//vdo2.attr('height', data.video.height);
+		bbuilder = new BlobBuilder(data.video.mime_type);
+		bbuilder.append(db64(data.video.init_segment));
+			lastBlobData = bbuilder.getBlob();
+			lastBlob = URL.createObjectURL(lastBlobData);
+			console.log(lastBlobData);
+		var player = vdo[0];
+		//var player2 = vdo2[0];
+		currentVid = 0;
+		//player.src = lastBlob;
+		//player.load();
+		player.addEventListener('timeupdate', function () {
+			if (player.currentTime < player.duration) {
+				lastEndTime = player.currentTime;
+			} else {
+				if ((currentVid + 1) < data.video.segments.length) {
+					currentVid = currentVid+1; 
+					playVid(data.video.segments[currentVid]);
+				}
+			}
+		});
+		//player.addEventListener('ended', function () {
+		//	if (player.currentTime > lastEndTime && (currentVid < data.video.segments.length)) {
+		//		if ((currentVid + 1) < data.video.segments.length) {
+		//			currentVid = currentVid+1; 
+		//			playVid(data.video.segments[currentVid]);
+		//		}
+		//	}
+		//})		
+		//player2.addEventListener('timeupdate', function () {
+		//	if (player2.currentTime < player2.duration) {
+		//		lastEndTime = player2.currentTime;
+		//	} else {
+		//		if ((currentVid + 1) < data.video.segments.length) {
+		//			currentVid = currentVid+1; 
+		//			playVid(data.video.segments[currentVid]);
+		//		}
+		//	}
+		//});
+		//player2.addEventListener('ended', function () {
+		//	if (player2.currentTime > lastEndTime && (currentVid < data.video.segments.length)) {
+		//		if ((currentVid + 1) < data.video.segments.length) {
+		//			currentVid = currentVid+1; 
+		//			playVid(data.video.segments[currentVid]);
+		//		}
+		//	}
+		//})		
+		playVid(data.video.segments[currentVid]);
+	});
+	
+	function playVid(segment) {
+		if (bbuilder != null) {
+			//var vdo = $("#v1");
+			var player = document.getElementById("v0");
+			//player.src = URL.createObjectURL(lastBlob);
+			player.src = lastBlob;
+			//console.log(lastEndTime);
+			player.currentTime = lastEndTime;
+			player.play();
+			//player.style.display = '';
+			duration = player.duration;
+			//currentPlaying = ++currentPlaying % 2;
+			//document.getElementById("v"+ currentPlaying).style.display = 'none';
+			//console.log(bbuilder);
+		}
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', segment.url, true);
+		xhr.onload = function(e) {
+		  if (this.status == 200) {
+			bbuilder.append(db64(xhr.response));
+			lastBlobData = bbuilder.getBlob();
+			lastBlob = URL.createObjectURL(lastBlobData);
+			var player = document.getElementById("v0");
+			//player.src = URL.createObjectURL(lastBlob);
+			//player.src = lastBlob;
+			//player.load();
+			//nextBlob = b64toBlob(xhr.response, mime_type);
+		  }
+		};
+		xhr.send();
+	}
+});
+</script>
+{% endblock %}

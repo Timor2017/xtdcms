@@ -13,6 +13,7 @@ class ApiController extends BaseController {
 		$this->app->group('/group', '\App\Controllers\MemberController:group');
 		$this->app->group('/form/def', '\App\Controllers\FormController:definition');
 		$this->app->group('/form/data', '\App\Controllers\FormController:data');
+		$this->app->group('/search', '\App\Controllers\SearchController:search');
 	}
 
 	public function login($request, $response, $args)  {

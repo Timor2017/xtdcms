@@ -24,6 +24,58 @@ $app->get('/modules/{file}', function ($request, $response, $args) use ($app, $c
 });
 
 
+$app->get('/player', function ($request, $response, $args) use ($app, $container) {
+	return $this->view->render($response, 'video.html', $args);
+});
+
+$position = 300;
+$app->get('/playlist', function ($request, $response, $args) use ($app, $container, $position) {
+	$size = 1024 * $position;
+	$filename = __DIR__.'/../public/video/843bbd58c1b80fe084f34b6720f9864b.mp4';
+	$stream = new StreamingManager($filename);
+	$stream->start();
+	//$filesize = filesize($filename);
+	//$handle = fopen($filename, 'rb');
+	//$size = min($size, $filesize);
+	//$content = fread($handle, $size);
+    //
+	//$result = [];
+	//$result['video'] = [];
+	//$result['video']['format'] = 'mp4';
+	//$result['video']['mime_type'] = 'video/mp4';
+	//$result['video']['width'] = '640';
+	//$result['video']['height'] = '360';
+	//$result['video']['init_segment'] = base64_encode($content);
+	//$result['video']['segments'] = [];
+	//$segment_count = round($filesize / $size);
+	//for ($i = 1; $i < $segment_count; $i++) {
+	//	$result['video']['segments'][] = array('segment'=>$i, 'url'=>'./video/'.$i);
+	//}
+	//fclose($handle);
+	//$response->withJson($result);
+});
+
+$app->get('/video/{segment}', function ($request, $response, $args) use ($app, $container, $position) {
+	$size = 1024 * $position;
+	$filename = __DIR__.'/../public/video/843bbd58c1b80fe084f34b6720f9864b.mp4';
+	$filesize = filesize($filename);
+	$offset = $args['segment'] * $size;
+	$size = min($size, $filesize - $offset);
+	$handle = fopen($filename, 'rb');
+	fseek($handle, $offset);
+	//echo ftell ( $handle );exit;
+	//$content = '';
+	//$content .= fread($handle, $size / 2);
+	//fseek($handle, 0);
+	//fseek($handle, $size / 2);
+	//$content .= fread($handle, $size / 2);
+	$content = fread($handle, $size);
+	echo base64_encode($content);
+	
+	
+	fclose($handle);
+});
+
 $app->get('/forms/[{folder_id}]', function ($request, $response, $args) use ($app, $container) {
 
 	$ids = $this->db->select(['max(id) as id'])
