@@ -1,22 +1,46 @@
 try {
 	XTD.factories = XTD.factories || {};
-	XTD.factories.CheckboxFactory = XTD.factories.CheckboxFactory || (function () {
+	XTD.factories.TextareaFactory = XTD.factories.TextareaFactory || (function () {
 		return {
-			name: 'checkbox', 
-			display: '复选框',
+			name: 'textarea', 
+			display: '多行文本',
 			create: function (definition) {
-				return new XTD.controls.Checkbox(definition);
+				return new XTD.controls.Textarea(definition);
 			},
 			createEditable: function (definition) {
-				return new XTD.controls.EditableCheckbox(definition);
+				return new XTD.controls.EditableTextarea(definition);
 			}
 		}
 	})();
 	
 	XTD.controls = XTD.controls || {};
-	XTD.controls.Checkbox = function(definition) {
-		this.__proto__ = new XTD.definitions.Item(definition.name, definition.properties.common.display);
+	XTD.controls.Textarea = function(definition) {
+		this.__proto__ = new XTD.definitions.Item(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
+		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');
+		this.definition.properties.common.default_value = this.definition.properties.common.default_value || new XTD.properties.DefaultPropertyDefinition('common', 'default_value', 'default_value', 'TextBox');
+		this.definition.properties.common.placeholder = this.definition.properties.common.placeholder || new XTD.properties.DefaultPropertyDefinition('common', 'placeholder', 'placeholder', 'TextBox');
+		this.definition.properties.common.tooltips = this.definition.properties.common.tooltips || new XTD.properties.DefaultPropertyDefinition('common', 'tooltips', 'tooltips', 'TextBox');
+		this.definition.properties.common.is_searchable = this.definition.properties.common.is_searchable || new XTD.properties.DefaultPropertyDefinition('common', 'is_searchable', 'is_searchable', 'CheckBox');
+		this.definition.properties.common.is_show_in_list = this.definition.properties.common.is_show_in_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_list', 'is_show_in_list', 'CheckBox');
+		this.definition.properties.common.is_show_in_mobile_list = this.definition.properties.common.is_show_in_mobile_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_mobile_list', 'is_show_in_mobile_list', 'CheckBox');
+		this.definition.properties.common.sort_sequence = this.definition.properties.common.sort_sequence || new XTD.properties.DefaultPropertyDefinition('common', 'sort_sequence', 'sort_sequence', 'TextBox');
+		this.definition.properties.layout.width = this.definition.properties.layout.width || new XTD.properties.DefaultPropertyDefinition('layout', 'width', 'width', 'TextBox');
+		this.definition.properties.layout.height = this.definition.properties.layout.height || new XTD.properties.DefaultPropertyDefinition('layout', 'height', 'height', 'TextBox');
+		this.definition.properties.layout.horizontalAlignment = this.definition.properties.layout.horizontalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'horizontalAlignment', 'horizontalAlignment', 'TextBox');
+		this.definition.properties.layout.verticalAlignment = this.definition.properties.layout.verticalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'verticalAlignment', 'verticalAlignment', 'TextBox');
+		this.definition.properties.layout.marginTop = this.definition.properties.layout.marginTop || new XTD.properties.DefaultPropertyDefinition('layout', 'marginTop', 'marginTop', 'TextBox');
+		this.definition.properties.layout.marginRight = this.definition.properties.layout.marginRight || new XTD.properties.DefaultPropertyDefinition('layout', 'marginRight', 'marginRight', 'TextBox');
+		this.definition.properties.layout.marginBottom = this.definition.properties.layout.marginBottom || new XTD.properties.DefaultPropertyDefinition('layout', 'marginBottom', 'marginBottom', 'TextBox');
+		this.definition.properties.layout.marginLeft = this.definition.properties.layout.marginLeft || new XTD.properties.DefaultPropertyDefinition('layout', 'marginLeft', 'marginLeft', 'TextBox');
+		this.definition.properties.brush.backgroundColor = this.definition.properties.brush.backgroundColor || new XTD.properties.DefaultPropertyDefinition('brush', 'backgroundColor', 'backgroundColor', 'TextBox');
+		this.definition.properties.brush.backgroundImage = this.definition.properties.brush.backgroundImage || new XTD.properties.DefaultPropertyDefinition('brush', 'backgroundImage', 'backgroundImage', 'TextBox');
+		this.definition.properties.brush.foregroundColor = this.definition.properties.brush.foregroundColor || new XTD.properties.DefaultPropertyDefinition('brush', 'foregroundColor', 'foregroundColor', 'TextBox');
+		this.definition.properties.text.size = this.definition.properties.text.size || new XTD.properties.DefaultPropertyDefinition('text', 'size', 'size', 'TextBox');
+		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
+		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
+		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
+
 		if (this.definition.id) {
 			this.__id = this.definition.id;
 		}
@@ -34,6 +58,11 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
 				$('#txt_'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_searchable).setParent(this));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_list).setParent(this));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_mobile_list).setParent(this));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.sort_sequence).setParent(this));
+			
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
 				$('#txt_'+$(this).attr('data-parent-id')).css('width', value);
 			}));
@@ -89,7 +118,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<input />').attr('type','checkbox').attr('name', 'form[fields]').attr('id', 'txt_'+this.__id)
+									$('<textarea />').attr('type','text').attr('name', this.__id).attr('id', 'txt_'+this.__id)
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
@@ -119,9 +148,9 @@ try {
 		
 		return this;
 	};
-	XTD.controls.EditableCheckbox = function(definition) {
-		this.__proto__ = new XTD.definitions.EditableItem(definition.name, (definition.properties.common)?definition.properties.common.display:'');
-		this.control = new XTD.controls.Checkbox(definition).setParent(this);
+	XTD.controls.EditableTextarea = function(definition) {
+		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
+		this.control = new XTD.controls.Textarea(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
 			var properties = this.control.properties;
@@ -137,6 +166,6 @@ try {
 	};
 
 } catch (e) {
-    console.log(e);
+ console.log(e);
 }
 
