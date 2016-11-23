@@ -3,7 +3,7 @@ try {
 	XTD.factories.SelectFactory = XTD.factories.SelectFactory || (function () {
 		return {
 			name: 'select', 
-			display: '下拉菜单2222',
+			display: '下拉菜单测试',
 			create: function (definition) {
 				return new XTD.controls.Select(definition);
 			},
@@ -40,8 +40,7 @@ try {
 		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
-		this.definition.properties.text.options = this.definition.properties.text.options || new XTD.properties.DefaultPropertyDefinition('text', 'options', 'options', 'textarea');
-
+		
 		if (this.definition.id) {
 			this.__id = this.definition.id;
 		}
@@ -109,20 +108,17 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
 				$('#txt_'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
-			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('options', value);
-			}));
-			
+					
 		};
-		this.render = function () {
-			return $('<div />').attr('id', 'container_'+this.__id)
+	this.render = function () {
+			return $('<div />').attr('id', 'test_container_'+this.__id)
 							.append(
-								$('<label />').attr('id', '111111lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
+								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
 							.append(
-								$('<div />').attr('ng-app','myselectapp').attr('ng-controller','selectcontroller').addClass('item-control0000000')
+								$('<div />').addClass('item-control')
 								.append(
-									$('<select />').attr('name', this.__id).attr('id', 'txt_'+this.__id)
+									$('<select />').attr('name', this.__id).attr('id', 'select_'+this.__id)
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
@@ -141,7 +137,6 @@ try {
 										.css('font-weight', this.properties.get('text.weight').getValue())
 										.css('text-decoration', this.properties.get('text.textDecoration').getValue())
 										.css('font-style', this.properties.get('text.style').getValue())
-										
 								)
 							);
 		};
@@ -173,4 +168,3 @@ try {
 } catch (e) {
  console.log(e);
 }
-
