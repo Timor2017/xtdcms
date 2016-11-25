@@ -12,9 +12,7 @@ try {
 								$("<label />").addClass("property-item-label").html(this.property.name)
 							).append(
 								$("<div />").addClass("property-item-control")
-								.append(
-									$('#datetimepicker').bind("click",function(){alert("dfdf");datetimepicker({format: 'yyyy-mm-dd hh:ii'	})});									
-								)
+								
 							);
 		};
 		
