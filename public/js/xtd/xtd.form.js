@@ -137,9 +137,12 @@ try {
 		
 		this.__changeControlHandlerFn =  function (item) {
 		};
-		
+		$lastItem = null;
 		this.changeControlHandler =  function (item) {
-			$this.__changeControlHandlerFn(item);
+			if ($lastItem != item){
+				$this.__changeControlHandlerFn(item);
+				$lastItem = item;
+			}
 		};
 
 		this.setChangeControlHandler = function (fn) {
