@@ -111,14 +111,14 @@ try {
 			
 		};
 		this.render = function () {
-			return $('<div />').attr('id', 'container_'+this.__id)
+			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<textarea />').attr('type','text').attr('name', this.__id).attr('id', 'txt_'+this.__id)
+									$('<textarea />').attr('type','text').attr('name', this.__id).attr('id', 'txt_'+this.__id).addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
@@ -156,7 +156,7 @@ try {
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {
-				$this.fire(properties);
+				$this.fire(properties, this);
 			});
 			
 			return output;

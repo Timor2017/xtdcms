@@ -135,11 +135,11 @@ try {
 			return output;
 		};
 		
-		this.__changeControlHandlerFn =  function (item) {
+		this.__changeControlHandlerFn =  function (item, scope) {
 		};
 		
 		this.changeControlHandler =  function (item) {
-			$this.__changeControlHandlerFn(item);
+			$this.__changeControlHandlerFn(item, this);
 		};
 
 		this.setChangeControlHandler = function (fn) {
