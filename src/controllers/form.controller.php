@@ -12,7 +12,9 @@ class FormController extends BaseController {
 	}
 	
 	public function data()  {
-		$this->app->post('/{id}', 'App\Controllers\FormController:submitForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->post('/{form_id}', 'App\Controllers\FormController:submitFormData');
+		$this->app->put('/{form_id}/{id}', 'App\Controllers\FormController:updateFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('/{form_id}/{id}[/{version}]', 'App\Controllers\FormController:loadFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
 	public function loadForm($request, $response, $args)  {
@@ -208,6 +210,18 @@ class FormController extends BaseController {
 	}
 	
 	public function submitForm($request, $response, $args) {
+		$form_id = $args['form_id'];
+		$parsedBody = $request->getParsedBody();
+		
+		if (!empty($form_id)) {
+			$form = \App\Models\Forms::find($form_id);
+			if (!empty($form)) {
+				$check = true;
+				foreach ($form->$items as $item) {
+					
+				}
+			}
+		}
 	}
 
 }

@@ -22,11 +22,14 @@ if (XTD) {
 			return this;
 		};
 		
-		this.changeControlHandler = function (item) {
+		this.changeControlHandler = function (item, scope) {
 			$('#' + $this.__propertyContainerId).empty();
+			$(".selected").removeClass("selected");
+			$(scope).addClass("selected");
 			item.each(function (property) {
 				$('#' + $this.__propertyContainerId).append($(property.render()));
 			});
+			$(".nav-tabs a[href='#control-sidebar-properties-tab']").tab('show');
 		};
 		
 		this.renderAll = function () {

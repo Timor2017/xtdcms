@@ -111,7 +111,7 @@ try {
 			
 		};
 		this.render = function () {
-			return $('<div />').attr('id', 'container_'+this.__id)
+			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
@@ -156,7 +156,7 @@ try {
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {
-				$this.fire(properties);
+				$this.fire(properties, this);
 			});
 			
 			return output;

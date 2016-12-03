@@ -135,7 +135,7 @@ try {
 			return output;
 		};
 		
-		this.__changeControlHandlerFn =  function (item) {
+		this.__changeControlHandlerFn =  function (item, scope) {
 		};
 		$lastItem = null;
 		this.changeControlHandler =  function (item) {
@@ -143,6 +143,8 @@ try {
 				$this.__changeControlHandlerFn(item);
 				$lastItem = item;
 			}
+			$this.__changeControlHandlerFn(item, this);
+
 		};
 
 		this.setChangeControlHandler = function (fn) {
