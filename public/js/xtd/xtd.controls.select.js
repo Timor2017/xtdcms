@@ -1,21 +1,20 @@
 try {
 	XTD.factories = XTD.factories || {};
-	XTD.factories.RadioFactory = XTD.factories.RadioFactory || (function () {
+	XTD.factories.SelectFactory = XTD.factories.SelectFactory || (function () {
 		return {
-			name: 'radio', 
-			display: '单选按钮',
-			icon: 'fa-edit',
+			name: 'select', 
+			display: '下拉菜单测试',
 			create: function (definition) {
-				return new XTD.controls.Radio(definition);
+				return new XTD.controls.Select(definition);
 			},
 			createEditable: function (definition) {
-				return new XTD.controls.EditableRadio(definition);
+				return new XTD.controls.EditableSelect(definition);
 			}
 		}
 	})();
 	
 	XTD.controls = XTD.controls || {};
-	XTD.controls.Radio = function(definition) {
+	XTD.controls.Select = function(definition) {
 		this.__proto__ = new XTD.definitions.Item(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
 		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');
@@ -41,7 +40,7 @@ try {
 		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
-
+		
 		if (this.definition.id) {
 			this.__id = this.definition.id;
 		}
@@ -51,13 +50,13 @@ try {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).val(value);
+				$('#txt_'+$(this).attr('data-parent-id')).val(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).attr('placeholder', value);
+				$('#txt_'+$(this).attr('data-parent-id')).attr('placeholder', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).attr('title', value);
+				$('#txt_'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_searchable).setParent(this));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_list).setParent(this));
@@ -65,61 +64,61 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.sort_sequence).setParent(this));
 			
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('width', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('width', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('height', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('height', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('text-aign', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('vertical-align', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('vertical-align', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('margin-top', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('margin-top', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('margin-right', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('margin-right', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('margin-left', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('margin-left', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('background-color', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('background-color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('background-image', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('background-image', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('color', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('font-size', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('font-size', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('font-weight', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('font-weight', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('text-decoration', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('text-decoration', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
-				$('#rdo_'+$(this).attr('data-parent-id')).css('font-style', value);
+				$('#txt_'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
-			
+					
 		};
-		this.render = function () {
-			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
+	this.render = function () {
+			return $('<div />').attr('id', 'test_container_'+this.__id)
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<input />').attr('type','radio').attr('name', 'gender').attr('id', 'rdo_'+this.__id)
+									$('<select />').attr('name', this.__id).attr('id', 'select_'+this.__id)
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
@@ -149,15 +148,15 @@ try {
 		
 		return this;
 	};
-	XTD.controls.EditableRadio = function(definition) {
+	XTD.controls.EditableSelect = function(definition) {
 		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
-		this.control = new XTD.controls.Radio(definition).setParent(this);
+		this.control = new XTD.controls.Select(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {
-				$this.fire(properties, this);
+				$this.fire(properties);
 			});
 			
 			return output;
@@ -169,4 +168,3 @@ try {
 } catch (e) {
  console.log(e);
 }
-
