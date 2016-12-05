@@ -164,7 +164,7 @@ try {
 
 		return this;
 	};
-	$('body').on('click',".datepicker_show", function(){
+	$('body').on('click',".datetimepicker_show", function(){
 		$(this).datetimepicker('show');
 	});
 } catch (e) {
