@@ -340,6 +340,9 @@ $app->delete('/member/{id}', function ($request, $response, $args) use ($app, $c
 })->setName("member.delete.submit");
 
 
+$app->get('/login', function ($request, $response, $args) {
+	return $this->view->render($response, 'signin.html', $args);
+})->setName('member.signin');
 
 
 $app->get('/', function ($request, $response, $args) {
@@ -364,6 +367,12 @@ $app->get('/', function ($request, $response, $args) {
 	
 	return $this->view->render($response, 'index.html', $args);
 })->setName("dashboard");
+
+$app->get('/form', function ($request, $response, $args) {
+	$args['route'] = 'formdata.form';
+	
+	return $this->view->render($response, 'form.html', $args);
+})->setName("formdata.form");
 
 
 $app->get('/test/[{name}]', function ($request, $response, $args) {

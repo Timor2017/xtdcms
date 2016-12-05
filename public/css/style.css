@@ -148,6 +148,15 @@ footer {
 	}
 
 .control-item {
+	cursor: pointer;
+	padding: 5px 0px 5px 3px;
+	border: 1px solid #ccc;
+	margin: 3px 3px 3px;
+	width: 47%;
+	display: inline-block;
+}
+.control-item:before {
+	margin-right: 3px;
 }
 
 .item-container {

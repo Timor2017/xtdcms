@@ -4,6 +4,7 @@ try {
 		return {
 			name: 'textarea', 
 			display: '多行文本',
+			icon: 'fa-edit',
 			create: function (definition) {
 				return new XTD.controls.Textarea(definition);
 			},

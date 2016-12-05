@@ -9,55 +9,14 @@ class FormController extends BaseController {
 		$this->app->get('/{id}', 'App\Controllers\FormController:loadForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('[/]', 'App\Controllers\FormController:createForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/{id}', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->delete('/{id}', 'App\Controllers\FormController:deleteForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
 	public function data()  {
-		$this->app->post('/{id}', 'App\Controllers\FormController:submitForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->post('/{form_id}', 'App\Controllers\FormController:submitFormData');
+		$this->app->put('/{form_id}/{id}', 'App\Controllers\FormController:updateFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('/{form_id}/{id}[/{version}]', 'App\Controllers\FormController:loadFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
-	public function deleteForm($request, $response, $args)  {
-		$id = $args['id'];
-		
-		if (!empty($id)) {
-			$form = \App\Models\Forms::find($id);
-			if (!empty($form)) {
-				$form->status=STATUS_DELETED;
-				$form->save();
-				//同时也删除和form相关联的
-				
-					
-				$formItems = \App\Models\FormItems::where('form_id','=',$form->id)->get();
-				if ($formItems->count()>=1){
-					foreach ($formItems as $formItem) {
-						$formItem->status=STATUS_DELETED;
-						$formItem->save();
-					}
-				}
-				
-				$formListItems = \App\Models\FormListItems::where('form_id','=',$form->id)->get();
-				if ($formListItems->count()>=1){
-					foreach ($formListItems as $formListItem) {
-						$formListItem->status=STATUS_DELETED;
-						$formListItem->save();
-					}
-				}
-				
-				$formPermissions = \App\Models\FormPermissions::where('form_id','=',$form->id)->get();
-				if ($formPermissions->count()>=1){
-					foreach ($formPermissions as $formPermission) {
-						$formPermission->status=STATUS_DELETED;
-						$formPermission->save();
-					}
-				}
-					
-				return $this->toJSON(true);
-			} else {
-				return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
-			}
-		} else {
-			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
-		}
-	}
+	
 	public function loadForm($request, $response, $args)  {
 		$parsedBody = $request->getParsedBody();
 		
@@ -251,6 +210,18 @@ class FormController extends BaseController {
 	}
 	
 	public function submitForm($request, $response, $args) {
+		$form_id = $args['form_id'];
+		$parsedBody = $request->getParsedBody();
+		
+		if (!empty($form_id)) {
+			$form = \App\Models\Forms::find($form_id);
+			if (!empty($form)) {
+				$check = true;
+				foreach ($form->$items as $item) {
+					
+				}
+			}
+		}
 	}
 
 }

@@ -12,7 +12,7 @@
 			<div class="box-header with-border"><h1 id="form_title"></h1></div>
 			<form action="{{ path_for('form.create.submit') }}" method="post">
 				<div id="form-items-container" class="form-items-container edit-mode box-body"></div>
-				<div class="box-footer"><input type="button" value="serialize" onclick="serializeItem();" /></div>
+				<div class="box-footer"><input type="button" class="btn btn-primary" value="save" onclick="serializeItem();" /></div>
 			</form>
 		</div>
 	</div>
@@ -33,6 +33,7 @@
 				<h3 class="control-sidebar-heading">Properties</h3>
 				<div id="form-properties-container" class="form"></div>
 		</div>
+	</div>
 		
 	
 {% endblock %}
@@ -58,21 +59,6 @@
 	//var formData = {};
 	var fda = {};
 	$(document).ready(function () {
-		XTD.init({
-				appId: '6d25b55d-987a-41dd-87b3-4db79b81f86c',
-				version: '1.0',
-				secret: '8861b2e14d94'
-				});
-		XTD.getLoginStatus(function (data) {
-			if (!data.result) {
-				XTD.login({'username':'admin','password':'admin'}, function (data) {
-					consolelog(data);
-				});
-			} else {
-				consolelog('login success');
-			}
-		});
-		
 		XTD.api('/form/def/1', function (data) {
 			//console.log(data.result);
 			fda = new XTD.FDA(data.result, true).setItemContainerId('form-items-container').setPropertyContainerId('form-properties-container');
@@ -108,7 +94,7 @@
 		$controlContainer = $("#form-controls-container");
 		for (var name in XTD.factories) {
 			if (XTD.factories[name].name) {
-				$("<div />").addClass("control-item").attr('data-factory', name).html(XTD.factories[name].display).appendTo($controlContainer);
+				$("<div />").addClass("control-item").addClass("fa fa-edit").attr('data-factory', name).html(XTD.factories[name].display).appendTo($controlContainer);
 			}
 		}
 		

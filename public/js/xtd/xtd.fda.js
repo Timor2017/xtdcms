@@ -26,7 +26,12 @@ if (XTD) {
 			$('#' + $this.__propertyContainerId).empty();
 			$(".selected").removeClass("selected");
 			$(scope).addClass("selected");
+			var group = '';
 			item.each(function (property) {
+				if (group != property.property.group) {
+					group = property.property.group;
+					$('#' + $this.__propertyContainerId).append($('<h3 />').html(group).addClass('control-sidebar-heading'));
+				}
 				$('#' + $this.__propertyContainerId).append($(property.render()));
 			});
 			$(".nav-tabs a[href='#control-sidebar-properties-tab']").tab('show');
