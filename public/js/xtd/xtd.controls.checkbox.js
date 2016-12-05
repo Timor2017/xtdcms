@@ -4,6 +4,7 @@ try {
 		return {
 			name: 'checkbox', 
 			display: '复选框',
+			icon: 'fa-edit',
 			create: function (definition) {
 				return new XTD.controls.Checkbox(definition);
 			},

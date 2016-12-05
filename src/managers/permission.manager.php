@@ -3,7 +3,7 @@
 function has_group_permission($id, $access = PERMISSION_READ) {
 	$item = \App\Models\Groups::find($id);
 	$permissions = $item->permissions;
-	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+	$result = has_permission($permissions, $item->created_by, $access);
 
 	return $result;
 }
@@ -11,28 +11,28 @@ function has_group_permission($id, $access = PERMISSION_READ) {
 function has_folder_permission($id, $access = PERMISSION_READ) {
 	$item = \App\Models\Folders::find($id);
 	$permissions = $item->permissions;
-	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+	$result = has_permission($permissions, $item->created_by, $access);
 
 	return $result;
 }
 
-function has_form_permission($id, $access = 'READ') {
+function has_form_permission($id, $access = PERMISSION_READ) {
 	$item = \App\Models\Forms::find($id);
 	$permissions = $item->permissions;
-	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+	$result = has_permission($permissions, $item->created_by, $access);
 	
 	return $result;
 }
 
-function has_form_item_permission($id, $access = 'READ') {
+function has_form_item_permission($id, $access = PERMISSION_READ) {
 	$item = \App\Models\FormItems::find($id);
 	$permissions = $item->permissions;
-	$result = has_permission($permissions, $item->created_by, $access = 'READ');
+	$result = has_permission($permissions, $item->created_by, $access);
 	
 	return $result;
 }
 
-function has_permission($permissions, $created_by, $access = 'READ') {
+function has_permission($permissions, $created_by, $access = PERMISSION_READ) {
 	global $app;
 	$container = $app->getContainer();
 	$result = false;

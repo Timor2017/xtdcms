@@ -4,6 +4,7 @@ try {
 		return {
 			name: 'singleline', 
 			display: '單行文字',
+			icon: 'fa-edit',
 			create: function (definition) {
 				return new XTD.controls.Singleline(definition);
 			},

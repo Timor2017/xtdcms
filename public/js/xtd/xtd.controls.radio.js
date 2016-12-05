@@ -4,6 +4,7 @@ try {
 		return {
 			name: 'radio', 
 			display: '单选按钮',
+			icon: 'fa-edit',
 			create: function (definition) {
 				return new XTD.controls.Radio(definition);
 			},
