@@ -1,21 +1,21 @@
 try {
 	$.getScript("../public/js/bootstrap-datetimepicker.min.js");
 	XTD.factories = XTD.factories || {};
-	XTD.factories.DatetimeFactory = XTD.factories.DatetimeFactory || (function () {
+	XTD.factories.DateFactory = XTD.factories.DateFactory || (function () {
 		return {
-			name: 'datetime', 
-			display: '日期时间',
+			name: 'date', 
+			display: '日期',
 			create: function (definition) {
-				return new XTD.controls.Datetime(definition);
+				return new XTD.controls.Date(definition);
 			},
 			createEditable: function (definition) {
-				return new XTD.controls.EditableDatetime(definition);
+				return new XTD.controls.EditableDate(definition);
 			}
 		}
 	})();
 	
 	XTD.controls = XTD.controls || {};
-	XTD.controls.Datetime = function(definition) {
+	XTD.controls.Date = function(definition) {
 		this.__proto__ = new XTD.definitions.Item(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
 		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');
@@ -51,13 +51,13 @@ try {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).val(value);
+				$('#date_'+$(this).attr('data-parent-id')).val(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).attr('placeholder', value);
+				$('#date_'+$(this).attr('data-parent-id')).attr('placeholder', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).attr('title', value);
+				$('#date_'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_searchable).setParent(this));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_list).setParent(this));
@@ -65,61 +65,61 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.sort_sequence).setParent(this));
 			
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('width', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('width', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('height', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('height', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('text-aign', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('vertical-align', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('vertical-align', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('margin-top', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('margin-top', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('margin-right', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('margin-right', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('margin-left', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('margin-left', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('background-color', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('background-color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('background-image', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('background-image', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('color', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('font-size', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('font-size', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('font-weight', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('font-weight', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('text-decoration', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('text-decoration', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
-				$('#dt_'+$(this).attr('data-parent-id')).css('font-style', value);
+				$('#date_'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
 			
 		};
 		this.render = function () {
 			return $('<div />').attr('id', 'container_'+this.__id)
 							.append(
-								$('<label />').attr('for','dt_'+this.__id).attr('id','lbl_'+this.__id).html(this.properties.get('common.display').getValue())
+								$('<label />').attr('for','date_'+this.__id).attr('id','lbl_'+this.__id).html(this.properties.get('common.display').getValue())
 							)
-							.append( 
-								$('<div />').addClass('item-control').attr('data-date','').attr('data-date-format','dd MM yyyy - HH:ii p').attr('data-link-field','dt_'+this.__id)
+							.append(
+								$('<div />').addClass('item-control'+this.__id).attr('data-link-field','date_'+this.__id)
 								.append(
-									$('<input />').addClass('datepicker_show').attr('id','dt_'+this.__id).attr('size','16').attr('type','text').attr('value', '')
+									$('<input />').addClass('datepicker_show').attr('data-provide',"datepicker").attr('id','date_'+this.__id).attr('size','16').attr('type','text')
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
@@ -148,9 +148,9 @@ try {
 		
 		return this;
 	};
-	XTD.controls.EditableDatetime = function(definition) {
+	XTD.controls.EditableDate = function(definition) {
 		this.__proto__ = new XTD.definitions.EditableItem(definition.name, definition.properties.common.display);
-		this.control = new XTD.controls.Datetime(definition).setParent(this);
+		this.control = new XTD.controls.Date(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
 			var properties = this.control.properties;
@@ -164,9 +164,13 @@ try {
 
 		return this;
 	};
-	$('body').on('click',".datetimepicker_show", function(){
-		$(this).datetimepicker('show');
+	
+	$('body').on('click',".datepicker_show", function(){
+		$(this).datetimepicker({
+			format: 'mm/dd/yyyy'
+		});
 	});
+	
 } catch (e) {
  console.log(e);
 }
