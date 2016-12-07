@@ -14,6 +14,8 @@ class FormController extends BaseController {
 	
 	public function data()  {
 		$this->app->post('/{id}', 'App\Controllers\FormController:submitForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->put('/{id}[/{data_id}]', 'App\Controllers\FormController:submitForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		
 	}
 	public function deleteForm($request, $response, $args)  {
 		$id = $args['id'];
@@ -251,6 +253,77 @@ class FormController extends BaseController {
 	}
 	
 	public function submitForm($request, $response, $args) {
+		$id = $args['id'];
+		$data_id = $args['data_id'];
+		
+		if (!empty($id)) {
+			$form = \App\Models\Forms::find($id);
+			if (!empty($form)) {
+				if (empty($data_id)) {
+					if (!has_form_permission($form->id, PERMISSION_CREATE)){
+						return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
+					}
+				} else {
+					if (!has_form_permission($form->id, PERMISSION_UPDATE)){
+						return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
+					}
+				}
+				$parsedBody = $request->getParsedBody();
+				
+				$is_valid = true;
+				foreach ($form->items as $item) {
+					if (!isset($parsedBody[$item->id])) {
+						$isvalid = false;
+						break;
+					}
+				}
+				if ($is_valid) {
+					$form_data = null;
+					if (empty($data_id)) {
+						$form_data = new \App\Models\FormDatas();
+						$form_data->form_id = $id;
+						$form_data->version = 1;
+						$form_data->status = STATUS_ACTIVE;
+						$form_data->save();
+					} else {
+						$form_data = \App\Models\FormDatas::find($data_id);
+						$form_data->version++;
+						$form_data->status = STATUS_ACTIVE;
+						$form_data->save();
+					}
+					if ($form_data != null) {
+						$values = [];
+						//print_r($parsedBody);
+						foreach ($form->items as $item) {
+							$value = new \App\Models\FormDataValues();
+							$value->form_id = $id;
+							$value->form_item_id = $item->id;
+							$value->item_version = $form->version;
+							$value->data_version = $form_data->version;
+							switch ($item->value_type) {
+								case 'number':
+									$value->number_value = $parsedBody[$item->id];
+									break;
+								case 'file':
+								case 'image':
+									$value->file_value = $parsedBody[$item->id];
+									break;
+								default:
+								//echo $parsedBody[$item->id];
+									$value->text_value = $parsedBody[$item->id];
+									break;
+							}
+							$value->status = STATUS_ACTIVE;
+							$values[] = $value;
+						}
+						$form_data->values()->saveMany($values);
+					}
+				}
+				return $this->toJSON(true);;
+			}
+		}
+		return $this->toJSON(false, ERR_INVALID_FORM_ID, ERR_INVALID_FORM_ID);;
+
 	}
 
 }

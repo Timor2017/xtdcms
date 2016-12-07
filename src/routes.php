@@ -23,6 +23,31 @@ $app->get('/modules/{file}', function ($request, $response, $args) use ($app, $c
 	echo 'a';
 });
 
+$app->get('/folder/{id}', function ($request, $response, $args) {
+	$id = isset($args['id']) ? $args['id'] : '0';
+	$folder = \App\Models\Folders::find($id);
+	if (!empty($folder)) {
+		$args['folder'] = $folder;
+	}
+	return $this->view->render($response, 'folder.details.html', $args);
+})->setName("folder.details");
+
+$app->get('/login', function ($request, $response, $args) {
+	return $this->view->render($response, 'signin.html', $args);
+})->setName('member.signin');
+
+$app->get('/member/profile', function ($request, $response, $args) {
+	return $this->view->render($response, 'signin.html', $args);
+})->setName('member.profile');
+
+$app->get('/js/variable', function ($request, $response, $args) {
+	return $this->view->render($response, 'variable.html', $args);
+})->setName('variable');
+
+
+
+
+
 
 $app->get('/player', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'video.html', $args);
@@ -76,6 +101,7 @@ $app->get('/video/{segment}', function ($request, $response, $args) use ($app, $
 	fclose($handle);
 });
 
+/*
 $app->get('/forms/[{folder_id}]', function ($request, $response, $args) use ($app, $container) {
 
 	$ids = $this->db->select(['max(id) as id'])
@@ -102,7 +128,7 @@ $app->get('/forms/[{folder_id}]', function ($request, $response, $args) use ($ap
 
 	return $this->view->render($response, 'form.list.html', $args);
 })->setName("form.list");
-
+*/
 $app->post('/folder', function ($request, $response, $args) use ($app, $container) {
 	$stmt = $this->db->insert(array('name', 'sequence', 'status', 'created_date', 'created_by', 'last_modified_date', 'last_modified_by'))
                        ->into('folders')
@@ -149,7 +175,7 @@ $app->get('/form/success', function ($request, $response, $args) use ($app, $con
 	$args['route'] = 'form';
 	return $this->view->render($response, 'form.success.html', $args);
 })->setName("form.submit.success");
-
+/*
 $app->get('/form/{id}', function ($request, $response, $args) use ($app, $container) {
 	$values = $this->db->select()
 					->from('swdata')
@@ -165,7 +191,7 @@ $app->get('/form/{id}', function ($request, $response, $args) use ($app, $contai
 
 	return $this->view->render($response, 'form.details.html', $args);
 })->setName("form.details");
-
+*/
 $app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $container) {
 	$values = $this->db->select()
 					->from('swdata')
@@ -340,12 +366,14 @@ $app->delete('/member/{id}', function ($request, $response, $args) use ($app, $c
 })->setName("member.delete.submit");
 
 
-$app->get('/login', function ($request, $response, $args) {
-	return $this->view->render($response, 'signin.html', $args);
-})->setName('member.signin');
+$app->get('/form/[{id}]', function ($request, $response, $args) {
+	$args['route'] = 'formdata.form';
+	
+	return $this->view->render($response, 'form.html', $args);
+})->setName("formdata.form");
 
 
-$app->get('/', function ($request, $response, $args) {
+$app->get('/', function ($request, $response, $args) use ($app, $container) {
 	$args['route'] = 'dashboard';
 	
 	//for test permission
@@ -367,12 +395,6 @@ $app->get('/', function ($request, $response, $args) {
 	
 	return $this->view->render($response, 'index.html', $args);
 })->setName("dashboard");
-
-$app->get('/form', function ($request, $response, $args) {
-	$args['route'] = 'formdata.form';
-	
-	return $this->view->render($response, 'form.html', $args);
-})->setName("formdata.form");
 
 
 $app->get('/test/[{name}]', function ($request, $response, $args) {

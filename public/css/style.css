@@ -170,6 +170,9 @@ footer {
 	padding: 5px;
 }
 
+.form-list-item h1 {
+	margin: 0;
+}
 
 /*
  * Off Canvas

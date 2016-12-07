@@ -21,7 +21,7 @@ try {
             var __DEV__ = 0;
             var undefined;
 			var appCode = null;
-			var apiUrl = 'api';
+			var apiUrl = BASE_URL+'/api';
 			var config = {
 				appId: '',
 				version: '1.0',

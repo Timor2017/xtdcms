@@ -25,7 +25,7 @@ class BaseModel extends Model {
 		});
 		static::saving(function ($model) use ($container) {
 			if ($model instanceof FormDataValues){
-				$model->text_value = encrypt($container->user->info->code, $model->text_value);
+				//$model->text_value = encrypt($container->user->info->code, $model->text_value);
 			}
 		});
 	}

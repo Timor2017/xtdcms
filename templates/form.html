@@ -25,22 +25,22 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="./js/xtd/xtd.sdk.js"></script>
-<script src="./js/xtd/xtd.sequencegenerator.js"></script>
-<script src="./js/xtd/xtd.collection.js"></script>
-<script src="./js/xtd/xtd.baseitem.js"></script>
-<script src="./js/xtd/xtd.item.js"></script>
-<script src="./js/xtd/xtd.editableitem.js"></script>
-<script src="./js/xtd/xtd.property.js"></script>
-<script src="./js/xtd/xtd.form.js"></script>
-<script src="./js/xtd/xtd.properties.textbox.js"></script>
-<script src="./js/xtd/xtd.properties.checkbox.js"></script>
-<script src="./js/xtd/xtd.controls.singleline.js"></script>
-<script src="./js/xtd/xtd.controls.textarea.js"></script>
-<script src="./js/xtd/xtd.controls.checkbox.js"></script>
-<script src="./js/xtd/xtd.controls.radio.js"></script>
-<script src="./js/xtd/xtd.validators.mandatory.js"></script>
-<script src="./js/xtd/xtd.fda.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.sdk.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.sequencegenerator.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.collection.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.baseitem.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.item.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.editableitem.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.property.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.form.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.properties.textbox.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.properties.checkbox.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.controls.singleline.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.controls.textarea.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.controls.checkbox.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.controls.radio.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.validators.mandatory.js"></script>
+<script src="{{ base_url() }}/js/xtd/xtd.fda.js"></script>
 <script>
 	//var formData = {};
 	var fda = {};
@@ -67,10 +67,10 @@
 	});
 	
 	function serializeItem() {
-		console.log(fda.serializeValue());
-		//XTD.api('/form/def/1', 'PUT', fda.serializeItem(), function (data) {
-		//	console.log(data);
-		//});
+		//console.log(fda.serializeValue());
+		XTD.api('/form/data/1', 'POST', fda.serializeValue(), function (data) {
+			console.log(data);
+		});
 	}
 	
 	var debug = 0;

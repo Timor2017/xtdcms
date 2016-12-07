@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}{% endblock %} - XTD</title>
 		<link rel="stylesheet" href="{{ base_url() }}/css/bootstrap.min.css">
-		<link rel="stylesheet" href="{{ base_url() }}/js/jquery-ui-1.11.4/jquery-ui.min.css">
+		<link rel="stylesheet" href="{{ base_url() }}/js/plugins/jquery-ui-1.11.4/jquery-ui.min.css">
 		<link rel="stylesheet" href="{{ base_url() }}/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 		<link rel="stylesheet" href="{{ base_url() }}/css/AdminLTE.min.css">
@@ -33,10 +33,10 @@
 		<div class="wrapper">
 			<header class="main-header">
 				<!-- Logo -->
-				<a href="index2.html" class="logo">
-					<span class="logo-mini"><b>新</b>TD</span>
+				<a href="/" class="logo">
+					<span class="logo-mini"><b>X</b>TD</span>
 					<!-- logo for regular state and mobile devices -->
-					<span class="logo-lg"><b>新TD</b>系统</span>
+					<span class="logo-lg"><b>XTD</b>系统</span>
 				</a>
 				<!-- Header Navbar: style can be found in header.less -->
 				<nav class="navbar navbar-static-top">
@@ -61,7 +61,7 @@
 											<li><!-- start message -->
 												<a href="#">
 													<div class="pull-left">
-														<img src="img/default-icon.jpg" class="img-circle" alt="User Image">
+														<img src="{{ base_url() }}/img/default-icon.jpg" class="img-circle xtd-display-photo" alt="User Image">
 													</div>
 													<h4>
 														Support Team
@@ -131,16 +131,16 @@
 							<!-- User Account: style can be found in dropdown.less -->
 							<li class="dropdown user user-menu">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<img src="img/default-icon.jpg" class="user-image" alt="User Image">
-									<span class="hidden-xs">Alexander Pierce</span>
+									<img src="{{ base_url() }}/img/default-icon.jpg" class="user-image xtd-display-photo" alt="User Image">
+									<span class="hidden-xs xtd-display-name"></span>
 								</a>
 								<ul class="dropdown-menu">
 									<!-- User image -->
 									<li class="user-header">
-										<img src="img/default-icon.jpg" class="img-circle" alt="User Image">
+										<img src="{{ base_url() }}/img/default-icon.jpg" class="img-circle xtd-display-photo" alt="User Image">
 
 										<p>
-											Alexander Pierce - Web Developer
+											<span class="xtd-display-name"></span>
 											<small>Member since Nov. 2012</small>
 										</p>
 									</li>
@@ -162,10 +162,10 @@
 									<!-- Menu Footer-->
 									<li class="user-footer">
 										<div class="pull-left">
-											<a href="#" class="btn btn-default btn-flat">Profile</a>
+											<a href="{{ path_for('member.profile') }}" class="btn btn-default btn-flat">Profile</a>
 										</div>
 										<div class="pull-right">
-											<a href="#" class="btn btn-default btn-flat">Sign out</a>
+											<a href="#" class="btn btn-default btn-flat" onclick="signout();">Sign out</a>
 										</div>
 									</li>
 								</ul>
@@ -185,11 +185,11 @@
 					<!-- Sidebar user panel -->
 					<div class="user-panel">
 						<div class="pull-left image">
-							<img src="img/default-icon.jpg" class="img-circle" alt="User Image">
+							<img src="{{ base_url() }}/img/default-icon.jpg" class="img-circle xtd-display-photo" alt="User Image">
 						</div>
 						<div class="pull-left info">
-							<p>Alexander Pierce</p>
-							<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+							<p class="xtd-display-name"></p>
+							<i class="fa fa-circle text-success"></i> Online
 						</div>
 					</div>
 					<!-- search form -->
@@ -211,6 +211,7 @@
 				{% block content %}{% endblock %}
 			</div>
 			<footer class="main-footer">
+				{% block footer %}{% endblock %}
 				<div class="pull-right hidden-xs">
 					<b>Version</b> 1.0.0
 				</div>
@@ -228,6 +229,7 @@
 		<script>
 			$.widget.bridge('uibutton', $.ui.button);
 		</script>
+		<script src="{{ base_url() }}/js/plugins/history/html4+html5/jquery.history.js"></script>
 		<script src="{{ base_url() }}/js/plugins/dragula/dragula.js"></script>
 		<script src="{{ base_url() }}/js/plugins/bootstrap/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -243,12 +245,14 @@
 		<script src="{{ base_url() }}/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 		<script src="{{ base_url() }}/js/plugins/fastclick/fastclick.js"></script>
 		<script src="{{ base_url() }}/js/adminlte.min.js"></script>
+		<script src="{{ path_for('variable') }}"></script>
+		<script src="{{ base_url() }}/js/xtd/xtd.sdk.js"></script>
 		<script src="{{ base_url() }}/js/app.js"></script>
 		
-		<div id="footer">{% block footer %}{% endblock %}</div>
-		
+		<div class="script_block">
 		{% block scripts %}
 		{% endblock %}
+		</div>
 	</body>
 </html>
 

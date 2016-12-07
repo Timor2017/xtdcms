@@ -56,7 +56,13 @@ if (XTD) {
 		};
 		
 		this.serializeValue = function () {
+			console.log($this.form);
+			var result = {};
+			$this.form.items.each(function (property) {
+				result[property.__id] = $("[name=" + property.__id + "]").val();
+			});
 			//return this.form.serialize();
+			return result;
 		};
 
 		if (editable) {
