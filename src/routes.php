@@ -37,7 +37,7 @@ $app->get('/login', function ($request, $response, $args) {
 })->setName('member.signin');
 
 $app->get('/member/profile', function ($request, $response, $args) {
-	return $this->view->render($response, 'signin.html', $args);
+	return $this->view->render($response, 'member.profile.html', $args);
 })->setName('member.profile');
 
 $app->get('/js/variable', function ($request, $response, $args) {

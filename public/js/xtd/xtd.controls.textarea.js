@@ -51,13 +51,13 @@ try {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).val(value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).val(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).attr('placeholder', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).attr('placeholder', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).attr('title', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_searchable).setParent(this));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_list).setParent(this));
@@ -65,65 +65,63 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.sort_sequence).setParent(this));
 			
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('width', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('width', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('height', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('height', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('text-aign', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('vertical-align', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('vertical-align', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-top', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('margin-top', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-right', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('margin-right', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-left', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('margin-left', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('background-color', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('background-color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('background-image', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('background-image', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('color', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('font-size', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('font-size', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('font-weight', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('font-weight', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('text-decoration', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('text-decoration', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('font-style', value);
+				$('#txtArea_'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
 			
 		};
+
 		this.render = function () {
 			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
-							//.append(
-							//	$('<textarea />').attr('cols', '40').attr('rows', '3').html(this.properties.get('common.display').getValue()) 
-							//)
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<textarea />').attr('type','text').attr('name', this.__id).attr('id', 'txt_'+this.__id).addClass('form-control')
-										.val(this.properties.get('common.default_value').getValue())
+									$('<textArea />').width('200px').height('30px').attr('name', this.__id).attr('id', 'txtArea_'+this.__id).addClass('form-control')
+							    		.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
