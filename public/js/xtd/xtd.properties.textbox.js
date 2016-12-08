@@ -10,7 +10,7 @@ try {
 			var $this = this;
 			return $("<div />").addClass("property-item")
 							.append(
-								$("<label />").addClass("property-item-label").html(this.property.name)
+								$("<label />").addClass("property-item-label").html(XTD.__(this.property.name))
 							).append(
 								$("<div />").addClass("property-item-control")
 								.append(

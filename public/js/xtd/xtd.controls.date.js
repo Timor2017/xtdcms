@@ -1,5 +1,4 @@
 try {
-	$.getScript("../public/js/bootstrap-datetimepicker.min.js");
 	XTD.factories = XTD.factories || {};
 	XTD.factories.DateFactory = XTD.factories.DateFactory || (function () {
 		return {

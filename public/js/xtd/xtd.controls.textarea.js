@@ -116,9 +116,9 @@ try {
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
-							.append(
-								$('<textarea />').attr('cols', '40').attr('rows', '3').html(this.properties.get('common.display').getValue()) 
-							)
+							//.append(
+							//	$('<textarea />').attr('cols', '40').attr('rows', '3').html(this.properties.get('common.display').getValue()) 
+							//)
 							.append(
 								$('<div />').addClass('item-control')
 								.append(

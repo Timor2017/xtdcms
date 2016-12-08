@@ -6,7 +6,7 @@ class FormController extends BaseController {
 	}
 
 	public function definition()  {
-		$this->app->get('/{id}', 'App\Controllers\FormController:loadForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('[/[{id}]]', 'App\Controllers\FormController:loadForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('[/]', 'App\Controllers\FormController:createForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/{id}', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->delete('/{id}', 'App\Controllers\FormController:deleteForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
@@ -62,15 +62,23 @@ class FormController extends BaseController {
 	}
 	public function loadForm($request, $response, $args)  {
 		$parsedBody = $request->getParsedBody();
-		
-		$form = \App\Models\Forms::find($args['id']);
-		$result = null;
-		if (!empty($form)) {
-			$result['id'] = $form->id;
+		$id = (isset($args['id'])) ? $args['id'] : '';
+		if (!empty($id)) {
+			$form = \App\Models\Forms::find($args['id']);
+			$result = null;
+			if (!empty($form)) {
+				$result['id'] = $form->id;
 
-			$result['items'] = $this->generateItems($form);
-			$result['properties'] = $this->generateProperties($form);
-			$result['validations'] = $this->generateValidations($form);
+				$result['items'] = $this->generateItems($form);
+				$result['properties'] = $this->generateProperties($form);
+				$result['validations'] = $this->generateValidations($form);
+			}
+		} else {
+			$form = new \App\Models\Forms();
+				$result['id'] = '';
+				$result['items'] = $this->generateItems($form);
+				$result['properties'] = $this->generateProperties($form);
+				$result['validations'] = $this->generateValidations($form);
 		}
 		
 		if (!empty($result)) {

@@ -5,11 +5,11 @@ body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 /*
 	text-align: center;
-*/
 	color: #aaa;
+*/
 	font-size: 9pt;
 }
-
+/*
 h1 {
 	color: #719e40;
 	letter-spacing: -3px;
@@ -18,7 +18,7 @@ h1 {
 	font-weight: 200;
 	margin-bottom: 0;
 }
-
+*/
 .form_item {
 	width: 410px;
 	border-bottom: 1px solid #ccc;
@@ -133,7 +133,7 @@ footer {
 }
 
 .content-wrapper {
-	padding: 20px;
+	padding: 0px;
 }
 
 #form_title {
@@ -171,7 +171,11 @@ footer {
 }
 
 .form-list-item h1 {
-	margin: 0;
+	margin: 10px 0 20px 0;
+	font-size: 4em;
+}
+.form-list-item .box-body {
+	text-align: center;
 }
 
 /*
