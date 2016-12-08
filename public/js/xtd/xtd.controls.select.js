@@ -17,7 +17,7 @@ try {
 	XTD.controls.Select = function(definition) {
 		this.__proto__ = new XTD.definitions.Item(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
-		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');
+		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');		
 		this.definition.properties.common.default_value = this.definition.properties.common.default_value || new XTD.properties.DefaultPropertyDefinition('common', 'default_value', 'default_value', 'TextBox');
 		this.definition.properties.common.placeholder = this.definition.properties.common.placeholder || new XTD.properties.DefaultPropertyDefinition('common', 'placeholder', 'placeholder', 'TextBox');
 		this.definition.properties.common.tooltips = this.definition.properties.common.tooltips || new XTD.properties.DefaultPropertyDefinition('common', 'tooltips', 'tooltips', 'TextBox');
@@ -40,6 +40,7 @@ try {
 		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
+		this.definition.properties.text.option = this.definition.properties.text.option || new XTD.properties.DefaultPropertyDefinition('text', 'option', 'option', 'Textarea');
 		
 		if (this.definition.id) {
 			this.__id = this.definition.id;
@@ -48,6 +49,9 @@ try {
 		this.initialize = function () {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
+			}));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.option).setParent(this).subscribe(function (value) {
+				$('#txtarea_'+$(this).attr('data-parent-id')).html(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
 				$('#select_'+$(this).attr('data-parent-id')).val(value);
@@ -111,7 +115,7 @@ try {
 					
 		};
 	this.render = function () {
-			return $('<div />').attr('id', 'test_container_'+this.__id)
+			return $('<div />').attr('id', 'test_container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
@@ -121,6 +125,7 @@ try {
 									$('<select />').attr('name', this.__id).attr('id', 'select_'+this.__id)
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
+										.attr('option', this.properties.get('text.option').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
 										.css('height', this.properties.get('layout.height').getValue())
