@@ -93,11 +93,12 @@ try {
 			};
 			
 			this.login = function (o, cb) {
+				$this = this;
 				this.api('/me/login', method.POST, o, function (r) {
 					if (r.result){
 						appCode = r.result;
 						r.result = true;
-						this.setCookie('appCode', appCode, 7);
+						$this.setCookie('appCode', appCode, 7);
 					}
 					if (cb) {
 						if (typeof cb === 'function') {
