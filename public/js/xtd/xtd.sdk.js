@@ -21,6 +21,7 @@ try {
             var __DEV__ = 0;
             var undefined;
 			var appCode = null;
+			var glossaries = null;
 			var apiUrl = BASE_URL+'/api';
 			var config = {
 				appId: '',
@@ -39,7 +40,7 @@ try {
 			
 			this.init = function (o) {
 				config = o
-				var ac = getCookie('appCode');
+				var ac = this.getCookie('appCode');
 				if (ac != '') {
 					appCode = ac;
 				}
@@ -76,6 +77,9 @@ try {
 								ro = JSON.parse(ro);
 							}
 						} catch (e) { console.log(ro); console.log(e); }
+						if ((ro.response) && ro.response.code.toString().indexOf('403') >= 0) {
+							location.href = URL_SIGNIN;
+						}
 						cb(ro);
 					}
 				});
@@ -93,7 +97,7 @@ try {
 					if (r.result){
 						appCode = r.result;
 						r.result = true;
-						setCookie('appCode', appCode, 7);
+						this.setCookie('appCode', appCode, 7);
 					}
 					if (cb) {
 						if (typeof cb === 'function') {
@@ -105,7 +109,7 @@ try {
 			
 			this.logout = function () {
 				this.api('/me/logout', method.POST, null, function (r) {
-					setCookie('appCode', '', -7);
+					this.setCookie('appCode', '', -7);
 				});
 			};
 			
@@ -119,14 +123,14 @@ try {
 				});
 			};
 			
-			function setCookie(cname, cvalue, exdays) {
+			this.setCookie = function (cname, cvalue, exdays) {
 				var d = new Date();
 				d.setTime(d.getTime() + (exdays*24*60*60*1000));
 				var expires = "expires="+d.toUTCString();
 				document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 			}
 
-			function getCookie(cname) {
+			this.getCookie = function (cname) {
 				var name = cname + "=";
 				var ca = document.cookie.split(';');
 				for(var i = 0; i < ca.length; i++) {
@@ -140,6 +144,26 @@ try {
 				}
 				return "";
 			}
+			
+			this.__ = function(content_key) {
+				if (glossaries) {
+					if (glossaries[content_key]) {
+						return glossaries[content_key];
+					}
+				}
+				return content_key;
+			};
+			
+			this.translate = function(content) {
+				$this = this;
+				var elements = content.find(".multi-lang");
+				elements.each (function (index, element) {
+					$(element).html($this.__($(element).html()));
+				});
+			};
+			$.get(BASE_URL+"/js/static-glossaries", function (data) {
+				glossaries = data;
+			});
 			window.XTD = this;
 			
         }).call(global);

@@ -31,8 +31,7 @@ class FolderController extends BaseController{
 		foreach ($folders as $key => $folder) {
 			if (!has_folder_permission($folder->id, PERMISSION_READ)){
 					unset($folders[$key]);
-			}
-			else{
+			} else {
 				unset($folder->created_date);
 				unset($folder->created_by);
 				unset($folder->last_modified_date);

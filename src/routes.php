@@ -44,6 +44,24 @@ $app->get('/js/variable', function ($request, $response, $args) {
 	return $this->view->render($response, 'variable.html', $args);
 })->setName('variable');
 
+$app->get('/js/static-glossaries', function ($request, $response, $args) {
+	$wordings = \App\Models\StaticContents::all();
+	$result = [];
+	foreach ($wordings as $wording) {
+		$glossary = $wording->glossaries()->where('language','zh-cn')->first();
+		if (!empty($glossary)) {
+			$result[$wording->content] = $glossary->content;
+		} else {
+			$result[$wording->content] = $wording->content;
+		}
+	}
+	return $response->withJson($result);//$this->view->render($response, 'glossary.html', $args);
+})->setName('variable');
+
+$app->get('/form/create', function ($request, $response, $args) {
+	return $this->view->render($response, 'form.edit.html', $args);
+})->setName("form.create");
+
 
 
 
@@ -165,12 +183,12 @@ $app->delete('/folder/{id}', function ($request, $response, $args) use ($app, $c
 
 })->setName("folder.delete.submit");
 
-
+/*
 $app->get('/form/create', function ($request, $response, $args) use ($app, $container) {
 	$args['route'] = 'form';
 	return $this->view->render($response, 'form.form.html', $args);
 })->setName("form.create");
-
+*/
 $app->get('/form/success', function ($request, $response, $args) use ($app, $container) {
 	$args['route'] = 'form';
 	return $this->view->render($response, 'form.success.html', $args);

@@ -6,17 +6,73 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-	<div class="col-md-12">
-		<div class="box box-primary">
-			<div class="box-header with-border"><h1 id="form_title"></h1></div>
-			<form action="{{ path_for('form.create.submit') }}" method="post">
-				<div id="form-items-container" class="form-items-container edit-mode box-body"></div>
-				<div class="box-footer"><input type="button" class="btn btn-primary" value="save" onclick="serializeItem();" /></div>
-			</form>
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box box-primary">
+				<div class="box-header with-border"><h1 id="form_title"></h1></div>
+				<form action="{{ path_for('form.create.submit') }}" method="post">
+					<div id="form-items-container" class="form-items-container edit-mode box-body"></div>
+					<div class="box-footer"><input type="button" class="btn btn-primary" value="save" onclick="serializeItem();" /></div>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
+</section>
+<script>
+	var fda = {};
+	var documentReady = function () {
+		XTD.api('/form/def/', function (data) {
+			if (data.result) {
+				fda = new XTD.FDA(data.result, true).setItemContainerId('form-items-container').setControlContainerId('form-controls-container').setPropertyContainerId('form-properties-container');
+				fda.renderAll();
+				dragula([document.getElementById('form-controls-container'), document.getElementById('form-items-container')], {
+					moves: function (item, source, handle, nextEl) {
+						return $(item).attr('id') != 'form_title';
+					},
+					copy: function (el, source) {
+						return source === document.getElementById('form-controls-container')
+					},
+					accepts: function (el,target) {
+						return target !== document.getElementById('form-controls-container');
+					}
+				})
+				.on('drop', function (item, target, _source, _currentSibling) {
+					var index = Array.prototype.indexOf.call(target.childNodes, _currentSibling) - 1; //-1 for 1 based array, -1 for header
+					console.log(index);
+					if (index == -2) {
+						index = fda.definition.items.length;
+					}
+					
+					var item = $(item);
+					if (item.attr('data-factory')) {
+						fda.insertItem(index, new XTD.properties.DefaultDefinition(XTD.SequenceGenerator.getNextCounter() , item.html(), item.attr('data-factory').toString().replace('Factory','')));
+						fda.renderAll();
+					}
+				});
+				
+			}
+		});
+		
+		 $('.control-sidebar').addClass('control-sidebar-open');
+		 
+		 $(".nav-tabs a:first").tab('show');
+	};
+	
+	function serializeItem() {
+		console.log(fda.serializeItem());
+		//XTD.api('/form/def/1', 'PUT', fda.serializeItem(), function (data) {
+		//	console.log(data);
+		//});
+	}
+	
+	var debug = 0;
+	function consolelog(msg) {
+		if (debug) {
+			console.log(msg);
+		}
+	}
+</script>
 {% endblock %}
 
 {% block sidebar %}
@@ -39,87 +95,4 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="./js/xtd/xtd.sequencegenerator.js"></script>
-<script src="./js/xtd/xtd.collection.js"></script>
-<script src="./js/xtd/xtd.baseitem.js"></script>
-<script src="./js/xtd/xtd.item.js"></script>
-<script src="./js/xtd/xtd.editableitem.js"></script>
-<script src="./js/xtd/xtd.property.js"></script>
-<script src="./js/xtd/xtd.form.js"></script>
-<script src="./js/xtd/xtd.properties.textbox.js"></script>
-<script src="./js/xtd/xtd.properties.textarea.js"></script>
-<script src="./js/xtd/xtd.properties.checkbox.js"></script>
-<script src="./js/xtd/xtd.controls.singleline.js"></script>
-<script src="./js/xtd/xtd.controls.textarea.js"></script>
-<script src="./js/xtd/xtd.controls.checkbox.js"></script>
-<script src="./js/xtd/xtd.controls.radio.js"></script>
-<script src="./js/xtd/xtd.controls.select.js"></script>
-<script src="./js/xtd/xtd.controls.datetime.js"></script>
-<script src="./js/xtd/xtd.controls.daterangepicker.js"></script>
-<script src="./js/xtd/xtd.controls.date.js"></script>
-<script src="./js/xtd/xtd.controls.time.js"></script>
-<script src="./js/xtd/xtd.controls.fileupload.js"></script>
-<script src="./js/xtd/xtd.validators.mandatory.js"></script>
-<script src="./js/xtd/xtd.fda.js"></script>
-<script>
-	//var formData = {};
-	var fda = {};
-	$(document).ready(function () {
-		XTD.api('/form/def/1', function (data) {
-			//console.log(data.result);
-			fda = new XTD.FDA(data.result, true).setItemContainerId('form-items-container').setPropertyContainerId('form-properties-container');
-			fda.renderAll();
-			//console.log(data);
-			dragula([document.getElementById('form-controls-container'), document.getElementById('form-items-container')], {
-				moves: function (item, source, handle, nextEl) {
-					return $(item).attr('id') != 'form_title';
-				},
-				copy: function (el, source) {
-					return source === document.getElementById('form-controls-container')
-				},
-				accepts: function (el,target) {
-					return target !== document.getElementById('form-controls-container');
-				}
-			})
-			.on('drop', function (item, target, _source, _currentSibling) {
-				var index = Array.prototype.indexOf.call(target.childNodes, _currentSibling) - 1; //-1 for 1 based array, -1 for header
-				var item = $(item);
-				if (item.attr('data-factory')) {
-					fda.insertItem(index, new XTD.properties.DefaultDefinition(XTD.SequenceGenerator.getNextCounter() , item.html(), item.attr('data-factory').toString().replace('Factory','')));
-					fda.renderAll();
-				}
-			});
-			
-			$(".control-item").click(function () {
-				var item = $(this);
-				fda.addItem(new XTD.properties.DefaultDefinition(XTD.SequenceGenerator.getNextCounter() , item.html(), item.attr('data-factory').toString().replace('Factory','')));
-				fda.renderAll();
-			});
-		});
-		
-		$controlContainer = $("#form-controls-container");
-		for (var name in XTD.factories) {
-			if (XTD.factories[name].name) {
-				$("<div />").addClass("control-item").addClass("fa fa-edit").attr('data-factory', name).html(XTD.factories[name].display).appendTo($controlContainer);
-			}
-		}
-		 $('.control-sidebar').addClass('control-sidebar-open');
-		 
-		 $(".nav-tabs a:first").tab('show');
-	});
-	
-	function serializeItem() {
-		console.log(fda.serializeItem());
-		//XTD.api('/form/def/1', 'PUT', fda.serializeItem(), function (data) {
-		//	console.log(data);
-		//});
-	}
-	
-	var debug = 0;
-	function consolelog(msg) {
-		if (debug) {
-			console.log(msg);
-		}
-	}
-</script>
 {% endblock %}

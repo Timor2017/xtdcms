@@ -8,24 +8,68 @@
 {% endif %}
 
 {% block content %}
-<h1>{{folder.name}}</h1>
-<div class="row">
-	<div class="col-md-2 form-list-item">
-		<a href="/form/1">
-			<div class="box box-default color-palette-box">
-				<div class="box-header with-border">
-					<h3 class="box-title"><i class="fa fa-edit"></i> Form A</h3>
-				</div>
-				<div class="box-body">
-					<h1 style="text-align: center;">20</h1>
-					<div>
-						last submit: 1 Dec 2016
+<section class="content-header">
+	<h1>
+		{{folder.name}}
+	</h1>
+</section>
+<section class="content">
+	<div class="row folder-container">
+		<div class="col-md-2 form-list-item">
+			<a href="/form/1">
+				<div class="box box-default color-palette-box">
+					<div class="box-header with-border">
+						<h3 class="box-title"><i class="fa fa-edit"></i> Create Folder</h3>
+					</div>
+					<div class="box-body">
+						<h1><i class="fa fa-folder"></i></h1>
+						<div>
+							Click to create a new folder
+						</div>
 					</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		</div>
+		<div class="col-md-2 form-list-item">
+			<a href="{{ path_for('form.create') }}">
+				<div class="box box-default color-palette-box">
+					<div class="box-header with-border">
+						<h3 class="box-title"><i class="fa fa-edit"></i> Create Form</h3>
+					</div>
+					<div class="box-body">
+						<h1><i class="fa fa-edit"></i></h1>
+						<div>
+							Click to create a new form
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
 	</div>
-</div>
+</section>
+<script>
+	var documentReady = function () {
+		var container = $(".folder-container");
+		var id = 1;
+		$("<div />").addClass("col-md-2 form-list-item").append(
+			$("<a />").attr("href", "/form/"+id).append(
+				$("<div />").addClass("box box-default color-palette-box").append(
+					$("<div />").addClass("box-header with-border").append(
+						$("<h3 />").addClass("box-title").html("Form A").prepend($("<i />").addClass("fa fa-edit"))
+					)
+				).append(
+					$("<div />").addClass("box-body").append(
+						$("<h1 />").html("20k").append(
+							$("<span />").css("font-size",".3em").html("posts")
+						)
+					).append(
+						$("<div />").html("last submit: 1 Dec 2016")
+					)
+				)
+			)
+		).appendTo(container);
+	}
+</script>
 {% endblock %}
 
 {% block scripts %}

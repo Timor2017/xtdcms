@@ -24,4 +24,9 @@ class FormItems extends BaseModel {
 	{
 		return $this->morphMany('\App\Models\ItemProperties', 'target');
 	}	
+	
+	public function glossaries()
+    {
+        return $this->morphMany('\App\Models\Glossaries', 'target')->where('status',STATUS_ACTIVE);
+    }
 }

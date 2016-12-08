@@ -1,6 +1,10 @@
 try {
 	XTD.definitions = XTD.definitions || {};
 	XTD.definitions.Form = function (definition) {
+		if (definition.properties.length == 0) {
+			ddef = new XTD.properties.DefaultDefinition('new form', 'new form', 'form');
+			definition.properties = ddef.properties;
+		}
 		this.__proto__ = new XTD.definitions.Item(definition.properties.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
 		this.__id = this.definition.id;
