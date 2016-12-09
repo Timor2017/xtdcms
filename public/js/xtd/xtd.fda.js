@@ -33,6 +33,7 @@ if (XTD) {
 		$.cachedScript(BASE_URL + '/js/xtd/xtd.properties.checkbox.js'),
 		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.singleline.js'),
 		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.textarea.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.properties.textarea.js'),
 		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.checkbox.js'),
 		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.radio.js'),
 		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.select.js'),
