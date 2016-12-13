@@ -17,7 +17,7 @@ try {
 	XTD.controls.Select = function(definition) {
 		this.__proto__ = new XTD.definitions.Item(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
-		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');
+		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');		
 		this.definition.properties.common.default_value = this.definition.properties.common.default_value || new XTD.properties.DefaultPropertyDefinition('common', 'default_value', 'default_value', 'TextBox');
 		this.definition.properties.common.placeholder = this.definition.properties.common.placeholder || new XTD.properties.DefaultPropertyDefinition('common', 'placeholder', 'placeholder', 'TextBox');
 		this.definition.properties.common.tooltips = this.definition.properties.common.tooltips || new XTD.properties.DefaultPropertyDefinition('common', 'tooltips', 'tooltips', 'TextBox');
@@ -40,6 +40,7 @@ try {
 		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
+		this.definition.properties.text.option = this.definition.properties.text.option || new XTD.properties.DefaultPropertyDefinition('text', 'option', 'option', 'Textarea');
 		
 		if (this.definition.id) {
 			this.__id = this.definition.id;
@@ -49,14 +50,17 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.option).setParent(this).subscribe(function (value) {
+				$('#txtarea_'+$(this).attr('data-parent-id')).html(value);
+			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).val(value);
+				$('#select_'+$(this).attr('data-parent-id')).val(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).attr('placeholder', value);
+				$('#select_'+$(this).attr('data-parent-id')).attr('placeholder', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).attr('title', value);
+				$('#select_'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_searchable).setParent(this));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_list).setParent(this));
@@ -64,54 +68,54 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.sort_sequence).setParent(this));
 			
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('width', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('width', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('height', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('height', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('text-aign', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('vertical-align', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('vertical-align', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-top', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('margin-top', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-right', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('margin-right', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('margin-left', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('margin-left', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('background-color', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('background-color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('background-image', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('background-image', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('color', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('font-size', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('font-size', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('font-weight', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('font-weight', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('text-decoration', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('text-decoration', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
-				$('#txt_'+$(this).attr('data-parent-id')).css('font-style', value);
+				$('#select_'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
 					
 		};
 	this.render = function () {
-			return $('<div />').attr('id', 'test_container_'+this.__id)
+			return $('<div />').attr('id', 'test_container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
@@ -121,6 +125,7 @@ try {
 									$('<select />').attr('name', this.__id).attr('id', 'select_'+this.__id)
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
+										.attr('option', this.properties.get('text.option').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
 										.css('height', this.properties.get('layout.height').getValue())

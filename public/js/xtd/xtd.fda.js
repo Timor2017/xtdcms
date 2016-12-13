@@ -1,47 +1,47 @@
 if (XTD) {
 	$.when(
-		$.cachedScript(BASE_URL + '/min'
-			+'/js/xtd/xtd.sequencegenerator.js'
-			+',/js/xtd/xtd.collection.js'
-			+',/js/xtd/xtd.baseitem.js'
-			+',/js/xtd/xtd.item.js'
-			+',/js/xtd/xtd.editableitem.js'
-			+',/js/xtd/xtd.property.js'
-			+',/js/xtd/xtd.form.js'
-			+',/js/xtd/xtd.properties.textbox.js'
-			+',/js/xtd/xtd.properties.checkbox.js'
-			+',/js/xtd/xtd.controls.singleline.js'
-			+',/js/xtd/xtd.controls.textarea.js'
-			+',/js/xtd/xtd.controls.checkbox.js'
-			+',/js/xtd/xtd.controls.radio.js'
-			+',/js/xtd/xtd.controls.select.js'
-			+',/js/xtd/xtd.controls.datetime.js'
-			+',/js/xtd/xtd.controls.daterangepicker.js'
-			+',/js/xtd/xtd.controls.date.js'
-			+',/js/xtd/xtd.controls.time.js'
-			+',/js/xtd/xtd.controls.fileupload.js'
-			+',/js/xtd/xtd.validators.mandatory.js'
-		)
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.sequencegenerator.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.collection.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.baseitem.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.item.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.editableitem.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.property.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.form.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.properties.textbox.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.properties.checkbox.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.singleline.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.textarea.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.checkbox.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.radio.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.select.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.datetime.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.daterangepicker.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.date.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.time.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.fileupload.js'),
-		//$.cachedScript(BASE_URL + '/js/xtd/xtd.validators.mandatory.js')
+		//$.cachedScript(BASE_URL + '/min/'
+		//	+'/js/xtd/xtd.sequencegenerator.js'
+		//	+',/js/xtd/xtd.collection.js'
+		//	+',/js/xtd/xtd.baseitem.js'
+		//	+',/js/xtd/xtd.item.js'
+		//	+',/js/xtd/xtd.editableitem.js'
+		//	+',/js/xtd/xtd.property.js'
+		//	+',/js/xtd/xtd.form.js'
+		//	+',/js/xtd/xtd.properties.textbox.js'
+		//	+',/js/xtd/xtd.properties.checkbox.js'
+		//	+',/js/xtd/xtd.controls.singleline.js'
+		//	+',/js/xtd/xtd.controls.textarea.js'
+		//	+',/js/xtd/xtd.controls.checkbox.js'
+		//	+',/js/xtd/xtd.controls.radio.js'
+		//	+',/js/xtd/xtd.controls.select.js'
+		//	+',/js/xtd/xtd.controls.datetime.js'
+		//	+',/js/xtd/xtd.controls.daterangepicker.js'
+		//	+',/js/xtd/xtd.controls.date.js'
+		//	+',/js/xtd/xtd.controls.time.js'
+		//	+',/js/xtd/xtd.controls.fileupload.js'
+		//	+',/js/xtd/xtd.validators.mandatory.js'
+		//)
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.sequencegenerator.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.collection.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.baseitem.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.item.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.editableitem.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.property.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.form.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.properties.textbox.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.properties.checkbox.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.singleline.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.textarea.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.checkbox.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.radio.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.select.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.datetime.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.daterangepicker.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.date.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.time.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.controls.fileupload.js'),
+		$.cachedScript(BASE_URL + '/js/xtd/xtd.validators.mandatory.js')
 	).done(function () {
 		XTD.FDA = XTD.FDA || function (definition, editable) {
 			this.__itemContainerId = '';
