@@ -6,11 +6,11 @@ class FolderController extends BaseController{
 		
 	}
 	public function definition(){
-		$this->app->post('/manage','App\Controllers\FolderController:createfolder')->add('\App\Controllers\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->put('/manage/{id}','App\Controllers\FolderController:updateFolder')->add('\App\Controllers\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->delete('/manage/{id}', 'App\Controllers\FolderController:deleteFolder')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
-		$this->app->get('/manage/{id}', 'App\Controllers\FolderController:getProfile')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
-		$this->app->get('/[{id}]', 'App\Controllers\FolderController:getAllFolders')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+		$this->app->post('/manage','App\Controllers\FolderController:createFolder')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->put('/manage/{id}','App\Controllers\FolderController:updateFolder')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->delete('/manage/{id}', 'App\Controllers\FolderController:deleteFolder')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('/manage/{id}', 'App\Controllers\FolderController:getProfile')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('/[{id}]', 'App\Controllers\FolderController:getAllFolders')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
 	
@@ -64,7 +64,7 @@ class FolderController extends BaseController{
 			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
 	}	
-	public function createfolder($request,$response,$args){
+	public function createFolder($request,$response,$args){
 		$parseBody=$request->getParsedBody();
 		$folder=\App\Models\Folders();
 		$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';

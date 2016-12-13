@@ -1,0 +1,166 @@
+{% if request.ajax == false %}
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+		{{ parent() }}
+{% endblock %}
+{% endif %}
+
+{% block content %}
+<section class="content-header">
+	<h1 class="multi-lang">
+		Manage Translation
+	</h1>
+</section>
+<section class="content">
+	<div class="row group-container">
+		<div class="col-md-3">
+			<div class="box box-primary">
+				<div class="box-body box-translate">
+					<h3 class="translate-content text-center"></h3>
+					<input type="hidden" name="translate-id" id="translate-id" class="translate-id" />
+					<ul class="list-group list-group-unbordered">
+						<li class="list-group-item">
+							<b class="multi-lang">Language</b> 
+							<select name="language" id="translate-language" class="translate-language form-control ">
+								<option value="zh-cn">简体中文</option>
+							</select>
+						</li>
+						<li class="list-group-item">
+							<b class="multi-lang ">Content</b> <input name="content" id="translate-content" class="translate-content form-control " />
+						</li>
+					</ul>
+
+					<a href="#" class="btn btn-primary btn-block btn-update-translate"><b class="multi-lang">Update</b></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title multi-lang">Translation</h3>
+
+					<div class="box-tools pull-right">
+						<div class="has-feedback">
+							<input type="text" class="form-control input-sm multi-lang" placeholder="Search translation">
+							<span class="glyphicon glyphicon-search form-control-feedback"></span>
+						</div>
+					</div>
+				</div>
+				<div class="box-body no-padding">
+					<div class="table-controls">
+						<div class="btn-group">
+							<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-minus"></i></button>
+						</div>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new-translate-form"><i class="fa fa-plus"></i></button>
+						<button type="button" class="btn btn-default btn-sm btn-refresh"><i class="fa fa-refresh"></i></button>
+					</div>
+					<div class="table-responsive table-messages">
+						<table class="table table-hover table-striped table-translate-list">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="new-translate-form" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title multi-lang" id="modalLabel">New Translation</h4>
+			</div>
+			<div class="modal-body">
+				<div class="box-body">
+					
+					<div class="form-group">
+						<label for="static_wordings" class="multi-lang">Static Word</label>
+						<textarea class="form-control multi-lang" id="static_wordings" placeholder="Enter display name" name="static_wordings"></textarea>
+					</div>
+
+				</div>				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-save">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var documentReady = function () {
+		showTranslateList();
+	}
+	$(".btn-refresh").click(function () {
+		showTranslateList();
+	});
+	$(".btn-save").click(function () {
+		
+		var static_wordings = $("#static_wordings").val();
+		XTD.api('/translate/manage/', XTD.method.POST, 
+		{
+			static_wordings: static_wordings
+		}, function (data) {
+			if (data.result) {
+				showTranslateList();
+				$('#new-translate-form').modal('hide')
+			} else {
+			}
+		});
+	});
+	$(".btn-update-translate").click(function () {
+		var id = $("#translate-id").val();
+		var language = $("#translate-language").val();
+		var content = $("#translate-content").val();
+		XTD.api('/translate/manage/'+id, XTD.method.PUT, 
+		{
+			language: language,
+			content: content
+		}, function (data) {
+			if (data.result) {
+				$.get(BASE_URL+"/js/static-glossaries", function (data) {
+					glossaries = data;
+				});
+				showTranslateList();
+			} else {
+			}
+		});
+	});
+	var showTranslateList = function () {
+		var translates = XTD.api('/translate/', function (data) {
+			if (data.result) {
+				var translateTable = $(".table-translate-list");
+				translateTable.empty();
+				$(data.result).each(function (index, translate) {
+							var row = $("<tr />").data("id", translate.id)
+							.append(
+								$("<td />").addClass("translate-name").append($("<a />").attr("href", "/profile/" + translate.id).html(translate.grouping))
+							)
+							.append(
+								$("<td />").addClass("translate-name").append($("<a />").attr("href", "/profile/" + translate.id).html(XTD.__(translate.content)))
+							)
+							.click(function () {
+								$("tr.selected").removeClass("selected");
+								$(this).addClass("selected");
+								$(".translate-content").html(translate.content).val(translate.content);
+								$(".translate-id").val(translate.id);
+								$('html, body').animate({
+									scrollTop: 0
+								}, 500);
+							})
+							.appendTo(translateTable);
+				});
+			}
+		});
+	}
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

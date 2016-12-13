@@ -39,7 +39,7 @@
 				<a href="/" class="logo">
 					<span class="logo-mini multi-lang"><b>S</b>CJ</span>
 					<!-- logo for regular state and mobile devices -->
-					<span class="logo-lg multi-lang"><b>SCJ</b>系统</span>
+					<span class="logo-lg multi-lang"><b>SCJ</b>System</span>
 				</a>
 				<!-- Header Navbar: style can be found in header.less -->
 				<nav class="navbar navbar-static-top">
@@ -219,13 +219,13 @@
 						</div>
 						<div class="pull-left info">
 							<p class="xtd-display-name"></p>
-							<i class="fa fa-circle text-success"></i> Online
+							<i class="fa fa-circle text-success multi-lang"></i> <span class="multi-lang">Online</span>
 						</div>
 					</div>
 					<!-- search form -->
 					<form action="#" method="get" class="sidebar-form">
 						<div class="input-group">
-							<input type="text" name="q" class="form-control" placeholder="Search...">
+							<input type="text" name="q" class="form-control multi-lang" placeholder="Search...">
 									<span class="input-group-btn">
 										<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
 										</button>
@@ -242,10 +242,11 @@
 			</div>
 			<footer class="main-footer">
 				{% block footer %}{% endblock %}
-				<div class="pull-right hidden-xs multi-lang">
-					<b>Version</b> 1.0.0
+				<div class="pull-right hidden-xs">
+					<b class="multi-lang">Version</b> 1.0.0
 				</div>
 				<strong class="multi-lang">Copyright &copy; since 2012 <a href="http://www.shincheonji.kr/">Shincheonji</a>.</strong> All rights reserved.
+				<button onclick="$('.multi-lang').each(function(i,e){if($(e).attr('placeholder')){console.log($(e).attr('placeholder').trim());}if ($(e).html() != '') {console.log($(e).html().trim());}});">get words</button>
 			</footer>
 
 			<aside class="control-sidebar control-sidebar-dark">

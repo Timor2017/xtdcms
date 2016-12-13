@@ -178,6 +178,10 @@ footer {
 	text-align: center;
 }
 
+tr.selected {
+	background-color: #ffd !important;
+}
+
 /*
  * Off Canvas
  * --------------------------------------------------

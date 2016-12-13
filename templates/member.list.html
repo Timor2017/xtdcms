@@ -1,0 +1,276 @@
+{% if request.ajax == false %}
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+		{{ parent() }}
+{% endblock %}
+{% endif %}
+
+{% block content %}
+<section class="content-header">
+	<h1 class="multi-lang">
+		Manage Members
+	</h1>
+</section>
+<section class="content">
+	<div class="row group-container">
+		<div class="col-md-3">
+			<div class="box box-primary">
+				<div class="box-body box-profile">
+					<img class="profile-user-img img-responsive img-circle" src="{{ base_url() }}/img/default-icon.jpg" alt="User profile picture">
+
+					<h3 class="profile-display_name text-center"></h3>
+
+					<p class="profile-username text-muted text-center"></p>
+
+					<ul class="list-group list-group-unbordered">
+						<li class="list-group-item">
+							<b class="multi-lang">Email</b> <a class="pull-right profile-email"></a>
+						</li>
+						<li class="list-group-item">
+							<b class="multi-lang">Phone</b> <a class="pull-right profile-phone"></a>
+						</li>
+						<li class="list-group-item">
+							<b class="multi-lang">Last Login</b> <a class="pull-right profile-login_time"></a>
+						</li>
+					</ul>
+
+					<a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title multi-lang">Members</h3>
+
+					<div class="box-tools pull-right">
+						<div class="has-feedback">
+							<input type="text" class="form-control input-sm multi-lang" placeholder="Search member">
+							<span class="glyphicon glyphicon-search form-control-feedback"></span>
+						</div>
+					</div>
+				</div>
+				<div class="box-body no-padding">
+					<div class="table-controls">
+						<div class="btn-group" style="display:none">
+							<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-plus-square-o"></i>Create</button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-pencil-square-o"></i>Update</button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-check-square-o"></i>View</button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-minus-square-o"></i>Delete</button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-user-plus"></i>Add User</button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-user-times"></i>Remove User</button>
+						</div>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new-member-form"><i class="fa fa-plus"></i></button>
+						<button type="button" class="btn btn-default btn-sm btn-refresh"><i class="fa fa-refresh"></i></button>
+					</div>
+					<div class="table-responsive table-messages">
+						<table class="table table-hover table-striped table-member-list">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="new-member-form" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title multi-lang" id="modalLabel">New Member</h4>
+			</div>
+			<div class="modal-body">
+				<div class="box-body">
+					
+					<div class="form-group">
+						<label for="display_name" class="multi-lang">Display Name</label>
+						<input type="text" class="form-control multi-lang" id="display_name" placeholder="Enter display name" name="display_name">
+					</div>
+					<div class="form-group">
+						<label for="username" class="multi-lang">Username</label>
+						<input type="text" class="form-control multi-lang" id="username" placeholder="Enter username" name="username">
+					</div>
+					<div class="form-group">
+						<label for="password" class="multi-lang">Password</label>
+						<input type="password" class="form-control multi-lang" id="password" placeholder="Password" name="password">
+					</div>
+					<div class="form-group">
+						<label for="phone" class="multi-lang">Phone</label>
+						<input type="text" class="form-control multi-langl" id="phone" placeholder="Enter phone" name="phone">
+					</div>
+					<div class="form-group">
+						<label for="email" class="multi-lang">Email address</label>
+						<input type="email" class="form-control multi-langl" id="email" placeholder="Enter email" name="email">
+					</div>
+					<div class="form-group">
+						<label for="photo" class="multi-lang">Photo</label>
+						<input type="file" id="photo" name="photo">
+
+						<p class="help-block multi-lang">User profile photo</p>
+					</div>
+					<div class="form-group">
+						<label for="status" class="multi-lang">Status</label>
+						<select id="status" name="status" class="form-control">
+							<option value="ACTIVE" class="multi-lang">Active</option>
+							<option value="SUSPENDED" class="multi-lang">Suspended</option>
+						</select>
+					</div>
+
+				</div>				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-save">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var documentReady = function () {
+		showMemberList();
+		
+		
+		//$('.new-sub-group').on("keypress", function(e) {
+		//	if (e.keyCode == 13) {
+		//		$this = this;
+		//		XTD.api('/group/manage/', XTD.method.POST, 
+		//		{
+		//			parent_id: id,
+		//			name: $(this).val()
+		//		}, function (data) {
+		//			if (data.result) {
+		//				$($this).val('');
+		//				showMemberList();
+		//			}
+		//		});
+		//		return false;
+		//	}
+		//});
+	}
+	$(".btn-refresh").click(function () {
+		showMemberList();
+	});
+	$(".btn-save").click(function () {
+		var display_name = $("#display_name").val();
+		var username = $("#username").val();
+		var password = $("#password").val();
+		var phone = $("#phone").val();
+		var email = $("#email").val();
+		var photo = $("#photo").val();
+		var status = $("#status").val();
+		
+		if (display_name == "") {
+			alert(XTD.__("Display name cannot be empty"));
+			return;
+		}
+		if (username == "") {
+			alert(XTD.__("Username cannot be empty"));
+			return;
+		}
+		if (password == "") {
+			alert(XTD.__("Password cannot be empty"));
+			return;
+		}
+		
+		XTD.api('/user/profile/manage/', XTD.method.POST, 
+		{
+			display_name: display_name,
+			username: username,
+			password: password,
+			phone: phone,
+			email: email,
+			photo: photo,
+			status: status
+		}, function (data) {
+			if (data.result) {
+				showMemberList();
+				$('#new-member-form').modal('hide')
+			} else {
+			}
+		});
+	});
+	var showMemberList = function () {
+		var members = XTD.api('/user/', function (data) {
+			if (data.result) {
+				var memberTable = $(".table-member-list");
+				memberTable.empty();
+				$(data.result).each(function (index, member) {
+							var row = $("<tr />").data("id", member.id)
+							.append(
+							//	$("<td />").append($("<input />").attr("type","checkbox"))
+							//).append(
+								$("<td />").addClass("member-photo").append(
+									$("<div />").addClass("user-block").append(
+										$("<img />").attr("src", "{{ base_url() }}/img/default-icon.jpg").addClass("img-circle img-bordered-sm1")
+									).append(
+										$("<span />").addClass("username").append(
+											$("<a />").attr("href", "/profile/" + member.id).html(member.display_name)
+										)
+									)
+								)
+							//).append(
+							//	$("<td />").addClass("member-name").append($("<a />").attr("href", "/profile/" + member.id).html(member.display_name))
+							).append(
+								$("<td />").addClass("member-permission").css("text-align","right").append(
+									$("<button />").attr("type","button").addClass("btn btn-normal btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_create }}").html(XTD.__("Create"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn btn-normal btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_update }}").html(XTD.__("Update"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn btn-normal btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_view }}").html(XTD.__("View"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn btn-normal btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_delete }}").html(XTD.__("Delete"))
+								//).append(" ").append(
+								//	'<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Status <span class="caret"></span></button><ul class="dropdown-menu btn-status"><li><a href="#">Active</a></li><li><a href="#">Suspended</a></li><li><a href="#">Delete</a></li></ul></div>'									
+								)
+							).click(function () {
+								$("tr.selected").removeClass("selected");
+								$(this).addClass("selected");
+								loadProfile(member);
+							})
+							.appendTo(memberTable);
+				});
+			}
+		});
+		var loadProfile = function (member) {
+		console.log(member);
+			$.each(member, function (key, value) {
+			console.log(key);
+				$(".profile-"+key).html(value);
+			});
+		};
+//		if (data.result) {
+		$(".btn-permission").click(function () {
+			var member_id = $(this).data('id');
+			var permission = 0;
+			$(this).toggleClass('btn-success');
+			$(".btn-permission[data-id=" + member_id + "]").each (function (index, item) {
+				if ($(item).hasClass("btn-success")) {
+					permission += parseInt($(item).data("value"));
+				}
+			});
+			XTD.api('/user/permission/manage/', XTD.method.PUT, 
+			{
+				id: id,
+				member_id: member_id,
+				permission: permission
+			}, function (data) {
+				if (data.result) {
+					showMemberList();
+				}
+			});
+			
+		});
+//		}
+							
+	}
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

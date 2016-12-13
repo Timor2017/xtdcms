@@ -10,10 +10,12 @@ class ApiController extends BaseController {
 	public function __invoke() {
 		$this->app->group('/me', '\App\Controllers\MemberController:me');
 		$this->app->group('/user', '\App\Controllers\MemberController:user');
-		$this->app->group('/group', '\App\Controllers\MemberController:group');
+		//$this->app->group('/group', '\App\Controllers\MemberController:group');
+		$this->app->group('/group', '\App\Controllers\GroupController:definition');
 		$this->app->group('/form/def', '\App\Controllers\FormController:definition');
 		$this->app->group('/form/data', '\App\Controllers\FormController:data');
 		$this->app->group('/folder', '\App\Controllers\FolderController:definition');
+		$this->app->group('/translate', '\App\Controllers\TranslateController:definition');
 		$this->app->group('/search', '\App\Controllers\SearchController:search');
 	}
 
