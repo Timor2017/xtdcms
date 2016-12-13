@@ -125,7 +125,7 @@ try {
 									$('<select />').attr('name', this.__id).attr('id', 'select_'+this.__id)
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
-										.attr('option', this.properties.get('text.option').getValue())
+										.append('<option value="0">==Select an option==</option>')
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
 										.css('height', this.properties.get('layout.height').getValue())
