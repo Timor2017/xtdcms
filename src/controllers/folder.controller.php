@@ -32,8 +32,12 @@ class FolderController extends BaseController{
 		if (!empty($forms)) {
 			$result = [];
 			foreach ($forms as $key => $form) {
-				if (has_form_permission($form->id, PERMISSION_READ)) {
+				$can_read = has_form_permission($form->id, PERMISSION_READ);
+				$can_create = has_form_permission($form->id, PERMISSION_CREATE);
+				if ($can_read || $can_create) {
 					$form->data_count = $form->datas->count();
+					$form->can_read = $can_read;
+					$form->can_create = $can_create;
 					unset($form->created_date);
 					unset($form->created_by);
 					unset($form->last_modified_date);

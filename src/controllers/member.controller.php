@@ -35,6 +35,8 @@ class MemberController extends BaseController {
 			$member->login_ip = $_SERVER['REMOTE_ADDR'];
 			$member->login_time = date('Y-m-d H:i:s');
 			$member->save();
+			$_SESSION['token'] = $member->token;
+			
 			return $this->toJSON($token);
 		} else {
 			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
@@ -48,6 +50,10 @@ class MemberController extends BaseController {
 			$member = $members[0];
 			$member->token = '';
 			$member->save();
+			
+			$_SESSION['token'] = null;
+			unset($_SESSION['token']);
+			
 			return $this->toJSON(true);
 		} else {
 			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
@@ -111,6 +117,9 @@ class MemberController extends BaseController {
 			unset($member->last_modified_date);
 			unset($member->last_modified_by);
 			unset($member->concurrent_id);
+			$member->is_admin = is_admin($member->groups);
+			unset($member->groups);
+			
 			return $this->toJSON($member);
 		} else {
 			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);

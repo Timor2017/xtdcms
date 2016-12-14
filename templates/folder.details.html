@@ -1,11 +1,9 @@
-{% if request.ajax == false %}
 {% extends "layout.html" %}
 
 {% block title %}Index{% endblock %}
 {% block head %}
     {{ parent() }}
 {% endblock %}
-{% endif %}
 
 {% block content %}
 <section class="content-header">
@@ -15,6 +13,7 @@
 </section>
 <section class="content">
 	<div class="row folder-container">
+{% if can_create %}
 		<div class="col-md-3 col-sm-3 form-list-item">
 			<a data-toggle="modal" data-target="#new-folder-form">
 				<div class="info-box">
@@ -27,6 +26,8 @@
 				</div><!-- /.info-box -->
 			</a>
 		</div>
+{% endif %}
+{% if can_add %}
 		<div class="col-md-3 col-sm-3 form-list-item">
 			<a href="{{ path_for('form.create', {'id': id}) }}">
 				<div class="info-box">
@@ -39,6 +40,7 @@
 				</div><!-- /.info-box -->
 			</a>
 		</div>
+{% endif %}
 	</div>
 </section>
 <!-- Modal -->

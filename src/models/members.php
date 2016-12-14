@@ -6,7 +6,7 @@ class Members extends BaseModel {
 	protected $table = 'members';
 	
 	public function groups() {
-		return $this->belongsToMany('App\Models\Groups', 'group_members', 'member_id', 'group_id')->where('status', STATUS_ACTIVE);
+		return $this->belongsToMany('App\Models\Groups', 'group_members', 'member_id', 'group_id')->where('groups.status', STATUS_ACTIVE);
 	}
 	
 	public function all_groups() {

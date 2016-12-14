@@ -37,8 +37,8 @@ function has_permission($permissions, $created_by, $access = PERMISSION_READ) {
 	$container = $app->getContainer();
 	$result = false;
 	
-	if (($access != PERMISSION_CREATE) && ($access != PERMISSION_UPDATE) && ($access != PERMISSION_READ) && ($access != PERMISSION_DELETE) && ($access != PERMISSION_ADD) && ($access != PERMISSION_REMOVE) && ($access != PERMISSION_EXECUTE)) {
-		throw new Exception ('variable access only allowed: CREATE, UPDATE, READ, DELETE, ADD, REMOVE');
+	if (($access != PERMISSION_CREATE) && ($access != PERMISSION_UPDATE) && ($access != PERMISSION_READ) && ($access != PERMISSION_DELETE) && ($access != PERMISSION_ADD) && ($access != PERMISSION_REMOVE) && ($access != PERMISSION_EXECUTE) && ($access != ACCESS_RIGHT_ACCESS_ADD) && ($access != ACCESS_RIGHT_ACCESS_REMOVE)) {
+		throw new Exception ('variable access only allowed: CREATE, UPDATE, READ, DELETE, ADD, REMOVE, ACCESS_ADD, ACCESS_REMOVE');
 	}
 	$user = (object)[ 'id' => '' ];
 	$groups = [(object)[ 'id' => '' ]];
@@ -69,20 +69,28 @@ function has_permission($permissions, $created_by, $access = PERMISSION_READ) {
 		case PERMISSION_REMOVE:
 			$position = ACCESS_RIGHT_REMOVE;
 		break;			
+		case PERMISSION_EXECUTE:
+			$position = ACCESS_RIGHT_EXECUTE;
+		break;			
+		case PERMISSION_ACCESS_ADD:
+			$position = ACCESS_RIGHT_ACCESS_ADD;
+		break;			
+		case PERMISSION_ACCESS_REMOVE:
+			$position = ACCESS_RIGHT_ACCESS_REMOVE;
+		break;			
 	}
-			
 	foreach ($permissions as $permission) {
 		$access_right = $permission['permission'];
 
-		if ((($access_right & ACCESS_MEMBER_PUBLIC) == ACCESS_MEMBER_PUBLIC) && ($access_right & $position == $position)) {
+		if ((($access_right & ACCESS_MEMBER_PUBLIC) == ACCESS_MEMBER_PUBLIC) && (($access_right & $position) == $position)) {
 			$result = true;
 			break;
 		}
-		else if ((($access_right & ACCESS_MEMBER_GROUP) == ACCESS_MEMBER_GROUP) && ($access_right & $position == $position) && (in_same_group($permission['group_id'], $groups))) {
+		else if ((($access_right & ACCESS_MEMBER_GROUP) == ACCESS_MEMBER_GROUP) && (($access_right & $position) == $position) && (in_same_group($permission['group_id'], $groups))) {
 			$result = true;
 			break;
 		}
-		else if ((($access_right & ACCESS_MEMBER_SELF) == ACCESS_MEMBER_SELF) && ($access_right & $position == $position) && ($permission['owner_id'] == $user->id)) {
+		else if ((($access_right & ACCESS_MEMBER_SELF) == ACCESS_MEMBER_SELF) && (($access_right & $position) == $position) && ($permission['owner_id'] == $user->id)) {
 			$result = true;
 			break;
 		}

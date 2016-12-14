@@ -9,41 +9,41 @@ $(document).ready(function () {
 		if (!data.result) {
 			console.log(window.location.href.indexOf(URL_SIGNIN) );
 			if (window.location.href.indexOf(URL_SIGNIN) < 0) {
-				//location.href = URL_SIGNIN;
+				XTD.signout();
 			}
 		} else {
 			if (window.location.href.indexOf(URL_SIGNIN) >= 0) {
 				location.href = './';
 			} else {
 				profile = getItems('me.profile', '/me/profile');
-				//XTD.api('/me/profile', function (data) {
 				if (profile) {
 					$(".xtd-display-name").html(profile.display_name);
 					if (profile.photo != '') {
 						$(".xtd-display-photo").attr('src', data.result.photo);
 					}
 				}
-				//});
 	
 				generateFolders(false);
 				generateGroups(false);
-				$(".sidebar-menu").append($("<li />").addClass("header manage").html("<span>"+XTD.__('Manage')+"</span>"));
-				$(".sidebar-menu").append($("<li />").addClass("treeview").append(
-						$("<a />").attr("href","/member/list").append(
-							$("<i />").addClass("fa fa-users")
-						).append(
-							$("<span />").html(XTD.__('Members'))
+				if (profile.is_admin) {
+					$(".sidebar-menu").append($("<li />").addClass("header manage").html("<span>"+XTD.__('Manage')+"</span>"));
+					$(".sidebar-menu").append($("<li />").addClass("treeview").append(
+							$("<a />").attr("href","/member/list").append(
+								$("<i />").addClass("fa fa-users")
+							).append(
+								$("<span />").html(XTD.__('Members'))
+							)
 						)
-					)
-				);
-				$(".sidebar-menu").append($("<li />").addClass("treeview").append(
-						$("<a />").attr("href","/translate").append(
-							$("<i />").addClass("fa fa-gears")
-						).append(
-							$("<span />").html(XTD.__('Translation'))
+					);
+					$(".sidebar-menu").append($("<li />").addClass("treeview").append(
+							$("<a />").attr("href","/translate").append(
+								$("<i />").addClass("fa fa-gears")
+							).append(
+								$("<span />").html(XTD.__('Translation'))
+							)
 						)
-					)
-				);
+					);
+				}
 			}
 			XTD.translate($('body'));
 		}
@@ -85,11 +85,6 @@ $(document).ready(function () {
 		}
 	});
 	
-	//$('body').on('click', '.sidebar-menu a', function (evt) {
-	//	$('.sidebar-menu .active').removeClass('active');
-	//	$(this).closest('li').addClass('active');
-	//});	
-	
 	var executeDocumentReady = function () {
 			if (typeof documentReady === 'function') {
 				documentReady();
@@ -111,18 +106,8 @@ var readText = function () {
 };
 
 var generateFolders = function (refresh) {
-	//var folders = XTD.getCookie('folders');
-	//if (folders == '' || refresh) {
-	//	XTD.api('/folder/', function ( data ) {
-	//		if (data.response.code == '0') {
-	//			folders = JSON.stringify(data.result);
-	//			XTD.setCookie('folders', folders, 1);
-	//		}
-	//	});
-	//}
 	var folders = getItems('folders', '/folder/', refresh);
 	if (folders != '') {
-		//folders = $.parseJSON(folders);
 		var ul = addItems(folders, '/folder/', 'folder', true);
 		if ($(".sidebar-menu .folder-title").size() == 0) {
 			$(".sidebar-menu").append($("<li />").addClass("header folder-title").html("<span>"+XTD.__('MAIN NAVIGATION')+"</span>").prepend($("<i />").addClass("fa fa-refresh refresh-menu").css("width", "20px").click(function () {
@@ -138,25 +123,19 @@ var generateFolders = function (refresh) {
 }
 
 var generateGroups = function (refresh) {
-	//var groups = XTD.getCookie('groups');
-	//if (groups == '' || refresh) {
-	//	XTD.api('/group/', function ( data ) {
-	//		if (data.response.code == '0') {
-	//			groups = JSON.stringify(data.result);
-	//			XTD.setCookie('groups', groups, 1);
-	//		}
-	//	});
-	//}
 	var groups = getItems('groups', '/group/', refresh);
 	if (groups != '') {
-		//console.log(groups);
-		//groups = $.parseJSON(groups);
 		var ul = addItems(groups, '/group/', 'group', true);
-		$(".sidebar-menu .group").remove();
-		$(".sidebar-menu").append($("<li />").addClass("header group").html("<span>"+XTD.__('GROUPS')+"</span>").prepend($("<i />").addClass("fa fa-refresh refresh-menu").css("width", "20px").click(function () {
-			generateGroups(true);
-		})));
-		$(".sidebar-menu").append(ul.html());
+		if ($(".sidebar-menu .group-title").size() == 0) {
+			$(".sidebar-menu").append($("<li />").addClass("header group-title").html("<span>"+XTD.__('GROUPS')+"</span>").prepend($("<i />").addClass("fa fa-refresh refresh-menu").css("width", "20px").click(function () {
+				generateGroups(true);
+			})));
+		}
+		if ($(".sidebar-menu .group").size() > 0) {
+			$(".sidebar-menu .group").replaceWith(ul.html());
+		} else {
+			$(".sidebar-menu").append(ul.html());
+		}
 	}
 }
 var getItems = function (key, path, refresh) {

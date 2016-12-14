@@ -130,7 +130,7 @@ class FormController extends BaseController {
 	}
 	
 	public function createForm($request, $response, $args) {
-		$folder_id = $args['folder_id'];
+		$folder_id = (isset($args['folder_id'])) ? $args['folder_id'] : '';
 		$parsedBody = $request->getParsedBody();
 		
 		$form = new \App\Models\Forms();
@@ -167,8 +167,8 @@ class FormController extends BaseController {
 	}
 	
 	public function updateForm($request, $response, $args) {
-		$folder_id = $args['folder_id'];
-		$id = $args['id'];
+		$folder_id = (isset($args['folder_id'])) ? $args['folder_id'] : '';
+		$id = (isset($args['id'])) ? $args['id'] : '';
 		
 		if (!empty($id)) {
 			$parsedBody = $request->getParsedBody();
@@ -264,8 +264,8 @@ class FormController extends BaseController {
 	}
 	
 	public function submitForm($request, $response, $args) {
-		$id = $args['id'];
-		$data_id = $args['data_id'];
+		$id = (isset($args['id'])) ? $args['id'] : '';
+		$data_id = (isset($args['data_id'])) ? $args['data_id'] : '';
 		
 		if (!empty($id)) {
 			$form = \App\Models\Forms::find($id);

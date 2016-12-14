@@ -6,6 +6,15 @@
 {% endblock %}
 
 {% block content %}
+<script>
+function documentReady() {
+	XTD.api('/search', 'POST', {
+		key: 'a'
+	}, function (data) {
+		console.log(data);
+	});
+}
+</script>
 {% endblock %}
 
 {% block sidebar %}
