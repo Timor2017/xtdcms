@@ -6,11 +6,12 @@ class FolderController extends BaseController{
 		
 	}
 	public function definition(){
-		$this->app->post('/manage','App\Controllers\FolderController:createFolder')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->post('/manage[/]','App\Controllers\FolderController:createFolder')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/manage/{id}','App\Controllers\FolderController:updateFolder')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->delete('/manage/{id}', 'App\Controllers\FolderController:deleteFolder')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->get('/manage/{id}', 'App\Controllers\FolderController:getProfile')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->get('/[{id}]', 'App\Controllers\FolderController:getAllFolders')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('/{id}/forms', 'App\Controllers\FolderController:getAllForms')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
 	
@@ -25,8 +26,33 @@ class FolderController extends BaseController{
 		}
 	}	
 	
+	public function getAllForms($request, $response, $args)  {
+		$id = isset($args['id']) ? $args['id'] : '0';
+		$forms = \App\Models\Forms::where('folder_id','=',$id)->get();
+		if (!empty($forms)) {
+			$result = [];
+			foreach ($forms as $key => $form) {
+				if (has_form_permission($form->id, PERMISSION_READ)) {
+					$form->data_count = $form->datas->count();
+					unset($form->created_date);
+					unset($form->created_by);
+					unset($form->last_modified_date);
+					unset($form->last_modified_by);
+					unset($form->concurrent_id);
+					
+					$result[] = $form;
+				}
+			}
+			return $this->toJSON($result);
+		} else {
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+		}
+	}	
+	
+	
+	
 	public function getFolders($id)  {
-		$folders = \App\Models\Folders::where('parent_id','=',$id)->orderby('sequence')->get();
+		$folders = \App\Models\Folders::where('parent_id','=',$id)->orderby('is_featured', 'desc')->orderby('sequence')->get();
 		
 		foreach ($folders as $key => $folder) {
 			if (!has_folder_permission($folder->id, PERMISSION_READ)){
@@ -65,23 +91,24 @@ class FolderController extends BaseController{
 		}
 	}	
 	public function createFolder($request,$response,$args){
-		$parseBody=$request->getParsedBody();
-		$folder=\App\Models\Folders();
-		$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';
+		$parsedBody=$request->getParsedBody();
+		$folder= new \App\Models\Folders();
+		$parent_id = $this->retrieveArray($parsedBody, 'parent_id', '0');
 			
-		$name = isset($parsedBody['name']) ? $parsedBody['name'] : '';
+		$name = $this->retrieveArray($parsedBody, 'name'); 
 		
 		if (!empty($name)) {
-			$folder->name =$this->retrieveValue($parsedBody['name']); 
-			$folder->color =$this->retrieveValue($parsedBody['color']); 
-			$folder->icon =$this->retrieveValue($parsedBody['icon']); 
-			$folder->is_featured =$this->retrieveValue($parsedBody['is_featured']); 
-			$folder->sequence =isset($parsedBody['sequence']) ? $parsedBody['sequence'] : '0';
-			$folder->tags =$this->retrieveValue($parsedBody['tags']); 
+			$folder->name =$name; 
+			$folder->parent_id = $parent_id;
+			$folder->color =$this->retrieveArray($parsedBody, 'color'); 
+			$folder->icon =$this->retrieveArray($parsedBody, 'icon', 'folder'); 
+			$folder->is_featured =$this->retrieveArray($parsedBody, 'is_featured'); 
+			$folder->sequence =$this->retrieveArray($parsedBody, 'sequence', '0');
+			$folder->tags =$this->retrieveArray($parsedBody, 'tags'); 
 			$folder->status = STATUS_ACTIVE;
 			//$folder->CreateDate=now();
 			
-			$this->save();
+			$folder->save();
 			
 			unset($folder->created_date);
 			unset($folder->created_by);
@@ -100,20 +127,20 @@ class FolderController extends BaseController{
 		
 		if (!empty($id)) {
 			$parsedBody = $request->getParsedBody();
-			$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';
-			$name = isset($parsedBody['name']) ? $parsedBody['name'] : '';
+			$parent_id = $this->retrieveArray($parsedBody, 'parent_id', '0');
+			$name = $this->retrieveArray($parsedBody, 'name');
 			
 			if (!empty($name)) {
 				$folder = \App\Models\Folders::find($id);
 				if (!empty($folder)) {
 				
 					
-					$folder->name =$this->retrieveValue($parsedBody['name']); 
-					$folder->color =$this->retrieveValue($parsedBody['color']); 
-					$folder->icon =$this->retrieveValue($parsedBody['icon']); 
-					$folder->is_featured =$this->retrieveValue($parsedBody['is_featured']); 
-					$folder->sequence =isset($parsedBody['sequence']) ? $parsedBody['sequence'] : '0';
-					$folder->tags =$this->retrieveValue($parsedBody['tags']); 
+					$folder->name =$this->retrieveArray($parsedBody, 'name'); 
+					$folder->color =$this->retrieveArray($parsedBody, 'color'); 
+					$folder->icon =$this->retrieveArray($parsedBody, 'icon'); 
+					$folder->is_featured =$this->retrieveArray($parsedBody, 'is_featured'); 
+					$folder->sequence =$this->retrieveArray($parsedBody, 'sequence', '0');
+					$folder->tags =$this->retrieveArray($parsedBody, 'tags'); 
 					$folder->status = STATUS_ACTIVE;
 					$folder->save();
 					

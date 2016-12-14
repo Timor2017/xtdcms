@@ -21,6 +21,11 @@ class Forms extends BaseModel {
 		return $this->hasMany('App\Models\FormItems', 'form_id', 'id')->where('status', STATUS_ACTIVE);
 	}	
 	
+	public function datas()
+	{
+		return $this->hasMany('App\Models\FormDatas', 'form_id', 'id')->where('status', STATUS_ACTIVE);
+	}	
+	
 	public function all_permissions()
 	{
 		return $this->morphMany('\App\Models\Permissions', 'target');

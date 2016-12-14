@@ -79,9 +79,9 @@ class SearchController extends BaseController {
 		
 		$form = new \App\Models\Forms();
 		$form->version = 1;
-		$form->name = 				$this->retrieveValue($parsedBody['properties']['common']['display']['value'], '');
-		$form->description = 	$this->retrieveValue($parsedBody['properties']['common']['description']['value'], '');
-		$form->is_featured = 	$this->retrieveValue($parsedBody['properties']['common']['is_featured']['value'], '0');
+		$form->name = 				$this->retrieveArray($parsedBody, 'properties.common.display.value', '');
+		$form->description = 	$this->retrieveArray($parsedBody, 'properties.common.description.value', '');
+		$form->is_featured = 	$this->retrieveArray($parsedBody, 'properties.common.is_featured.value', '0');
 		$form->save();
 		
 		$this->extractProperties($form, $parsedBody);
@@ -90,15 +90,15 @@ class SearchController extends BaseController {
 			$form_item = new \App\Models\FormItems();
 			$form_item->form_id = $form->id;
 			$form_item->status = STATUS_ACTIVE;
-			$form_item->display = 									$this->retrieveValue($item['properties']['common']['display']['value'], '');
-			$form_item->description = 							$this->retrieveValue($item['properties']['common']['description']['value'], '');
-			$form_item->type = 										$this->retrieveValue($item['type'], '');
-			$form_item->value_type = 							$this->retrieveValue($item['value_type'] , '');
-			$form_item->value_score = 						$this->retrieveValue($item['properties']['common']['value_score']['value'] , '0');
-			$form_item->is_searchable = 						$this->retrieveValue($item['properties']['common']['is_searchable']['value'] , '1');
-			$form_item->is_show_in_list =					$this->retrieveValue($item['properties']['common']['is_show_in_list']['value'] , '1');
-			$form_item->is_show_in_mobile_list =	$this->retrieveValue($item['properties']['common']['is_show_in_mobile_list']['value'] , '1');
-			$form_item->sort_sequence =					$this->retrieveValue($item['properties']['common']['sort_sequence']['value'] , '');
+			$form_item->display = 									$this->retrieveArray($item, 'properties.common.display.value', '');
+			$form_item->description = 							$this->retrieveArray($item, 'properties.common.description.value', '');
+			$form_item->type = 										$this->retrieveArray($item, 'type', '');
+			$form_item->value_type = 							$this->retrieveArray($item, 'value_type' , '');
+			$form_item->value_score = 						$this->retrieveArray($item, 'properties.common.value_score.value' , '0');
+			$form_item->is_searchable = 						$this->retrieveArray($item, 'properties.common.is_searchable.value' , '1');
+			$form_item->is_show_in_list =					$this->retrieveArray($item, 'properties.common.is_show_in_list.value' , '1');
+			$form_item->is_show_in_mobile_list =	$this->retrieveArray($item, 'properties.common.is_show_in_mobile_list.value' , '1');
+			$form_item->sort_sequence =					$this->retrieveArray($item, 'properties.common.sort_sequence.value' , '');
 			$form_item->sequence =								$sequence;
 			$form_item->save();
 			
@@ -117,9 +117,9 @@ class SearchController extends BaseController {
 			
 			$form = \App\Models\Forms::find($id);
 			$form->version++;
-			$form->name = $this->retrieveValue($parsedBody['properties']['common']['display']['value'] , '');
-			$form->description = $this->retrieveValue($parsedBody['properties']['common']['description']['value'] , '');
-			$form->is_featured = $this->retrieveValue($parsedBody['properties']['common']['is_featured']['value'] , '0');
+			$form->name = $this->retrieveArray($parsedBody, 'properties.common.display.value' , '');
+			$form->description = $this->retrieveArray($parsedBody, 'properties.common.description.value' , '');
+			$form->is_featured = $this->retrieveArray($parsedBody, 'properties.common.is_featured.value' , '0');
 			$form->save();
 			
 			$this->extractProperties($form, $parsedBody);
@@ -136,15 +136,15 @@ class SearchController extends BaseController {
 					$form_item->status = STATUS_ACTIVE;
 				}
 				
-				$form_item->type =										$this->retrieveValue($item['type'] , '');
-				$form_item->value_type =							$this->retrieveValue($item['value_type'] , '');
-				$form_item->display =									$this->retrieveValue($item['properties']['common']['display']['value'] , '');
-				$form_item->description =							$this->retrieveValue($item['properties']['common']['description']['value'] , '');
-				$form_item->value_score =							$this->retrieveValue($item['properties']['common']['value_score']['value'] , '0');
-				$form_item->is_searchable =						$this->retrieveValue($item['properties']['common']['is_searchable']['value'] , '1');
-				$form_item->is_show_in_list =					$this->retrieveValue($item['properties']['common']['is_show_in_list']['value'] , '1');
-				$form_item->is_show_in_mobile_list =	$this->retrieveValue($item['properties']['common']['is_show_in_mobile_list']['value'] , '1');
-				$form_item->sort_sequence =  					$this->retrieveValue($item['properties']['common']['sort_sequence']['value'] , '');
+				$form_item->type =										$this->retrieveArray($item, 'type' , '');
+				$form_item->value_type =							$this->retrieveArray($item, 'value_type' , '');
+				$form_item->display =									$this->retrieveArray($item, 'properties.common.display.value' , '');
+				$form_item->description =							$this->retrieveArray($item, 'properties.common.description.value' , '');
+				$form_item->value_score =							$this->retrieveArray($item, 'properties.common.value_score.value' , '0');
+				$form_item->is_searchable =						$this->retrieveArray($item, 'properties.common.is_searchable.value' , '1');
+				$form_item->is_show_in_list =					$this->retrieveArray($item, 'properties.common.is_show_in_list.value' , '1');
+				$form_item->is_show_in_mobile_list =	$this->retrieveArray($item, 'properties.common.is_show_in_mobile_list.value' , '1');
+				$form_item->sort_sequence =  					$this->retrieveArray($item, 'properties.common.sort_sequence.value' , '');
 				$form_item->sequence =								$sequence;
 				$form_item->save();
 				

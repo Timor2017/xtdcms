@@ -27,6 +27,20 @@ class BaseController {
 		$this->container->response = $this->container->response->withJson($result);
 	}
 	
+	public function retrieveArray($array, $key, $defaultValue = '') {
+		$keys = explode('.', $key, 2);
+		if (count($keys) == 2) {
+			if (isset($array[$keys[0]])) {
+				return $this->retrieveArray($array[$keys[0]], $keys[1], $defaultValue);
+			}
+		} else {
+			if (isset($array[$key])) {
+				return $array[$key];
+			}
+		}
+		return $defaultValue;
+	}
+	
 	public function retrieveValue($value, $defaultValue = '') {
 		if (isset($value)) {
 			return $value;

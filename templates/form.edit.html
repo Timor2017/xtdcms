@@ -63,8 +63,9 @@
 	
 	function serializeItem() {
 		//console.log(fda.serializeItem());
-		XTD.api('/form/def/{{id}}', 'PUT', fda.serializeItem(), function (data) {
-			console.log(data);
+		XTD.api('/form/def/{{id}}', 'POST', fda.serializeItem(), function (data) {
+			//console.log(data);
+			History.back();
 		});
 	}
 	
