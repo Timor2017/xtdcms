@@ -7,11 +7,12 @@ $(document).ready(function () {
 	});
 	XTD.getLoginStatus(function (data) {
 		if (!data.result) {
-			if (window.location.href.indexOf('login') < 0) {
-				location.href = URL_SIGNIN;
+			console.log(window.location.href.indexOf(URL_SIGNIN) );
+			if (window.location.href.indexOf(URL_SIGNIN) < 0) {
+				//location.href = URL_SIGNIN;
 			}
 		} else {
-			if (window.location.href.indexOf('login') >= 0) {
+			if (window.location.href.indexOf(URL_SIGNIN) >= 0) {
 				location.href = './';
 			} else {
 				profile = getItems('me.profile', '/me/profile');
@@ -23,30 +24,30 @@ $(document).ready(function () {
 					}
 				}
 				//});
+	
+				generateFolders(false);
+				generateGroups(false);
+				$(".sidebar-menu").append($("<li />").addClass("header manage").html("<span>"+XTD.__('Manage')+"</span>"));
+				$(".sidebar-menu").append($("<li />").addClass("treeview").append(
+						$("<a />").attr("href","/member/list").append(
+							$("<i />").addClass("fa fa-users")
+						).append(
+							$("<span />").html(XTD.__('Members'))
+						)
+					)
+				);
+				$(".sidebar-menu").append($("<li />").addClass("treeview").append(
+						$("<a />").attr("href","/translate").append(
+							$("<i />").addClass("fa fa-gears")
+						).append(
+							$("<span />").html(XTD.__('Translation'))
+						)
+					)
+				);
 			}
 			XTD.translate($('body'));
 		}
 	});
-	
-	generateFolders(false);
-	generateGroups(false);
-	$(".sidebar-menu").append($("<li />").addClass("header manage").html("<span>"+XTD.__('Manage')+"</span>"));
-	$(".sidebar-menu").append($("<li />").addClass("treeview").append(
-			$("<a />").attr("href","/member/list").append(
-				$("<i />").addClass("fa fa-users")
-			).append(
-				$("<span />").html(XTD.__('Members'))
-			)
-		)
-	);
-	$(".sidebar-menu").append($("<li />").addClass("treeview").append(
-			$("<a />").attr("href","/translate").append(
-				$("<i />").addClass("fa fa-gears")
-			).append(
-				$("<span />").html(XTD.__('Translation'))
-			)
-		)
-	);
 
 	var History = window.History;
 	if ( !History.enabled ) {
@@ -123,11 +124,16 @@ var generateFolders = function (refresh) {
 	if (folders != '') {
 		//folders = $.parseJSON(folders);
 		var ul = addItems(folders, '/folder/', 'folder', true);
-		$(".sidebar-menu .folder").remove();
-		$(".sidebar-menu").append($("<li />").addClass("header folder").html("<span>"+XTD.__('MAIN NAVIGATION')+"</span>").prepend($("<i />").addClass("fa fa-refresh refresh-menu").css("width", "20px").click(function () {
-			generateFolders(true);
-		})));
-		$(".sidebar-menu").append(ul.html());
+		if ($(".sidebar-menu .folder-title").size() == 0) {
+			$(".sidebar-menu").append($("<li />").addClass("header folder-title").html("<span>"+XTD.__('MAIN NAVIGATION')+"</span>").prepend($("<i />").addClass("fa fa-refresh refresh-menu").css("width", "20px").click(function () {
+				generateFolders(true);
+			})));
+		}
+		if ($(".sidebar-menu .folder").size() > 0) {
+			$(".sidebar-menu .folder").replaceWith(ul.html());
+		} else {
+			$(".sidebar-menu").append(ul.html());
+		}
 	}
 }
 
