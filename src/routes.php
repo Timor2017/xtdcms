@@ -11,7 +11,7 @@ $app->get('/min/{f:.*}', function ($request, $response, $args) use ($app, $conta
 
 	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
 });
-
+/*
 $app->get('/cmlist', function ($request, $response, $args) use ($app, $container) {
 	$modules = array(
 										'singleline' => 'modules/singeline',
@@ -22,7 +22,7 @@ $app->get('/cmlist', function ($request, $response, $args) use ($app, $container
 $app->get('/modules/{file}', function ($request, $response, $args) use ($app, $container) {
 	echo 'a';
 });
-
+*/
 $app->get('/folder/{id}', function ($request, $response, $args) {
 	$id = isset($args['id']) ? $args['id'] : '0';
 	$folder = \App\Models\Folders::find($id);
@@ -32,6 +32,23 @@ $app->get('/folder/{id}', function ($request, $response, $args) {
 	return $this->view->render($response, 'folder.details.html', $args);
 })->setName("folder.details");
 
+$app->get('/group/{id}', function ($request, $response, $args) {
+	$id = isset($args['id']) ? $args['id'] : '0';
+	$group = \App\Models\Groups::find($id);
+	if (!empty($group)) {
+		$args['group'] = $group;
+	}
+	$args['permission_none'] = 			ACCESS_RIGHT_NO;
+	$args['permission_create'] = 		ACCESS_RIGHT_CREATE;
+	$args['permission_update'] = 		ACCESS_RIGHT_UPDATE;
+	$args['permission_view'] = 			ACCESS_RIGHT_READ;
+	$args['permission_delete'] = 		ACCESS_RIGHT_DELETE;
+	$args['permission_add'] = 			ACCESS_RIGHT_ADD;
+	$args['permission_remove'] = 	ACCESS_RIGHT_REMOVE;
+	
+	return $this->view->render($response, 'group.details.html', $args);
+})->setName("group.details");
+
 $app->get('/login', function ($request, $response, $args) {
 	return $this->view->render($response, 'signin.html', $args);
 })->setName('member.signin');
@@ -39,6 +56,18 @@ $app->get('/login', function ($request, $response, $args) {
 $app->get('/member/profile', function ($request, $response, $args) {
 	return $this->view->render($response, 'member.profile.html', $args);
 })->setName('member.profile');
+
+$app->get('/member/list', function ($request, $response, $args) {
+	$args['permission_none'] = 			ACCESS_RIGHT_NO;
+	$args['permission_create'] = 		ACCESS_RIGHT_CREATE;
+	$args['permission_update'] = 		ACCESS_RIGHT_UPDATE;
+	$args['permission_view'] = 			ACCESS_RIGHT_READ;
+	$args['permission_delete'] = 		ACCESS_RIGHT_DELETE;
+	$args['permission_add'] = 			ACCESS_RIGHT_ADD;
+	$args['permission_remove'] = 	ACCESS_RIGHT_REMOVE;
+	
+	return $this->view->render($response, 'member.list.html', $args);
+})->setName('member.list');
 
 $app->get('/js/variable', function ($request, $response, $args) {
 	return $this->view->render($response, 'variable.html', $args);
@@ -58,11 +87,13 @@ $app->get('/js/static-glossaries', function ($request, $response, $args) {
 	return $response->withJson($result);//$this->view->render($response, 'glossary.html', $args);
 })->setName('variable');
 
-$app->get('/form/create', function ($request, $response, $args) {
+$app->get('/form/create/{id}', function ($request, $response, $args) {
 	return $this->view->render($response, 'form.edit.html', $args);
 })->setName("form.create");
 
-
+$app->get('/translate', function ($request, $response, $args) {
+	return $this->view->render($response, 'translate.html', $args);
+})->setName("form.create");
 
 
 

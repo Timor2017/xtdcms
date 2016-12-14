@@ -1,0 +1,201 @@
+{% if request.ajax == false %}
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+		{{ parent() }}
+{% endblock %}
+{% endif %}
+
+{% block content %}
+<section class="content-header">
+	<h1>
+		{{group.name}}
+	</h1>
+</section>
+<section class="content">
+	<div class="row group-container">
+		<div class="col-md-3">
+			<a class="btn btn-primary btn-block margin-bottom btn-up-one-level multi-lang">Up a level</a>
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title multi-lang">Sub-groups</h3>
+				</div>
+				<div class="box-body no-padding">
+					<ul class="nav nav-pills nav-stacked sub-group-list">
+						<li> <input type="text" class="form-control new-sub-group multi-lang" placeholder="New group here, enter to submit" /> </li>
+						<!--<li><a href="#"><i class="fa fa-circle-o"></i> Inbox <span class="label label-primary pull-right">12</span></a></li>--->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title multi-lang">Members</h3>
+
+					<div class="box-tools pull-right">
+						<div class="has-feedback">
+							<input type="text" class="form-control input-sm multi-lang" placeholder="Search member">
+							<span class="glyphicon glyphicon-search form-control-feedback"></span>
+						</div>
+					</div>
+				</div>
+				<div class="box-body no-padding">
+					<div class="table-controls">
+						<div class="btn-group" style="did">
+							<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-plus-square-o"></i><span class="multi-lang">Create</span></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-pencil-square-o"></i><span class="multi-lang">Update</span></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-check-square-o"></i><span class="multi-lang">View</span></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-minus-square-o"></i><span class="multi-lang">Delete</span></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-user-plus"></i><span class="multi-lang">Add User</span></button>
+							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-user-times"></i><span class="multi-lang">Remove User</span></button>
+						</div>
+						<button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i></button>
+						<button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+					</div>
+					<div class="table-responsive table-messages">
+						<table class="table table-hover table-striped table-member-list">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	id = '{{id}}';
+	var documentReady = function () {
+		showCurrentGroup(id);
+		
+		
+		$('.new-sub-group').on("keypress", function(e) {
+			if (e.keyCode == 13) {
+				$this = this;
+				XTD.api('/group/manage/', XTD.method.POST, 
+				{
+					parent_id: id,
+					name: $(this).val()
+				}, function (data) {
+					if (data.result) {
+						$($this).val('');
+						generateGroups(true);
+						showCurrentGroup(id);
+					}
+				});
+				return false;
+			}
+		});
+	}
+	var showCurrentGroup = function (id) {
+		var groups = getItems('groups', '/group/');
+		var currentGroup = findItem(groups, 'id', id);
+		if (currentGroup.parent_id) {
+			$(".btn-up-one-level").show();
+			$(".btn-up-one-level").attr('href', '/group/'+currentGroup.parent_id);
+		} else {
+			$(".btn-up-one-level").hide();
+		}
+		if (currentGroup) {
+			XTD.api('/group/manage/'+currentGroup.id, function (data) {
+				var members = data.result.members;
+				var permissions = data.result.permissions;
+				var memberTable = $(".table-member-list");
+				$(members).each(function (index, member) { 
+							var row = $("<tr />").append(
+								$("<td />").append($("<input />").attr("type","checkbox"))
+							).append(
+								$("<td />").addClass("group-name").append($("<a />").attr("href", "read-mail.html").html(member.display_name))
+							).append(
+								$("<td />").addClass("group-is-leader").html(XTD.__("Leader"))
+							).append(
+								$("<td />").addClass("group-star").css("text-align","right").append(
+									$("<button />").attr("type","button").addClass("btn  btn-xs btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_create }}").html(XTD.__("Create"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn  btn-xs btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_update }}").html(XTD.__("Update"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn  btn-xs btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_view }}").html(XTD.__("View"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn  btn-xs btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_delete }}").html(XTD.__("Delete"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn  btn-xs btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_add }}").html(XTD.__("Add User"))
+								).append(" ").append(
+									$("<button />").attr("type","button").addClass("btn  btn-xs btn-permission").attr("data-id", member.id).attr("data-value", "{{ permission_remove }}").html(XTD.__("Remove User"))
+								)
+							)
+							.appendTo(memberTable);
+				});
+				$(permissions).each(function (index, permission) {
+					$('.btn-permission[data-id='+permission.owner_id+']').each(function (idx, element){
+						var p = parseInt($(element).data('value'));
+						if (parseInt(permission.permission & p) == p) {
+							$(element).addClass('btn-success');
+						}
+					});
+				});
+				
+				$(".btn-permission").click(function () {
+					var member_id = $(this).data('id');
+					var permission = 0;
+					$(this).toggleClass('btn-success');
+					$(".btn-permission[data-id=" + member_id + "]").each (function (index, item) {
+						if ($(item).hasClass("btn-success")) {
+							permission += parseInt($(item).data("value"));
+						}
+					});
+					XTD.api('/group/permission/manage/', XTD.method.PUT, 
+					{
+						id: id,
+						member_id: member_id,
+						permission: permission
+					}, function (data) {
+						if (data.result) {
+							$($this).val('');
+							generateGroups(true);
+							showCurrentGroup(id);
+						}
+					});
+					
+				});
+			});
+			var container = $(".sub-group-list");
+			container.find('li').not(':first').remove();
+			$(currentGroup.children).each(function (index, item) {
+				$('<li />').append(
+					$('<a />').attr('href','/group/'+item.id).append(
+						$('<i />').addClass("fa fa-circle-o")
+					).append(item.name)
+					.append(
+						$('<span />').addClass("label label-primary pull-right").html(item.children.length)
+					)
+				).appendTo(container);
+			});
+		}
+							
+		//$("<div />").addClass("col-md-2 form-list-item").append(
+		//	$("<a />").attr("href", "/form/"+id).append(
+		//		$("<div />").addClass("box box-default color-palette-box").append(
+		//			$("<div />").addClass("box-header with-border").append(
+		//				$("<h3 />").addClass("box-title").html("Form A").prepend($("<i />").addClass("fa fa-edit"))
+		//			)
+		//		).append(
+		//			$("<div />").addClass("box-body").append(
+		//				$("<h1 />").html("20k").append(
+		//					$("<span />").css("font-size",".3em").html("posts")
+		//				)
+		//			).append(
+		//				$("<div />").html("last submit: 1 Dec 2016")
+		//			)
+		//		)
+		//	)
+		//).appendTo(container);
+	}
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

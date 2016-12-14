@@ -15,14 +15,11 @@ class MemberController extends BaseController {
 	}
 
 	public function user()  {
+		$this->app->get('/', 'App\Controllers\MemberController:getProfileList')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
 		$this->app->get('/profile/{id}', 'App\Controllers\MemberController:getProfile')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
-		$this->app->post('/profile/{id}', 'App\Controllers\MemberController:updateProfile')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
-	}
-
-	public function group()  {
-		$this->app->post('[/]', 'App\Controllers\MemberController:createGroup')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
-		$this->app->put('/{id}', 'App\Controllers\MemberController:updateGroup')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
-		$this->app->delete('/{id}', 'App\Controllers\MemberController:deleteGroup')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+		$this->app->post('/profile/manage[/]', 'App\Controllers\MemberController:createProfile')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+		$this->app->put('/profile/manage/{id}', 'App\Controllers\MemberController:updateProfile')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+		$this->app->put('/permission/manage/{id}', 'App\Controllers\MemberController:updatePermission')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
 	}
 
 	public function login($request, $response, $args)  {
@@ -69,6 +66,30 @@ class MemberController extends BaseController {
 		}
 	}	
 	
+	public function getProfileList($request, $response, $args)  {
+		$members = \App\Models\Members::where('status','=',STATUS_ACTIVE)->get();
+		
+		if (!empty($members)) {
+			
+			foreach ($members as $member) {
+				if (!empty($member)) {
+					unset($member->password);
+					unset($member->status);
+					unset($member->login_ip);
+					unset($member->token);
+					unset($member->created_date);
+					unset($member->created_by);
+					unset($member->last_modified_date);
+					unset($member->last_modified_by);
+					unset($member->concurrent_id);
+				}
+			}
+			return $this->toJSON($members);
+		} else {
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+		}
+	}	
+	
 	public function getProfile($request, $response, $args)  {
 		$id = isset($args['id']) ? $args['id'] : '';
 		$token = $this->container['auth.manager']->getToken();
@@ -109,11 +130,12 @@ class MemberController extends BaseController {
 		if (!empty($member)) {
 			$parsedBody = $request->getParsedBody();
 			if (!empty($parsedBody['password'])) {
-				$member->password = $parseBody['password'];
+				$member->password = md5($parsedBody['password']);
 			}
-			$member->email = $parseBody['email'];
-			$member->phone = $parseBody['phone'];
-			$member->status = $parseBody['status'];
+			$member->display_name = $parsedBody['display_name'];
+			$member->email = $parsedBody['email'];
+			$member->phone = $parsedBody['phone'];
+			$member->status = $parsedBody['status'];
 			$member->save();
 			
 			return $this->toJSON(true);
@@ -122,80 +144,51 @@ class MemberController extends BaseController {
 		}
 	}
 	
-	public function createGroup($request, $response, $args)  {
+	
+	public function createProfile($request, $response, $args)  {
 		$parsedBody = $request->getParsedBody();
-		$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';
-		$name = isset($parsedBody['name']) ? $parsedBody['name'] : '';
-		
-		if (!empty($name)) {
-			$model = new \App\Models\Groups();
-			$model->parent_id=$parent_id;
-			$model->name=$name;
-			$model->status=STATUS_ACTIVE;
-			$model->save();
+		if (true) {
+			$member = new \App\Models\Members();
 			
-			
-			unset($model->created_date);
-			unset($model->created_by);
-			unset($model->last_modified_date);
-			unset($model->last_modified_by);
-			unset($model->concurrent_id);
-			return $this->toJSON($model);
-		} else {
-			return $this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
-		}
-	}
-	
-	public function updateGroup($request, $response, $args)  {
-		$id = $args['id'];
-		
-		if (!empty($id)) {
-			$parsedBody = $request->getParsedBody();
-			$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';
-			$name = isset($parsedBody['name']) ? $parsedBody['name'] : '';
-			
-			if (!empty($name)) {
-				$model = \App\Models\Groups::find($id);
-				if (!empty($model)) {
+			$member->username = $parsedBody['username'];
+			$member->status = $parsedBody['status'];
+			$member->password = md5($parsedBody['password']);
+			$member->display_name = $parsedBody['display_name'];
+			$member->email = $parsedBody['email'];
+			$member->phone = $parsedBody['phone'];
+			$member->status = $parsedBody['status'];
+			$member->save();
 				
-					$model->parent_id=$parent_id;
-					$model->name=$name;
-					$model->status=STATUS_ACTIVE;
-					$model->save();
-					
-					
-					unset($model->created_date);
-					unset($model->created_by);
-					unset($model->last_modified_date);
-					unset($model->last_modified_by);
-					unset($model->concurrent_id);
-					return $this->toJSON($model);
-				} else {
-					return $this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
-				}
-			} else {
-				return $this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
-			}
+			return $this->toJSON(true);
 		} else {
-			return $this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
 	}
 	
-	public function deleteGroup($request, $response, $args)  {
-		$id = $args['id'];
+
+	
+	public function updatePermission($request, $response, $args) {
+		$parsedBody = $request->getParsedBody();
+		$id = isset($parsedBody['id']) ? $parsedBody['id'] : '';
+		$member_id = isset($parsedBody['member_id']) ? $parsedBody['member_id'] : '';
+		$permission = isset($parsedBody['permission']) ? $parsedBody['permission'] : '';
 		
 		if (!empty($id)) {
-			$model = \App\Models\Groups::find($id);
-			if (!empty($model)) {
-				$model->status=STATUS_DELETED;
-				$model->save();
-				return $this->toJSON(true);
-			} else {
-				return $this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
+			$group = \App\Models\Groups::find($id);
+			
+			$groupPermission = $group->permissions()->where('owner_id','=',$member_id)->first();
+			if (empty($groupPermission)) {
+				$groupPermission = new \App\Models\Permissions();
+				$groupPermission->owner_id = $member_id;
+				$groupPermission->group_id = $id;
+				$groupPermission->status = STATUS_ACTIVE;
 			}
-		} else {
-			return $this->toJSON(false, ERR_GROUP_ID_EMPTY, ERR_GROUP_ID_EMPTY);
+			
+			$groupPermission->permission = $permission;
+			
+			$group->permissions()->save($groupPermission);
 		}
+		return true;
 	}
 	
 }

@@ -10,7 +10,13 @@ try {
         var global = {
             __type: 'JS_SDK_SANDBOX',
             window: window,
-            document: window.document
+            document: window.document,
+			method: {
+				GET: 'GET',
+				POST: 'POST',
+				PUT: 'PUT',
+				DELETE: 'DELETE',
+			}
         };
         var sandboxWhitelist = ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval'];
         for (var i = 0; i < sandboxWhitelist.length; i++) {
@@ -28,14 +34,14 @@ try {
 				version: '1.0',
 				secret: ''
 			};
-			
-			var method = {
-				GET: 'GET',
-				POST: 'POST',
-				PUT: 'PUT',
-				DELETE: 'DELETE',
-			}
 
+			$.ajax({
+				url: BASE_URL+"/js/static-glossaries",
+				async: false
+			}).done(function (data) {
+				glossaries = data;
+			});
+			
             function emptyFunction() {};
 			
 			this.init = function (o) {
@@ -53,16 +59,59 @@ try {
 				}
 				if (typeof m === 'function') {
 					cb = m;
-					m = method.GET;
+					m = global.method.GET;
 				}
 				if (!m)
 				{
-					m = method.GET;
+					m = global.method.GET;
 				}
 				var req = $.ajax({
 					url: apiUrl+p,
 					type: m,
 					data: o,
+					beforeSend: function(xhr){
+						xhr.setRequestHeader('X-XTD-APP-ID', config.appId);
+						xhr.setRequestHeader('X-XTD-APP-VERSION', config.version);
+						xhr.setRequestHeader('X-XTD-APP-SECRET', config.secret);
+						xhr.setRequestHeader('X-XTD-AUTH-HEADER', appCode);
+					},
+				});
+				req.done(function (ro) {
+					if (typeof cb === 'function') {
+						try {
+							if (typeof ro === 'string' || myVar instanceof String) {
+								ro = JSON.parse(ro);
+							}
+						} catch (e) { console.log(ro); console.log(e); }
+						if ((ro.response) && ro.response.code.toString().indexOf('403') >= 0) {
+							location.href = URL_SIGNIN;
+						}
+						cb(ro);
+					}
+				});
+				req.fail(function (xhr, s) {
+					alert(s);
+				});
+			};
+			
+			this.syncApi = function (p, m, o, cb) {
+				if (typeof o === 'function') {
+					cb = o;
+					o = null;
+				}
+				if (typeof m === 'function') {
+					cb = m;
+					m = global.method.GET;
+				}
+				if (!m)
+				{
+					m = global.method.GET;
+				}
+				var req = $.ajax({
+					url: apiUrl+p,
+					type: m,
+					data: o,
+					async: false,
 					beforeSend: function(xhr){
 						xhr.setRequestHeader('X-XTD-APP-ID', config.appId);
 						xhr.setRequestHeader('X-XTD-APP-VERSION', config.version);
@@ -94,7 +143,7 @@ try {
 			
 			this.login = function (o, cb) {
 				$this = this;
-				this.api('/me/login', method.POST, o, function (r) {
+				this.api('/me/login', global.method.POST, o, function (r) {
 					if (r.result){
 						appCode = r.result;
 						r.result = true;
@@ -109,13 +158,14 @@ try {
 			};
 			
 			this.logout = function () {
-				this.api('/me/logout', method.POST, null, function (r) {
-					this.setCookie('appCode', '', -7);
+				$this = this;
+				this.api('/me/logout', global.method.POST, null, function (r) {
+					$this.setCookie('appCode', '', -7);
 				});
 			};
 			
 			this.__checkAuthResponse = function (cb) {
-				this.api('/me/getLoginStatus', method.POST, null, function (r) {
+				this.api('/me/getLoginStatus', global.method.POST, null, function (r) {
 					if (cb) {
 						if (typeof cb === 'function') {
 							cb(r);
@@ -146,9 +196,14 @@ try {
 				return "";
 			}
 			
-			this.__ = function(content_key) {
+			this.__ = function(content_key, group) {
+				//console.log(content_key, group);
 				if (glossaries) {
-					if (glossaries[content_key]) {
+					if (group) {
+						if (glossaries[group][content_key]) {
+							return glossaries[group][content_key];
+						}
+					} else if (glossaries[content_key]) {
 						return glossaries[content_key];
 					}
 				}
@@ -159,12 +214,13 @@ try {
 				$this = this;
 				var elements = content.find(".multi-lang");
 				elements.each (function (index, element) {
-					$(element).html($this.__($(element).html()));
+					var group = $(element).data('lang-group');
+					$(element).html($this.__($(element).html().trim()));
+					if ($(element).attr('placeholder')) {
+						$(element).attr('placeholder', $this.__($(element).attr('placeholder').trim()));
+					}
 				});
 			};
-			$.get(BASE_URL+"/js/static-glossaries", function (data) {
-				glossaries = data;
-			});
 			window.XTD = this;
 			
         }).call(global);

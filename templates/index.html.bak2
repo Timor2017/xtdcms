@@ -13,7 +13,7 @@
 				<div class="box-header with-border"><h1 id="form_title"></h1></div>
 				<form action="{{ path_for('form.create.submit') }}" method="post">
 					<div id="form-items-container" class="form-items-container edit-mode box-body"></div>
-					<div class="box-footer"><input type="button" class="btn btn-primary" value="save" onclick="serializeItem();" /></div>
+					<div class="box-footer"><button type="button" class="btn btn-primary multi-lang" onclick="serializeItem();">Save</button></div>
 				</form>
 			</div>
 		</div>
@@ -39,20 +39,19 @@
 					}
 				})
 				.on('drop', function (item, target, _source, _currentSibling) {
-					if (target) {
-						var index = Array.prototype.indexOf.call(target.childNodes, _currentSibling) - 1; //-1 for 1 based array, -1 for header
-						console.log(index);
-						if (index == -2) {
-							index = fda.definition.items.length;
-						}
-						
-						var item = $(item);
-						if (item.attr('data-factory')) {
-							fda.insertItem(index, new XTD.properties.DefaultDefinition(XTD.SequenceGenerator.getNextCounter() , item.html(), item.attr('data-factory').toString().replace('Factory','')));
-							fda.renderAll();
-						}
+					var index = Array.prototype.indexOf.call(target.childNodes, _currentSibling) - 1; //-1 for 1 based array, -1 for header
+					console.log(index);
+					if (index == -2) {
+						index = fda.definition.items.length;
+					}
+					
+					var item = $(item);
+					if (item.attr('data-factory')) {
+						fda.insertItem(index, new XTD.properties.DefaultDefinition(XTD.SequenceGenerator.getNextCounter() , item.html(), item.attr('data-factory').toString().replace('Factory','')));
+						fda.renderAll();
 					}
 				});
+				
 			}
 		});
 		
@@ -62,10 +61,10 @@
 	};
 	
 	function serializeItem() {
-		//console.log(fda.serializeItem());
-		XTD.api('/form/def/{{id}}', 'PUT', fda.serializeItem(), function (data) {
-			console.log(data);
-		});
+		console.log(fda.serializeItem());
+		//XTD.api('/form/def/1', 'PUT', fda.serializeItem(), function (data) {
+		//	console.log(data);
+		//});
 	}
 	
 	var debug = 0;
@@ -84,11 +83,11 @@
 	</ul>
     <div class="tab-content">
 		<div class="tab-pane" id="control-sidebar-controls-tab">
-			<h3 class="control-sidebar-heading multi-lang">Controls</h3>
+			<h3 class="control-sidebar-heading">Controls</h3>
 			<div id="form-controls-container" class="form"></div>
 		</div>
 		<div class="tab-pane" id="control-sidebar-properties-tab">
-				<h3 class="control-sidebar-heading multi-lang">Properties</h3>
+				<h3 class="control-sidebar-heading">Properties</h3>
 				<div id="form-properties-container" class="form"></div>
 		</div>
 	</div>

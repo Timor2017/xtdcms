@@ -8,7 +8,7 @@ class FormController extends BaseController {
 	public function definition()  {
 		$this->app->get('[/[{id}]]', 'App\Controllers\FormController:loadForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('[/]', 'App\Controllers\FormController:createForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->put('/{id}', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->put('/{folder_id}[/[{id}]]', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->delete('/{id}', 'App\Controllers\FormController:deleteForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
@@ -130,10 +130,12 @@ class FormController extends BaseController {
 	}
 	
 	public function createForm($request, $response, $args) {
+		$folder_id = $args['folder_id'];
 		$parsedBody = $request->getParsedBody();
 		
 		$form = new \App\Models\Forms();
 		$form->version = 1;
+		$form->folder_id = $folder_id;
 		$form->name = 				$this->retrieveValue($parsedBody['properties']['common']['display']['value'], '');
 		$form->description = 	$this->retrieveValue($parsedBody['properties']['common']['description']['value'], '');
 		$form->is_featured = 	$this->retrieveValue($parsedBody['properties']['common']['is_featured']['value'], '0');
@@ -165,6 +167,7 @@ class FormController extends BaseController {
 	}
 	
 	public function updateForm($request, $response, $args) {
+		$folder_id = $args['folder_id'];
 		$id = $args['id'];
 		
 		if (!empty($id)) {
