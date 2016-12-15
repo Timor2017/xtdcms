@@ -3,7 +3,7 @@ try {
 	XTD.factories.SelectFactory = XTD.factories.SelectFactory || (function () {
 		return {
 			name: 'select', 
-			display: '下拉菜单测试',
+			display: '下拉菜单',
 			create: function (definition) {
 				return new XTD.controls.Select(definition);
 			},
