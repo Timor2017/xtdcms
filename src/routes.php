@@ -23,16 +23,26 @@ $app->get('/modules/{file}', function ($request, $response, $args) use ($app, $c
 	echo 'a';
 });
 */
-$app->get('/folder/{id}', function ($request, $response, $args) {
+$app->get('/folder/{id}', function ($request, $response, $args) use ($app, $container) {
 	$id = isset($args['id']) ? $args['id'] : '0';
-	$folder = \App\Models\Folders::find($id);
-	if (!empty($folder)) {
-		$args['folder'] = $folder;
+	$can_read = has_folder_permission($id, PERMISSION_READ);
+	$can_create = has_folder_permission($id, PERMISSION_CREATE);
+	$can_add = has_folder_permission($id, PERMISSION_ADD);
+	if ($can_read) {
+		$folder = \App\Models\Folders::find($id);
+		$args['can_create'] = $can_create;
+		$args['can_add'] = $can_add;
+		if (!empty($folder)) {
+			$args['folder'] = $folder;
+		}
+		return $this->view->render($response, 'folder.details.html', $args);
+	} else {
+		$url = $container->router->pathFor('dashboard');
+		return $response->withRedirect($url);
 	}
-	return $this->view->render($response, 'folder.details.html', $args);
 })->setName("folder.details");
 
-$app->get('/group/{id}', function ($request, $response, $args) {
+$app->get('/group/{id}', function ($request, $response, $args) use ($app, $container) {
 	$id = isset($args['id']) ? $args['id'] : '0';
 	$group = \App\Models\Groups::find($id);
 	if (!empty($group)) {
@@ -49,15 +59,15 @@ $app->get('/group/{id}', function ($request, $response, $args) {
 	return $this->view->render($response, 'group.details.html', $args);
 })->setName("group.details");
 
-$app->get('/login', function ($request, $response, $args) {
+$app->get('/login', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'signin.html', $args);
 })->setName('member.signin');
 
-$app->get('/member/profile', function ($request, $response, $args) {
+$app->get('/member/profile', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'member.profile.html', $args);
 })->setName('member.profile');
 
-$app->get('/member/list', function ($request, $response, $args) {
+$app->get('/member/list', function ($request, $response, $args) use ($app, $container) {
 	$args['permission_none'] = 			ACCESS_RIGHT_NO;
 	$args['permission_create'] = 		ACCESS_RIGHT_CREATE;
 	$args['permission_update'] = 		ACCESS_RIGHT_UPDATE;
@@ -69,11 +79,11 @@ $app->get('/member/list', function ($request, $response, $args) {
 	return $this->view->render($response, 'member.list.html', $args);
 })->setName('member.list');
 
-$app->get('/js/variable', function ($request, $response, $args) {
+$app->get('/js/variable', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'variable.html', $args);
 })->setName('variable');
 
-$app->get('/js/static-glossaries', function ($request, $response, $args) {
+$app->get('/js/static-glossaries', function ($request, $response, $args) use ($app, $container) {
 	$wordings = \App\Models\StaticContents::all();
 	$result = [];
 	foreach ($wordings as $wording) {
@@ -87,13 +97,17 @@ $app->get('/js/static-glossaries', function ($request, $response, $args) {
 	return $response->withJson($result);//$this->view->render($response, 'glossary.html', $args);
 })->setName('variable');
 
-$app->get('/form/create/{id}', function ($request, $response, $args) {
+$app->get('/form/create/{id}', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'form.edit.html', $args);
 })->setName("form.create");
 
-$app->get('/translate', function ($request, $response, $args) {
+$app->get('/translate', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'translate.html', $args);
 })->setName("form.create");
+
+$app->get('/search', function ($request, $response, $args) use ($app, $container) {
+	return $this->view->render($response, 'search.html', $args);
+})->setName('search');
 
 
 

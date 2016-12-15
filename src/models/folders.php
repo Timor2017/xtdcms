@@ -7,7 +7,7 @@ class Folders extends BaseModel {
 	
 	public function permissions()
 	{
-		return $this->morphMany('\App\Models\Permissions', 'target')->where('status', STATUS_ACTIVE);
+		return $this->morphMany('\App\Models\Permissions', 'target')->where('permissions.status', STATUS_ACTIVE);
 	}	
 	
 	public function all_permissions()
@@ -17,7 +17,7 @@ class Folders extends BaseModel {
 	
 	public function forms()
 	{
-		return $this->hasMany('App\Models\Forms', 'folder_id', 'id')->where('status', STATUS_ACTIVE);
+		return $this->hasMany('App\Models\Forms', 'folder_id', 'id')->where('forms.status', STATUS_ACTIVE);
 	}	
 	
 	public function all_forms()
@@ -27,7 +27,7 @@ class Folders extends BaseModel {
 
 	public function subfolders()
 	{
-		return $this->hasMany('App\Models\Folders', 'parent_id', 'id')->where('status', STATUS_ACTIVE);
+		return $this->hasMany('App\Models\Folders', 'parent_id', 'id')->where('folders.status', STATUS_ACTIVE);
 	}
 
 	public function all_subfolders()
@@ -37,6 +37,6 @@ class Folders extends BaseModel {
 	
 	public function parentfolder()
 	{
-		return $this->belongsTo('App\Models\Folders', 'id', 'parent_id')->where('status', STATUS_ACTIVE);
+		return $this->belongsTo('App\Models\Folders', 'id', 'parent_id')->where('folders.status', STATUS_ACTIVE);
 	}
 }

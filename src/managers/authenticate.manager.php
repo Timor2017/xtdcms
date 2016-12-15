@@ -54,6 +54,14 @@ if (__IS_DEBUG){
 		
 		return $this->token;
 	}
+	
+	public function getSessionToken() {
+		if (empty($this->token)) {
+			$this->token = $_SESSION['token'];
+		}
+		
+		return $this->token;
+	}
 
 
 	public function isValidRequest() {
@@ -74,9 +82,14 @@ if (__IS_DEBUG){
 	
 	public function isAuthenticatedUser() {
 		if ($this->isValidRequest()) {
+			$session_token = '';
 			$token = $this->getToken();
+			if (empty($token)) {
+				$token = $session_token = $this->getSessionToken();
+			}
 
 			$model = \App\Models\Members::where('token','=', $token)->get();
+			
 			if ($model->count() == 1) {
 				$username = $model[0]->username;
 				$time = $model[0]->login_time;
@@ -85,7 +98,7 @@ if (__IS_DEBUG){
 				}
 				
 				$check_token = $this->getCurrentToken($username, $time);
-				if ($token == $check_token) {
+				if ($token == $check_token || !empty($session_token)) {
 					return true;
 				}
 			}

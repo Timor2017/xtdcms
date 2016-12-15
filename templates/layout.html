@@ -223,15 +223,13 @@
 						</div>
 					</div>
 					<!-- search form -->
-					<form action="#" method="get" class="sidebar-form">
-						<div class="input-group">
-							<input type="text" name="q" class="form-control multi-lang" placeholder="Search...">
-									<span class="input-group-btn">
-										<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-										</button>
-									</span>
-						</div>
-					</form>
+					<div class="input-group sidebar-form">
+						<input type="text" name="q" class="form-control multi-lang" placeholder="Search...">
+								<span class="input-group-btn">
+									<button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="History.pushState(null, XTD.__('Search'), '{{ path_for('search') }}')"><i class="fa fa-search"></i>
+									</button>
+								</span>
+					</div>
 					<ul class="sidebar-menu">
 					</ul>
 				</section>

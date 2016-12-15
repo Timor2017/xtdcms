@@ -7,7 +7,7 @@ class Groups extends BaseModel {
 	
 	public function permissions()
 	{
-		return $this->morphMany('\App\Models\Permissions', 'target')->where('status', STATUS_ACTIVE);
+		return $this->morphMany('\App\Models\Permissions', 'target')->where('permissions.status', STATUS_ACTIVE);
 	}	
 	
 	public function all_permissions()

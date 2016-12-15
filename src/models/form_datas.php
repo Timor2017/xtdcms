@@ -7,6 +7,11 @@ class FormDatas extends BaseModel {
 	
 	public function values()
 	{
-		return $this->hasMany('App\Models\FormDataValues', 'form_data_id', 'id')->where('status', STATUS_ACTIVE);
+		return $this->hasMany('App\Models\FormDataValues', 'form_data_id', 'id')->where('form_data_values.status', STATUS_ACTIVE);
+	}	
+	
+	public function form()
+	{
+		return $this->belongsTo('App\Models\Forms', 'form_id', 'id')->where('forms.status', STATUS_ACTIVE);
 	}	
 }
