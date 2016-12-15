@@ -51,7 +51,17 @@ try {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.option).setParent(this).subscribe(function (value) {
-				$('#txtarea_'+$(this).attr('data-parent-id')).html(value);
+				var str = "";
+				var a = value.split("\n");
+				for(var i =0;i<a.length;i++){
+					if(a[i].indexOf("||") >= 0 ){						
+						var item = a[i].split("||");
+						str+='<option value='+item[1]+'>'+item[0]+'</option>';
+					}else{
+						str+='<option value='+a[i]+'>'+a[i]+'</option>';
+					}
+				}
+				$('#select_'+$(this).attr('data-parent-id')).html(str);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
 				$('#select_'+$(this).attr('data-parent-id')).val(value);
