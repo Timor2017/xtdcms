@@ -7,9 +7,10 @@ $(document).ready(function () {
 	});
 	XTD.getLoginStatus(function (data) {
 		if (!data.result) {
-			console.log(window.location.href.indexOf(URL_SIGNIN) );
+			//console.log(window.location.href.indexOf(URL_SIGNIN) );
 			if (window.location.href.indexOf(URL_SIGNIN) < 0) {
-				XTD.signout();
+				XTD.logout();
+				location.href = URL_SIGNIN;
 			}
 		} else {
 			if (window.location.href.indexOf(URL_SIGNIN) >= 0) {
@@ -57,6 +58,8 @@ $(document).ready(function () {
 	History.Adapter.bind(window,'statechange',function() {
 		var State = History.getState();
 		$.get(State.url, function(response) {
+			executeDocumentUnload();
+			
 			$('.control-sidebar').removeClass('control-sidebar-open');
 			var html = $(response);
 			XTD.translate(html);
@@ -80,6 +83,10 @@ $(document).ready(function () {
 				if (url.indexOf(BASE_URL) < 0) {
 					url = BASE_URL + url;
 				}
+				var parent = $(this).parents("ul").last();
+				parent.find("li.active").removeClass("active");
+				$(this).parent("li").addClass("active");
+				
 				History.pushState(null, $(this).text(), url);
 			}
 		}
@@ -89,6 +96,12 @@ $(document).ready(function () {
 			if (typeof documentReady === 'function') {
 				documentReady();
 				documentReady = null;
+			}
+	}
+	var executeDocumentUnload = function () {
+			if (typeof documentUnload === 'function') {
+				documentUnload();
+				documentUnload = null;
 			}
 	}
 	executeDocumentReady();
@@ -108,7 +121,7 @@ var readText = function () {
 var generateFolders = function (refresh) {
 	var folders = getItems('folders', '/folder/', refresh);
 	if (folders != '') {
-		var ul = addItems(folders, '/folder/', 'folder', true);
+		var ul = addItems(folders, {folder: '/folder/', form: '/form/'}, 'folder', true);
 		if ($(".sidebar-menu .folder-title").size() == 0) {
 			$(".sidebar-menu").append($("<li />").addClass("header folder-title").html("<span>"+XTD.__('MAIN NAVIGATION')+"</span>").prepend($("<i />").addClass("fa fa-refresh refresh-menu").css("width", "20px").click(function () {
 				generateFolders(true);
@@ -132,10 +145,10 @@ var generateGroups = function (refresh) {
 			})));
 		}
 		if ($(".sidebar-menu .group").size() > 0) {
-			$(".sidebar-menu .group").replaceWith(ul.html());
-		} else {
-			$(".sidebar-menu").append(ul.html());
+			$(".sidebar-menu .group").remove();
 		}
+		//$(".sidebar-menu").append(ul.html());
+		$(ul.html()).insertAfter($(".sidebar-menu .group-title"));
 	}
 }
 var getItems = function (key, path, refresh) {
@@ -153,22 +166,36 @@ var getItems = function (key, path, refresh) {
 	return items;
 }
 var addItems = function (items, path, className, isTop) {
+	//var ul = $("<ul />").addClass(isTop ? "sidebar-menu" : "treeview-menu").addClass(className);
 	var ul = $("<ul />").addClass(isTop ? "sidebar-menu" : "treeview-menu").addClass(className);
-
-	$(items).each(function(index, item) {
+	$.each(items, function(index, item) {
+		currentPath = (typeof path == 'object') ? (item.icon) ? path.folder : path.form : path;
 		var li = $("<li />").addClass(isTop ? "treeview" : "").addClass(className).appendTo(ul);
-		var a =$("<a />").attr("href",path+item.id).append(
-				$("<i />").addClass("fa").addClass("fa-" + item.icon)
+		var a =$("<a />").attr("href",currentPath+item.id).append(
+				$("<i />").addClass("fa").addClass("fa-" + ((item.icon) ? item.icon : 'edit'))
 			).append(
 				$("<span />").html(item.name)
 			);
 		li.append(a);
 		//console.log(item.name);
+		//console.log(item.children);
 		//console.log(item.children.length);
-		if (item.children.length > 0) {
-			$("<span />").addClass("pull-right-container").append($("<i />").addClass("fa fa-angle-left pull-right")).appendTo(a);
-			var children = addItems(item.children, path, className, false);
-			li.append(children);
+		if ($(item.children).size() > 0) {
+			//$("<span />").addClass("pull-right-container toggle-open").append($("<i />").addClass("fa fa-angle-left pull-right")).appendTo(a);
+			if ($(item.children.folders) .size() > 0) {
+				var children = addItems(item.children.folders, path, className, false);
+				li.append(children);
+			}
+			if ($(item.children.forms).size() > 0) {
+				//$("<span />").addClass("pull-right-container").append($("<i />").addClass("fa fa-angle-left pull-right")).appendTo(a);
+				var children = addItems(item.children.forms, path, className, false);
+				li.append(children);
+			}
+			if (!item.children.folders && !item.children.forms) {
+				//$("<span />").addClass("pull-right-container").append($("<i />").addClass("fa fa-angle-left pull-right")).appendTo(a);
+				var children = addItems(item.children, path, className, false);
+				li.append(children);
+			}
 		}
 	});
 	return ul;

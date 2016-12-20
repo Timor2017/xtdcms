@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3f0cd0067d9aba2f7fbaf6e08ee872b9",
-    "content-hash": "316fa50c4f8708498149602909b7fecd",
+    "hash": "872919082a688c21cdbea70eb0492f68",
+    "content-hash": "b654a2303bc6706c7a3a55f64a9b4272",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -560,6 +560,49 @@
                 "routing"
             ],
             "time": "2016-06-12 19:08:51"
+        },
+        {
+            "name": "nullpunkt/lz-string-php",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nullpunkt/lz-string-php.git",
+                "reference": "b08fc07df528c7e3d05b47e6013dde63eebffb48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nullpunkt/lz-string-php/zipball/b08fc07df528c7e3d05b47e6013dde63eebffb48",
+                "reference": "b08fc07df528c7e3d05b47e6013dde63eebffb48",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "monolog/monolog": "^1.17",
+                "phpunit/phpunit": "~5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LZCompressor\\": "src/LZCompressor"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Tobias Seipke",
+                    "email": "tobias.seipke@gmail.com",
+                    "homepage": "https://github.com/nullpunkt"
+                },
+                {
+                    "name": "Juhász Ádám",
+                    "email": "juhasz.adam@virgo.hu",
+                    "homepage": "https://github.com/JuhaszAdam"
+                }
+            ],
+            "description": "PHP Class implementation of LZ-String javascript.",
+            "time": "2016-03-23 09:49:56"
         },
         {
             "name": "paragonie/random_compat",

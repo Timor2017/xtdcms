@@ -224,10 +224,9 @@
 					</div>
 					<!-- search form -->
 					<div class="input-group sidebar-form">
-						<input type="text" name="q" class="form-control multi-lang" placeholder="Search...">
+						<input type="text" name="q" class="form-control multi-lang txt-search" placeholder="Search...">
 								<span class="input-group-btn">
-									<button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="History.pushState(null, XTD.__('Search'), '{{ path_for('search') }}')"><i class="fa fa-search"></i>
-									</button>
+									<button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="History.pushState(null, XTD.__('Search'), '{{ path_for('search') }}')"><i class="fa fa-search"></i></button>
 								</span>
 					</div>
 					<ul class="sidebar-menu">
@@ -279,6 +278,12 @@
 		<script src="{{ base_url() }}/js/app.js"></script>
 
 		<div class="script_block">
+			<script>
+				$('.txt-search').keypress(function(e){
+					if(e.keyCode==13)
+						$('#search-btn').click();
+				});
+			</script>
 		{% block scripts %}
 		{% endblock %}
 		</div>

@@ -45,7 +45,7 @@ class GroupController extends BaseController{
 				$group->children = $this->getGroups($group->id);
 			}
 		}
-		return $groups;
+		return $groups->toArray();
 	}	
 
 	

@@ -28,14 +28,23 @@ class FolderController extends BaseController{
 	
 	public function getAllForms($request, $response, $args)  {
 		$id = isset($args['id']) ? $args['id'] : '0';
+		$result = $this->getForms($id);
+		if (!empty($result)) {
+			return $this->toJSON($result);
+		} else {
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+		}
+	}	
+	
+	public function getForms($id) {
 		$forms = \App\Models\Forms::where('folder_id','=',$id)->get();
+		$result = [];
 		if (!empty($forms)) {
-			$result = [];
 			foreach ($forms as $key => $form) {
 				$can_read = has_form_permission($form->id, PERMISSION_READ);
 				$can_create = has_form_permission($form->id, PERMISSION_CREATE);
 				if ($can_read || $can_create) {
-					$form->data_count = $form->datas->count();
+					$form->data_count = \App\Models\FormDatas::where('form_id','=',$form->id)->count();
 					$form->can_read = $can_read;
 					$form->can_create = $can_create;
 					unset($form->created_date);
@@ -47,13 +56,10 @@ class FolderController extends BaseController{
 					$result[] = $form;
 				}
 			}
-			return $this->toJSON($result);
-		} else {
-			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
 		}
-	}	
-	
-	
+		
+		return $result;
+	}
 	
 	public function getFolders($id)  {
 		$folders = \App\Models\Folders::where('parent_id','=',$id)->orderby('is_featured', 'desc')->orderby('sequence')->get();
@@ -67,7 +73,10 @@ class FolderController extends BaseController{
 				unset($folder->last_modified_date);
 				unset($folder->last_modified_by);
 				unset($folder->concurrent_id);
-				$folder->children = $this->getFolders($folder->id);
+				$children = [];
+				$children['folders'] = $this->getFolders($folder->id);
+				$children['forms'] = $this->getForms($folder->id);
+				$folder->children = $children;
 			}
 		}
 		return $folders;

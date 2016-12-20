@@ -4,6 +4,7 @@ try {
 		return {
 			name: 'daterangepicker', 
 			display: '日期区间',
+			icon: 'fa-edit',
 			create: function (definition) {
 				return new XTD.controls.Daterangepicker(definition);
 			},
@@ -113,7 +114,7 @@ try {
 		};
 		
 		this.render = function () {
-			return $('<div />').attr('id', 'container_'+this.__id)
+			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'drt_'+this.__id).attr('id','lbl_'+this.__id).html(this.properties.get('common.display').getValue())
 							)

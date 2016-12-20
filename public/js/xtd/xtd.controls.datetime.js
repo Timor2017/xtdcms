@@ -4,6 +4,7 @@ try {
 		return {
 			name: 'datetime', 
 			display: '日期时间',
+			icon: 'fa-edit',
 			create: function (definition) {
 				return new XTD.controls.Datetime(definition);
 			},
@@ -111,7 +112,7 @@ try {
 			
 		};
 		this.render = function () {
-			return $('<div />').attr('id', 'container_'+this.__id)
+			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('for','dt_'+this.__id).attr('id','lbl_'+this.__id).html(this.properties.get('common.display').getValue())
 							)

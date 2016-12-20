@@ -8,8 +8,9 @@ class FormController extends BaseController {
 	public function definition()  {
 		$this->app->get('[/[{id}]]', 'App\Controllers\FormController:loadForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('/{folder_id}[/]', 'App\Controllers\FormController:createForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->put('/{folder_id}[/[{id}]]', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->delete('/{id}', 'App\Controllers\FormController:deleteForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		//$this->app->put('/{folder_id}[/[{id}]]', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->put('/{id}[/]', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->delete('/{id}[/]', 'App\Controllers\FormController:deleteForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
 	public function data()  {
@@ -270,15 +271,15 @@ class FormController extends BaseController {
 		if (!empty($id)) {
 			$form = \App\Models\Forms::find($id);
 			if (!empty($form)) {
-				if (empty($data_id)) {
-					if (!has_form_permission($form->id, PERMISSION_CREATE)){
-						return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
-					}
-				} else {
-					if (!has_form_permission($form->id, PERMISSION_UPDATE)){
-						return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
-					}
-				}
+				//if (empty($data_id)) {
+				//	if (!has_form_permission($form->id, PERMISSION_CREATE)){
+				//		return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
+				//	}
+				//} else {
+				//	if (!has_form_permission($form->id, PERMISSION_UPDATE)){
+				//		return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
+				//	}
+				//}
 				$parsedBody = $request->getParsedBody();
 				
 				$is_valid = true;

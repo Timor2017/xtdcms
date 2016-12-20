@@ -40,7 +40,7 @@ try {
 		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
-		this.definition.properties.text.option = this.definition.properties.text.option || new XTD.properties.DefaultPropertyDefinition('text', 'option', 'option', 'Textarea');
+		this.definition.properties.common.option = this.definition.properties.common.option || new XTD.properties.DefaultPropertyDefinition('common', 'option', 'option', 'Textarea');
 		
 		if (this.definition.id) {
 			this.__id = this.definition.id;
@@ -50,15 +50,15 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
-			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.option).setParent(this).subscribe(function (value) {
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.option).setParent(this).subscribe(function (value) {
 				var str = "";
 				var a = value.split("\n");
 				for(var i =0;i<a.length;i++){
-					if(a[i].indexOf("||") >= 0 ){						
-						var item = a[i].split("||");
+					var item = a[i].split("||");
+					if(item.length == 2 ){
 						str+='<option value='+item[1]+'>'+item[0]+'</option>';
 					}else{
-						str+='<option value='+a[i]+'>'+a[i]+'</option>';
+						str+='<option value='+item[0]+'>'+item[0]+'</option>';
 					}
 				}
 				$('#select_'+$(this).attr('data-parent-id')).html(str);
@@ -125,7 +125,7 @@ try {
 					
 		};
 	this.render = function () {
-			return $('<div />').attr('id', 'test_container_'+this.__id).addClass("item-container")
+			div = $('<div />').attr('id', 'test_container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
@@ -154,6 +154,19 @@ try {
 										.css('font-style', this.properties.get('text.style').getValue())
 								)
 							);
+				str = "";
+				var a = this.properties.get('common.option').getValue().split("\n");
+				for(var i =0;i<a.length;i++){
+					var item = a[i].split("||");
+					if(item.length == 2 ){
+						str+='<option value='+item[1]+'>'+item[0]+'</option>';
+					}else{
+						str+='<option value='+item[0]+'>'+item[0]+'</option>';
+					}
+				}
+				div.find("select").html(str);
+				
+				return div;
 		};
 		
 		//this.serialize = function () {

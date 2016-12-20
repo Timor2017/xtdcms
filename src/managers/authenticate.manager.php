@@ -57,7 +57,8 @@ if (__IS_DEBUG){
 	
 	public function getSessionToken() {
 		if (empty($this->token)) {
-			$this->token = $_SESSION['token'];
+			//$this->token = $_SESSION['token'];
+			$this->token = isset($_COOKIE['appCode']) ? $_COOKIE['appCode'] : '';
 		}
 		
 		return $this->token;

@@ -68,6 +68,8 @@ try {
 				var req = $.ajax({
 					url: apiUrl+p,
 					type: m,
+					//processData: false,
+					//contentType: false,
 					data: o,
 					beforeSend: function(xhr){
 						xhr.setRequestHeader('X-XTD-APP-ID', config.appId);

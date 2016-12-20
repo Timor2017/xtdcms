@@ -7,8 +7,12 @@
 
 {% block content %}
 <section class="content-header">
-	<h1 class="multi-lang">
-		Search Result
+	<h1>
+		<span class="multi-lang">Search Result</span>
+		<small>
+			<span class="multi-lang">Total:</span>
+			<span id="total_count" class="multi-lang">No record</span>
+		</small>
 	</h1>
 </section>
 <section class="content">
@@ -16,44 +20,56 @@
 	</div>
 </section>
 <script>
+var currentPage = 1;
+var isSearching = false;
 function documentReady() {
 	getSearchResult();
-	$("#search-btn").click(function () {
+	$("#search-btn").bind("click", function () {
+		currentPage = 1;
 		getSearchResult();
 	});
 }
+function documentUnload() {
+	$("#search-btn").unbind("click");
+}
 
 function getSearchResult() {
-	XTD.api('/search', 'POST', {
-		key: $("[name=q]").val()
-	}, function (data) {
-		if (data.result) {
-			var container = $(".result-container");
-			container.empty();
-			$.each(data.result, function (id, element) {
-				var search_result = '';
-				$.each(element.fields, function (idx, value) {
-					search_result += idx + ": " + value + "<br />";
-				});
-				$("<div />").addClass("col-md-3 col-sm-3 form-list-item").append(
-					$("<a />").attr("href", "/form/"+id).append(
-						$("<div />").addClass("info-box").append(
-							$("<span />").addClass("info-box-icon bg-blue").append(
-								$("<i />").addClass("fa fa-edit")
-							)
-						).append(
-							$("<div />").addClass("info-box-content").append(
-								$("<span />").addClass("info-box-text multi-lang").html(element.form.name)
+	if (!isSearching) {
+		isSearching = true;
+		XTD.api('/search', 'POST', {
+			key: $("[name=q]").val(),
+			page: currentPage
+		}, function (data) {
+			if (data.result) {
+				var container = $(".result-container");
+				container.empty();
+				$("#total_count").html(data.result.total);
+				$.each(data.result.data, function (id, element) {
+					var search_result = '';
+					$.each(element.fields, function (idx, value) {
+						search_result += idx + ": " + value + "<br />";
+					});
+					$("<div />").addClass("col-lg-3 col-md-4 col-sm-6 form-list-item").append(
+						$("<a />").attr("href", "/form/"+id).append(
+							$("<div />").addClass("info-box").append(
+								$("<span />").addClass("info-box-icon bg-blue").append(
+									$("<i />").addClass("fa fa-edit")
+								)
 							).append(
-								$("<span />").addClass("info-box-result").html(search_result)
+								$("<div />").addClass("info-box-content").append(
+									$("<span />").addClass("info-box-text multi-lang").html(element.form.name)
+								).append(
+									$("<span />").addClass("info-box-result").html(search_result)
+								)
 							)
 						)
-					)
-				).appendTo(container);
-				
-			});
-		}
-	});
+					).appendTo(container);
+					
+				});
+			}
+			isSearching = false;
+		});
+	}
 }
 </script>
 {% endblock %}

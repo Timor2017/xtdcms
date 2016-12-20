@@ -35,7 +35,7 @@ class MemberController extends BaseController {
 			$member->login_ip = $_SERVER['REMOTE_ADDR'];
 			$member->login_time = date('Y-m-d H:i:s');
 			$member->save();
-			$_SESSION['token'] = $member->token;
+			//setcookie('token', $token);
 			
 			return $this->toJSON($token);
 		} else {
@@ -50,9 +50,6 @@ class MemberController extends BaseController {
 			$member = $members[0];
 			$member->token = '';
 			$member->save();
-			
-			$_SESSION['token'] = null;
-			unset($_SESSION['token']);
 			
 			return $this->toJSON(true);
 		} else {

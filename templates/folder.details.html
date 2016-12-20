@@ -14,7 +14,7 @@
 <section class="content">
 	<div class="row folder-container">
 {% if can_create %}
-		<div class="col-md-3 col-sm-3 form-list-item">
+		<div class="col-lg-3 col-md-4 col-sm-6 form-list-item">
 			<a data-toggle="modal" data-target="#new-folder-form">
 				<div class="info-box">
 				<!-- Apply any bg-* class to to the icon to color it -->
@@ -26,10 +26,8 @@
 				</div><!-- /.info-box -->
 			</a>
 		</div>
-{% endif %}
-{% if can_add %}
-		<div class="col-md-3 col-sm-3 form-list-item">
-			<a href="{{ path_for('form.create', {'id': id}) }}">
+		<div class="col-lg-3 col-md-4 col-sm-6 form-list-item">
+			<a href="{{ path_for('form.create', {'folder_id': id}) }}">
 				<div class="info-box">
 				<!-- Apply any bg-* class to to the icon to color it -->
 					<span class="info-box-icon bg-green"><i class="fa fa-edit"></i></span>
@@ -74,7 +72,7 @@
 		XTD.api('/folder/{{id}}/forms', function (data) {
 			$(data.result).each(function(index, form) {
 				var id = form.id;
-				$("<div />").addClass("col-md-3 col-sm-3 form-list-item").append(
+				$("<div />").addClass("col-lg-3 col-md-4 col-sm-6 form-list-item").append(
 					$("<a />").attr("href", "/form/"+id).append(
 						$("<div />").addClass("info-box").append(
 							$("<span />").addClass("info-box-icon bg-blue").append(

@@ -20,6 +20,7 @@
         "slim/twig-view": "^2.1",
 		"illuminate/events": "*",
 		"illuminate/database": "*",
-		"mrclay/minify":"*"
+		"mrclay/minify":"*",
+        "nullpunkt/lz-string-php": "^1.2"
     }
 }

@@ -31,6 +31,10 @@ class ComposerStaticInitff20e746c7d7e130a566f0587e43f8c0
         array (
             'Monolog\\' => 8,
         ),
+        'L' => 
+        array (
+            'LZCompressor\\' => 13,
+        ),
         'I' => 
         array (
             'Interop\\Container\\' => 18,
@@ -83,6 +87,10 @@ class ComposerStaticInitff20e746c7d7e130a566f0587e43f8c0
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'LZCompressor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nullpunkt/lz-string-php/src/LZCompressor',
         ),
         'Interop\\Container\\' => 
         array (

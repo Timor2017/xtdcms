@@ -2,7 +2,7 @@
 // Routes
 
 // API will all redirect to api controller
-$app->group('/api', 'App\Controllers\ApiController')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');
+$app->group('/api', 'App\Controllers\ApiController')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');//->add('\App\Middlewares\LZStringMiddleware::decryptString');
 
 // minify the static file (css, js) and add cache header
 $app->get('/min/{f:.*}', function ($request, $response, $args) use ($app, $container) {
@@ -27,11 +27,11 @@ $app->get('/folder/{id}', function ($request, $response, $args) use ($app, $cont
 	$id = isset($args['id']) ? $args['id'] : '0';
 	$can_read = has_folder_permission($id, PERMISSION_READ);
 	$can_create = has_folder_permission($id, PERMISSION_CREATE);
-	$can_add = has_folder_permission($id, PERMISSION_ADD);
+	//$can_add = has_folder_permission($id, PERMISSION_ADD);
 	if ($can_read) {
 		$folder = \App\Models\Folders::find($id);
 		$args['can_create'] = $can_create;
-		$args['can_add'] = $can_add;
+		//$args['can_add'] = $can_add;
 		if (!empty($folder)) {
 			$args['folder'] = $folder;
 		}
@@ -97,17 +97,53 @@ $app->get('/js/static-glossaries', function ($request, $response, $args) use ($a
 	return $response->withJson($result);//$this->view->render($response, 'glossary.html', $args);
 })->setName('variable');
 
-$app->get('/form/create/{id}', function ($request, $response, $args) use ($app, $container) {
-	return $this->view->render($response, 'form.edit.html', $args);
-})->setName("form.create");
-
 $app->get('/translate', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'translate.html', $args);
-})->setName("form.create");
+})->setName("translate");
 
 $app->get('/search', function ($request, $response, $args) use ($app, $container) {
 	return $this->view->render($response, 'search.html', $args);
 })->setName('search');
+
+$app->get('/form/create/{folder_id}', function ($request, $response, $args) use ($app, $container) {
+	//$args['id'] = '';
+	$folder_id = (isset($args['folder_id'])) ? $args['folder_id'] : '';
+
+	$can_create = has_folder_permission($folder_id, PERMISSION_CREATE);
+	if ($can_create) {
+		return $this->view->render($response, 'form.edit.html', $args);
+	} else {
+		$url = $container->router->pathFor('dashboard');
+		return $response->withRedirect($url);
+	}
+})->setName("form.create");
+
+$app->get('/form/success', function ($request, $response, $args) use ($app, $container) {
+	$args['route'] = 'form';
+	return $this->view->render($response, 'form.success.html', $args);
+})->setName("form.submit.success");
+
+$app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $container)  {
+	$id = (isset($args['id'])) ? $args['id'] : '';
+	$can_update = has_form_permission($id, PERMISSION_UPDATE);
+	if ($can_update) {
+		return $this->view->render($response, 'form.edit.html', $args);
+	} else {
+		$url = $container->router->pathFor('dashboard');
+		return $response->withRedirect($url);
+	}
+})->setName("form.edit");
+
+$app->get('/form/[{id}]', function ($request, $response, $args) use ($app, $container)  {
+	$id = (isset($args['id'])) ? $args['id'] : '';
+	$can_read = has_form_permission($id, PERMISSION_READ);
+	if ($can_read) {
+		return $this->view->render($response, 'form.html', $args);
+	} else {
+		$url = $container->router->pathFor('dashboard');
+		return $response->withRedirect($url);
+	}
+})->setName("formdata.form");
 
 
 
@@ -233,12 +269,7 @@ $app->get('/form/create', function ($request, $response, $args) use ($app, $cont
 	$args['route'] = 'form';
 	return $this->view->render($response, 'form.form.html', $args);
 })->setName("form.create");
-*/
-$app->get('/form/success', function ($request, $response, $args) use ($app, $container) {
-	$args['route'] = 'form';
-	return $this->view->render($response, 'form.success.html', $args);
-})->setName("form.submit.success");
-/*
+
 $app->get('/form/{id}', function ($request, $response, $args) use ($app, $container) {
 	$values = $this->db->select()
 					->from('swdata')
@@ -254,7 +285,6 @@ $app->get('/form/{id}', function ($request, $response, $args) use ($app, $contai
 
 	return $this->view->render($response, 'form.details.html', $args);
 })->setName("form.details");
-*/
 $app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $container) {
 	$values = $this->db->select()
 					->from('swdata')
@@ -395,6 +425,7 @@ $app->post('/form/{id}/edit', function ($request, $response, $args) use ($app, $
 $app->delete('/form/{id}', function ($request, $response, $args) use ($app, $container) {
 	$app->redirect($app->urlFor('form.list'));
 })->setName("form.delete.submit");
+*/
 
 $app->get('/members', function ($request, $response, $args) use ($app, $container) {
 	$args['route'] = 'member';
@@ -428,12 +459,6 @@ $app->delete('/member/{id}', function ($request, $response, $args) use ($app, $c
 	$app->redirect($app->urlFor('member.list'));
 })->setName("member.delete.submit");
 
-
-$app->get('/form/[{id}]', function ($request, $response, $args) {
-	$args['route'] = 'formdata.form';
-	
-	return $this->view->render($response, 'form.html', $args);
-})->setName("formdata.form");
 
 
 $app->get('/', function ($request, $response, $args) use ($app, $container) {

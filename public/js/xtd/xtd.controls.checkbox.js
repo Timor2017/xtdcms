@@ -26,8 +26,8 @@ try {
 		this.definition.properties.common.is_show_in_list = this.definition.properties.common.is_show_in_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_list', 'is_show_in_list', 'CheckBox');
 		this.definition.properties.common.is_show_in_mobile_list = this.definition.properties.common.is_show_in_mobile_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_mobile_list', 'is_show_in_mobile_list', 'CheckBox');
 		this.definition.properties.common.sort_sequence = this.definition.properties.common.sort_sequence || new XTD.properties.DefaultPropertyDefinition('common', 'sort_sequence', 'sort_sequence', 'TextBox');
-		this.definition.properties.layout.width = this.definition.properties.layout.width || new XTD.properties.DefaultPropertyDefinition('layout', 'width', 'width', 'TextBox');
-		this.definition.properties.layout.height = this.definition.properties.layout.height || new XTD.properties.DefaultPropertyDefinition('layout', 'height', 'height', 'TextBox');
+		//this.definition.properties.layout.width = this.definition.properties.layout.width || new XTD.properties.DefaultPropertyDefinition('layout', 'width', 'width', 'TextBox');
+		//this.definition.properties.layout.height = this.definition.properties.layout.height || new XTD.properties.DefaultPropertyDefinition('layout', 'height', 'height', 'TextBox');
 		this.definition.properties.layout.horizontalAlignment = this.definition.properties.layout.horizontalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'horizontalAlignment', 'horizontalAlignment', 'TextBox');
 		this.definition.properties.layout.verticalAlignment = this.definition.properties.layout.verticalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'verticalAlignment', 'verticalAlignment', 'TextBox');
 		this.definition.properties.layout.marginTop = this.definition.properties.layout.marginTop || new XTD.properties.DefaultPropertyDefinition('layout', 'marginTop', 'marginTop', 'TextBox');
@@ -64,12 +64,12 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_mobile_list).setParent(this));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.sort_sequence).setParent(this));
 		
-			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
-				$('#chk_'+$(this).attr('data-parent-id')).css('width', value);
-			}));
-			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
-				$('#chk_'+$(this).attr('data-parent-id')).css('height', value);
-			}));
+			//this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
+			//	$('#chk_'+$(this).attr('data-parent-id')).css('width', value);
+			//}));
+			//this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
+			//	$('#chk_'+$(this).attr('data-parent-id')).css('height', value);
+			//}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
 				$('#chk_'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
@@ -123,8 +123,8 @@ try {
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
-										.css('width', this.properties.get('layout.width').getValue())
-										.css('height', this.properties.get('layout.height').getValue())
+										//.css('width', this.properties.get('layout.width').getValue())
+										//.css('height', this.properties.get('layout.height').getValue())
 										.css('text-aign', this.properties.get('layout.horizontalAlignment').getValue())
 										.css('vertical-align', this.properties.get('layout.verticalAlignment').getValue())
 										.css('margin-top', this.properties.get('layout.marginTop').getValue())

@@ -19,9 +19,4 @@ class ApiController extends BaseController {
 		$this->app->group('/search', '\App\Controllers\SearchController:search');
 	}
 
-	public function login($request, $response, $args)  {
-		
-		
-	}
-
 }
