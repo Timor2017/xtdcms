@@ -125,14 +125,14 @@ try {
 					
 		};
 	this.render = function () {
-			div = $('<div />').attr('id', 'test_container_'+this.__id).addClass("item-container")
+			div = $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 							)
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<select />').attr('name', this.__id).attr('id', 'select_'+this.__id)
+									$('<select />').attr('name', this.__id).attr('id', 'select_'+this.__id).addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.append('<option value="0">==Select an option==</option>')

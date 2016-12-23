@@ -10,12 +10,12 @@ try {
 			var $this = this;
 			return $("<div />").addClass("property-item")
 							.append(
-								$("<label />").addClass("property-item-label").html(this.property.name)
+								$("<label />").addClass("property-item-label").html(XTD.__(this.property.name))
 							).append(
 								$("<div />").addClass("property-item-control")
 								.append(
 									$("<textarea />").attr('id', 'txtArea_'+this.__id).attr('data-id', this.__id).attr('data-parent-id', this.parent.__id).addClass("property-item-label").attr("type", "text").val(this._value).bind('input', function () {
-										$this.setValue("");
+										$this.setValue($(this).val());
 										$this.property.value = $this._value;
 										$this.fire($(this).val(), this);
 									})

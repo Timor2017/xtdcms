@@ -136,6 +136,7 @@ class FormController extends BaseController {
 		
 		$form = new \App\Models\Forms();
 		$form->version = 1;
+		$form->status = STATUS_ACTIVE;
 		$form->folder_id = 		$folder_id;
 		$form->name = 				$this->retrieveArray($parsedBody, 'properties.common.display.value', '');
 		$form->description = 	$this->retrieveArray($parsedBody, 'properties.common.description.value', '');
@@ -152,12 +153,20 @@ class FormController extends BaseController {
 			$form_item->description = 							$this->retrieveArray($item, 'properties.common.description.value', '');
 			$form_item->type = 										$this->retrieveArray($item, 'type', '');
 			$form_item->value_type = 							$this->retrieveArray($item, 'value_type' , '');
-			$form_item->value_score = 						$this->retrieveArray($item, 'properties.common.value_score.value' , '0');
+			$form_item->value_score = 							$this->retrieveArray($item, 'properties.common.value_score.value' , '0');
 			$form_item->is_searchable = 						$this->retrieveArray($item, 'properties.common.is_searchable.value' , '1');
 			$form_item->is_show_in_list =					$this->retrieveArray($item, 'properties.common.is_show_in_list.value' , '1');
-			$form_item->is_show_in_mobile_list =	$this->retrieveArray($item, 'properties.common.is_show_in_mobile_list.value' , '1');
-			$form_item->sort_sequence =					$this->retrieveArray($item, 'properties.common.sort_sequence.value' , '');
+			$form_item->is_show_in_mobile_list =		$this->retrieveArray($item, 'properties.common.is_show_in_mobile_list.value' , '1');
+			$form_item->sort_sequence =						$this->retrieveArray($item, 'properties.common.sort_sequence.value' , null);
 			$form_item->sequence =								$sequence;
+
+			$form_item->code			 						= 	'';
+			$form_item->value_score 					= 	$form_item->value_score 					? '1' : '0';
+			$form_item->is_searchable 					= 	$form_item->is_searchable 					? '1' : '0';
+			$form_item->is_show_in_list 				=	$form_item->is_show_in_list 				? '1' : '0';
+			$form_item->is_show_in_mobile_list =	$form_item->is_show_in_mobile_list ? '1' : '0';
+			$form_item->sort_sequence 				=	empty($form_item->sort_sequence)	? null : $form_item->sort_sequence;
+
 			$form_item->save();
 			
 			$this->extractProperties($form_item, $item);
@@ -176,9 +185,9 @@ class FormController extends BaseController {
 			
 			$form = \App\Models\Forms::find($id);
 			$form->version++;
-			$form->name = $this->retrieveValue($parsedBody['properties']['common']['display']['value'] , '');
-			$form->description = $this->retrieveValue($parsedBody['properties']['common']['description']['value'] , '');
-			$form->is_featured = $this->retrieveValue($parsedBody['properties']['common']['is_featured']['value'] , '0');
+			$form->name = $this->retrieveArray($parsedBody, 'properties.common.display.value' , '');
+			$form->description = $this->retrieveArray($parsedBody, 'properties.common.description.value' , '');
+			$form->is_featured = $this->retrieveArray($parsedBody, 'properties.common.is_featured.value' , '0');
 			$form->save();
 			
 			$this->extractProperties($form, $parsedBody);
@@ -195,16 +204,24 @@ class FormController extends BaseController {
 					$form_item->status = STATUS_ACTIVE;
 				}
 				
-				$form_item->type =										$this->retrieveValue($item['type'] , '');
-				$form_item->value_type =							$this->retrieveValue($item['value_type'] , '');
-				$form_item->display =									$this->retrieveValue($item['properties']['common']['display']['value'] , '');
-				$form_item->description =							$this->retrieveValue($item['properties']['common']['description']['value'] , '');
-				$form_item->value_score =							$this->retrieveValue($item['properties']['common']['value_score']['value'] , '0');
-				$form_item->is_searchable =						$this->retrieveValue($item['properties']['common']['is_searchable']['value'] , '1');
-				$form_item->is_show_in_list =					$this->retrieveValue($item['properties']['common']['is_show_in_list']['value'] , '1');
-				$form_item->is_show_in_mobile_list =	$this->retrieveValue($item['properties']['common']['is_show_in_mobile_list']['value'] , '1');
-				$form_item->sort_sequence =  					$this->retrieveValue($item['properties']['common']['sort_sequence']['value'] , '');
+				$form_item->type =										$this->retrieveArray($item, 'type', '');
+				$form_item->value_type =							$this->retrieveArray($item, 'value_type', '');
+				$form_item->display =									$this->retrieveArray($item, 'properties.common.display.value', '');
+				$form_item->description =							$this->retrieveArray($item, 'properties.common.description.value', '');
+				$form_item->value_score =							$this->retrieveArray($item, 'properties.common.value_score.value', '0');
+				$form_item->is_searchable =						$this->retrieveArray($item, 'properties.common.is_searchable.value', '1');
+				$form_item->is_show_in_list =					$this->retrieveArray($item, 'properties.common.is_show_in_list.value', '1');
+				$form_item->is_show_in_mobile_list =		$this->retrieveArray($item, 'properties.common.is_show_in_mobile_list.value', '1');
+				$form_item->sort_sequence =  					$this->retrieveArray($item, 'properties.common.sort_sequence.value', null);
 				$form_item->sequence =								$sequence;
+
+				$form_item->code			 						= 	'';
+				$form_item->value_score 					= 	$form_item->value_score 					? '1' : '0';
+				$form_item->is_searchable 					= 	$form_item->is_searchable 					? '1' : '0';
+				$form_item->is_show_in_list 				=	$form_item->is_show_in_list 				? '1' : '0';
+				$form_item->is_show_in_mobile_list =	$form_item->is_show_in_mobile_list ? '1' : '0';
+				$form_item->sort_sequence 				=	empty($form_item->sort_sequence)	? null : $form_item->sort_sequence;
+
 				$form_item->save();
 				
 				$this->extractProperties($form_item, $item);
@@ -235,6 +252,8 @@ class FormController extends BaseController {
 					//$property->form_id = $form_id;
 					$property->name = $name;
 					$property->group = $group_name;
+					$property->rule = '';
+					$property->sequence = '0';
 					$property->value = $prop['value'];
 					$property->type = $prop['type'];
 					$property->status = STATUS_ACTIVE;

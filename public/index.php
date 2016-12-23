@@ -15,7 +15,7 @@ session_start();
 
 // Instantiate the app
 require __DIR__ . '/../src/constants.php';
-$settings = require __DIR__ . '/../src/settings.php';
+$settings = require __DIR__ . '/../config/settings.php';
 $app = new \Slim\App($settings);
 
 require __DIR__ . '/../src/global.func.php';

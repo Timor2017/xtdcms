@@ -7,7 +7,7 @@ class MemberController extends BaseController {
 
 	public function me()  {
 		$this->app->post('/login', 'App\Controllers\MemberController:login');
-		$this->app->post('/logout', 'App\Controllers\MemberController:logout')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->post('/logout', 'App\Controllers\MemberController:logout');
 		$this->app->post('/getLoginStatus', 'App\Controllers\MemberController:getLoginStatus');
 		$this->app->get('/profile', 'App\Controllers\MemberController:getProfile')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('/profile', 'App\Controllers\MemberController:updateProfile')->add('\App\Middlewares\AuthenticateMiddleware::authUser');

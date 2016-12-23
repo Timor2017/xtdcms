@@ -9,8 +9,9 @@ $(document).ready(function () {
 		if (!data.result) {
 			//console.log(window.location.href.indexOf(URL_SIGNIN) );
 			if (window.location.href.indexOf(URL_SIGNIN) < 0) {
-				XTD.logout();
-				location.href = URL_SIGNIN;
+				//XTD.logout();
+				//location.href = URL_SIGNIN;
+				signout();
 			}
 		} else {
 			if (window.location.href.indexOf(URL_SIGNIN) >= 0) {
@@ -108,8 +109,9 @@ $(document).ready(function () {
 });
 	
 var signout = function () {
-	XTD.logout();
-	location.href = URL_SIGNIN;
+	XTD.logout(function () {
+		location.href = URL_SIGNIN;
+	});
 };
 
 var readText = function () {

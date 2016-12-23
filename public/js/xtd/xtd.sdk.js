@@ -159,13 +159,18 @@ try {
 				});
 			};
 			
-			this.logout = function () {
+			this.logout = function (cb) {
 				$this = this;
 				this.api('/me/logout', global.method.POST, null, function (r) {
 					$this.setCookie('me.profile', '', -7);
 					$this.setCookie('folders', '', -7);
 					$this.setCookie('groups', '', -7);
 					$this.setCookie('appCode', '', -7);
+					if (cb) {
+						if (typeof cb === 'function') {
+							cb();
+						};
+					}
 				});
 			};
 			

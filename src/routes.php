@@ -5,11 +5,24 @@
 $app->group('/api', 'App\Controllers\ApiController')->add('\App\Middlewares\AuthenticateMiddleware::authHeader');//->add('\App\Middlewares\LZStringMiddleware::decryptString');
 
 // minify the static file (css, js) and add cache header
-$app->get('/min/{f:.*}', function ($request, $response, $args) use ($app, $container) {
+$app->get('/min/f/{f:.*}', function ($request, $response, $args) use ($app, $container) {
 	$_GET['f'] = $args['f'];
-	$_GET['b'] = substr(dirname($_SERVER['SCRIPT_NAME']), 1);
+	$b = substr(dirname($_SERVER['SCRIPT_NAME']), 1);
+	if (!empty($b)) {
+		$_GET['b'] = $b;
+	}
 
 	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
+});
+$app->get('/min/g/{g:.*}', function ($request, $response, $args) use ($app, $container) {
+	$_GET['g'] = $args['g'];
+	$b = substr(dirname($_SERVER['SCRIPT_NAME']), 1);
+	if (!empty($b)) {
+		$_GET['b'] = $b;
+	}
+
+	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
+	exit;
 });
 /*
 $app->get('/cmlist', function ($request, $response, $args) use ($app, $container) {
