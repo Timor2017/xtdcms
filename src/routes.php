@@ -13,6 +13,7 @@ $app->get('/min/f/{f:.*}', function ($request, $response, $args) use ($app, $con
 	}
 
 	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
+	exit;
 });
 $app->get('/min/g/{g:.*}', function ($request, $response, $args) use ($app, $container) {
 	$_GET['g'] = $args['g'];

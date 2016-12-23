@@ -67,7 +67,11 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                         continue;
                     }
                     if (0 === strpos($file, '//')) {
-                        $file = $_SERVER['DOCUMENT_ROOT'] . substr($file, 1);
+						$base = '';
+						if (!empty($_GET['b'])){
+							$base = "/{$_GET['b']}";
+						}
+                        $file = $_SERVER['DOCUMENT_ROOT'] . $base . substr($file, 1);
                     }
                     $realpath = realpath($file);
                     if ($realpath && is_file($realpath)) {

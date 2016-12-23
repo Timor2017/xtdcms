@@ -36,7 +36,7 @@ return array(
 			,'//js/xtd/xtd.validators.mandatory.js'
 	),
 	'css'=>array(
-		'//css/bootstrap.min.css'
+		 '//css/bootstrap.min.css'
 		,'//js/plugins/jquery-ui-1.11.4/jquery-ui.min.css'
 		,'//css/font-awesome.min.css'
 		,'//css/AdminLTE.min.css'
