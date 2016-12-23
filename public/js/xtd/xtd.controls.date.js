@@ -119,7 +119,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control'+this.__id).attr('data-link-field','date_'+this.__id)
 								.append(
-									$('<input />').addClass('datepicker_show').attr('data-provide',"datepicker").attr('id','date_'+this.__id).attr('size','16').attr('type','text')
+									$('<input />').addClass('datepicker_show').attr('data-provide',"datepicker").attr('id','date_'+this.__id).attr('size','16').attr('type','text').addClass('form-control')
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
@@ -156,7 +156,7 @@ try {
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {
-				$this.fire(properties);
+				$this.fire(properties, this);
 			});
 			
 			return output;

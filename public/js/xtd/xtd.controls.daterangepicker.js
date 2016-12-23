@@ -121,7 +121,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<input />').addClass('daterangepicker_show').attr('id', 'drt_'+this.__id).attr('size','16').attr('type','text')
+									$('<input />').addClass('daterangepicker_show').attr('id', 'drt_'+this.__id).attr('size','16').attr('type','text').addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())

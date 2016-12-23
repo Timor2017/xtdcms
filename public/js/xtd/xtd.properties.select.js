@@ -13,7 +13,7 @@ try {
 							).append(
 								$("<div />").addClass("property-item-control")
 								.append(
-									$("<select />").attr('id', 'select88888'+this.__id).attr('data-id', this.__id).attr('data-parent-id', this.parent.__id).addClass("property-item-label").attr("type", "radio").prop('checked' , this._value.toString() == "true").bind('change', function () {
+									$("<select />").attr('id', 'select88888'+this.__id).attr('data-id', this.__id).attr('data-parent-id', this.parent.__id).addClass("property-item-label  form-control").attr("type", "radio").prop('checked' , this._value.toString() == "true").bind('change', function () {
 										//$this.setValue($(this).prop('checked'));
 										//$this.property.value = $this._value;
 										//$this.fire($(this).prop('checked'), this);

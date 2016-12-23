@@ -119,7 +119,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control')
 								.append(   
-									$('<input />').attr('type','file').attr('multiple','multiple').attr('name','files[]').attr('id', 'fileupload'+this.__id)
+									$('<input />').attr('type','file').attr('multiple','multiple').attr('name','files[]').attr('id', 'fileupload'+this.__id).addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())

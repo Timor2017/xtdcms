@@ -184,7 +184,7 @@ try {
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {
-				$this.fire(properties);
+				$this.fire(properties, this);
 			});
 			
 			return output;

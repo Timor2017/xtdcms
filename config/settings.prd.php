@@ -32,37 +32,37 @@ return [
 			'database' => [
 				'archive' => [
 					'dbname' => 'xtd_archives',
-					'username' => 'root',
+					'username' => 'xtd',
 					'password' => '',
 				],
 				'core' => [
 					'dbname' => 'xtd_core',
-					'username' => 'root',
+					'username' => 'xtd',
 					'password' => '',
 				],
 				'datapool' => [
 					'dbname' => 'xtd_datapool',
-					'username' => 'root',
+					'username' => 'xtd',
 					'password' => '',
 				],
 				'form_definition' => [
 					'dbname' => 'xtd_form_definition',
-					'username' => 'root',
+					'username' => 'xtd',
 					'password' => '',
 				],
 				'membership' => [
 					'dbname' => 'xtd_membership',
-					'username' => 'root',
+					'username' => 'xtd',
 					'password' => '',
 				],
 				'process_definition' => [
 					'dbname' => 'xtd_process_definition',
-					'username' => 'root',
+					'username' => 'xtd',
 					'password' => '',
 				],
 				'report_definition' => [
 					'dbname' => 'xtd_report_definition',
-					'username' => 'root',
+					'username' => 'xtd',
 					'password' => '',
 				]
 			],

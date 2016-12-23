@@ -119,7 +119,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<input />').attr('type','radio').attr('name', 'gender').attr('id', 'rdo_'+this.__id)
+									$('<input />').attr('type','radio').attr('name', 'gender').attr('id', 'rdo_'+this.__id).addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
