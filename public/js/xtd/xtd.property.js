@@ -54,8 +54,8 @@ try {
 					"tooltips" : { "group": "common", "name": "tooltips", "value": "", "type": "TextBox" }
 				},
 				"layout": { 
-					"width" : { "group": "layout", "name": "width", "value": "100px", "type": "TextBox" },
-					"height" : { "group": "layout", "name": "height", "value": "23px", "type": "TextBox" },
+					"width" : { "group": "layout", "name": "width", "value": "", "type": "TextBox" },
+					"height" : { "group": "layout", "name": "height", "value": "", "type": "TextBox" },
 					"horizontalAlignment" : { "group": "layout", "name": "horizontalAlignment", "value": "left", "type": "TextBox" },
 					"verticalAlignment" : { "group": "layout", "name": "verticalAlignment", "value": "top", "type": "TextBox" },
 					"marginTop" : { "group": "layout", "name": "marginTop", "value": "0px", "type": "TextBox" },

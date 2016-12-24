@@ -29,25 +29,25 @@ class FormController extends BaseController {
 				//同时也删除和form相关联的
 				
 					
-				$formItems = \App\Models\FormItems::where('form_id','=',$form->id)->get();
-				if ($formItems->count()>=1){
-					foreach ($formItems as $formItem) {
+				//$formItems = \App\Models\FormItems::where('form_id','=',$form->id)->get();
+				if ($form->items->count()>=1){
+					foreach ($form->items as $formItem) {
 						$formItem->status=STATUS_DELETED;
 						$formItem->save();
 					}
 				}
 				
-				$formListItems = \App\Models\FormListItems::where('form_id','=',$form->id)->get();
-				if ($formListItems->count()>=1){
-					foreach ($formListItems as $formListItem) {
-						$formListItem->status=STATUS_DELETED;
-						$formListItem->save();
-					}
-				}
+				//$formListItems = \App\Models\FormListItems::where('form_id','=',$form->id)->get();
+				//if ($formListItems->count()>=1){
+				//	foreach ($formListItems as $formListItem) {
+				//		$formListItem->status=STATUS_DELETED;
+				//		$formListItem->save();
+				//	}
+				//}
 				
-				$formPermissions = \App\Models\FormPermissions::where('form_id','=',$form->id)->get();
-				if ($formPermissions->count()>=1){
-					foreach ($formPermissions as $formPermission) {
+				//$formPermissions = \App\Models\FormPermissions::where('form_id','=',$form->id)->get();
+				if ($form->permissions->count()>=1){
+					foreach ($form->permissions as $formPermission) {
 						$formPermission->status=STATUS_DELETED;
 						$formPermission->save();
 					}
@@ -116,6 +116,7 @@ class FormController extends BaseController {
 	
 	private function generateProperties($data) {
 		$result = [];
+		
 		if (isset($data->properties)) {
 			foreach ($data->properties as $property) {
 				if ($property->group == 'validations') {
@@ -124,7 +125,14 @@ class FormController extends BaseController {
 				if ($property->group == 'common' && $property->name == 'name') {
 					$result['name'] = $property->value;
 				}
-				$result[$property->group][$property->name] = array('group'=>$property->group, 'name'=>$property->name,'type'=>$property->type,'value'=>$property->value);
+				$value = $property->value;
+				//if ($property->name == 'default_value') {
+				//	if (strpos($value, 'me.') !== false) { 
+				//		$key = substr($value, 3);
+				//		$value = $this->container->user->info->$key;
+				//	}
+				//}
+				$result[$property->group][$property->name] = array('group'=>$property->group, 'name'=>$property->name,'type'=>$property->type,'value'=>$value);
 			}
 		}
 		return $result;
@@ -134,46 +142,48 @@ class FormController extends BaseController {
 		$folder_id = (isset($args['folder_id'])) ? $args['folder_id'] : '';
 		$parsedBody = $request->getParsedBody();
 		
-		$form = new \App\Models\Forms();
-		$form->version = 1;
-		$form->status = STATUS_ACTIVE;
-		$form->folder_id = 		$folder_id;
-		$form->name = 				$this->retrieveArray($parsedBody, 'properties.common.display.value', '');
-		$form->description = 	$this->retrieveArray($parsedBody, 'properties.common.description.value', '');
-		$form->is_featured = 	$this->retrieveArray($parsedBody, 'properties.common.is_featured.value', '0');
-		$form->save();
-		
-		$this->extractProperties($form, $parsedBody);
-		foreach ($parsedBody['items'] as $sequence => $item) {
-			$new_properties = [];
-			$form_item = new \App\Models\FormItems();
-			$form_item->form_id = $form->id;
-			$form_item->status = STATUS_ACTIVE;
-			$form_item->display = 									$this->retrieveArray($item, 'properties.common.display.value', '');
-			$form_item->description = 							$this->retrieveArray($item, 'properties.common.description.value', '');
-			$form_item->type = 										$this->retrieveArray($item, 'type', '');
-			$form_item->value_type = 							$this->retrieveArray($item, 'value_type' , '');
-			$form_item->value_score = 							$this->retrieveArray($item, 'properties.common.value_score.value' , '0');
-			$form_item->is_searchable = 						$this->retrieveArray($item, 'properties.common.is_searchable.value' , '1');
-			$form_item->is_show_in_list =					$this->retrieveArray($item, 'properties.common.is_show_in_list.value' , '1');
-			$form_item->is_show_in_mobile_list =		$this->retrieveArray($item, 'properties.common.is_show_in_mobile_list.value' , '1');
-			$form_item->sort_sequence =						$this->retrieveArray($item, 'properties.common.sort_sequence.value' , null);
-			$form_item->sequence =								$sequence;
-
-			$form_item->code			 						= 	'';
-			$form_item->value_score 					= 	$form_item->value_score 					? '1' : '0';
-			$form_item->is_searchable 					= 	$form_item->is_searchable 					? '1' : '0';
-			$form_item->is_show_in_list 				=	$form_item->is_show_in_list 				? '1' : '0';
-			$form_item->is_show_in_mobile_list =	$form_item->is_show_in_mobile_list ? '1' : '0';
-			$form_item->sort_sequence 				=	empty($form_item->sort_sequence)	? null : $form_item->sort_sequence;
-
-			$form_item->save();
+		if (isset($parsedBody['items'])) {
+			$form = new \App\Models\Forms();
+			$form->version = 1;
+			$form->status = STATUS_ACTIVE;
+			$form->folder_id = 		$folder_id;
+			$form->name = 				$this->retrieveArray($parsedBody, 'properties.common.display.value', '');
+			$form->description = 	$this->retrieveArray($parsedBody, 'properties.common.description.value', '');
+			$form->is_featured = 	$this->retrieveArray($parsedBody, 'properties.common.is_featured.value', '0');
+			$form->save();
 			
-			$this->extractProperties($form_item, $item);
-		}
-		$args['id'] = $form->id;
+			$this->extractProperties($form, $parsedBody);
+			foreach ($parsedBody['items'] as $sequence => $item) {
+				$new_properties = [];
+				$form_item = new \App\Models\FormItems();
+				$form_item->form_id = $form->id;
+				$form_item->status = STATUS_ACTIVE;
+				$form_item->display = 									$this->retrieveArray($item, 'properties.common.display.value', '');
+				$form_item->description = 							$this->retrieveArray($item, 'properties.common.description.value', '');
+				$form_item->type = 										$this->retrieveArray($item, 'type', '');
+				$form_item->value_type = 							$this->retrieveArray($item, 'value_type' , '');
+				$form_item->value_score = 							$this->retrieveArray($item, 'properties.common.value_score.value' , '0');
+				$form_item->is_searchable = 						$this->retrieveArray($item, 'properties.common.is_searchable.value' , '1');
+				$form_item->is_show_in_list =					$this->retrieveArray($item, 'properties.common.is_show_in_list.value' , '1');
+				$form_item->is_show_in_mobile_list =		$this->retrieveArray($item, 'properties.common.is_show_in_mobile_list.value' , '1');
+				$form_item->sort_sequence =						$this->retrieveArray($item, 'properties.common.sort_sequence.value' , null);
+				$form_item->sequence =								$sequence;
 
-		return  $this->loadForm($request, $response, $args);
+				$form_item->code			 						= 	'';
+				$form_item->value_score 					= 	$form_item->value_score 					? '1' : '0';
+				$form_item->is_searchable 					= 	$form_item->is_searchable 					? '1' : '0';
+				$form_item->is_show_in_list 				=	$form_item->is_show_in_list 				? '1' : '0';
+				$form_item->is_show_in_mobile_list =	$form_item->is_show_in_mobile_list ? '1' : '0';
+				$form_item->sort_sequence 				=	empty($form_item->sort_sequence)	? null : $form_item->sort_sequence;
+
+				$form_item->save();
+				
+				$this->extractProperties($form_item, $item);
+			}
+			$args['id'] = $form->id;
+			return  $this->loadForm($request, $response, $args);
+		}
+		return  $this->toJSON(false);
 	}
 	
 	public function updateForm($request, $response, $args) {
@@ -191,6 +201,18 @@ class FormController extends BaseController {
 			$form->save();
 			
 			$this->extractProperties($form, $parsedBody);
+			foreach ($form->items as $fitem) {
+				$found = false;
+				foreach ($parsedBody['items'] as $sequence => $item) {
+					if ($fitem->id == $item['id']) {
+						$found = true;
+					}
+				}
+				if (!$found) {
+					$fitem->status = STATUS_DELETED;
+					$fitem->save();
+				}
+			}
 			foreach ($parsedBody['items'] as $sequence => $item) {
 				$new_properties = [];
 				$item_id = $item['id'];

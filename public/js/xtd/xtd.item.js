@@ -3,6 +3,7 @@ try {
 	XTD.definitions.Item = function (name, display) {
 		this.__proto__ = new XTD.definitions.BaseItem(name, display);
 		this._value = '';
+		this.profile = getItems('me.profile', '/me/profile');
 		
 		this.setValue = function (value) {
 			this._value = value;

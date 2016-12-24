@@ -58,21 +58,24 @@ $(document).ready(function () {
 
 	History.Adapter.bind(window,'statechange',function() {
 		var State = History.getState();
-		$.get(State.url, function(response) {
-			executeDocumentUnload();
-			
-			$('.control-sidebar').removeClass('control-sidebar-open');
-			var html = $(response);
-			XTD.translate(html);
-			$('title').html(html.find('title').html());
-			
-			var content = html.find('.content-wrapper');
-			$('.content-wrapper').html(content.html()); 
+		$('.content-wrapper > div').fadeOut(400, function () {
+			$.get(State.url, function(response) {
+				executeDocumentUnload();
+				
+				$('.control-sidebar').removeClass('control-sidebar-open');
+				var html = $(response);
+				XTD.translate(html);
+				$('title').html(html.find('title').html());
+				
+				var content = html.find('.content-wrapper > div');
+				$('.content-wrapper > div').html(content.html()); 
 
-			var sidebar = html.find('.control-sidebar');
-			$('.control-sidebar').html(sidebar.html()); 
-	
-			executeDocumentReady();
+				var sidebar = html.find('.control-sidebar');
+				$('.control-sidebar').html(sidebar.html()); 
+				$('.content-wrapper > div').fadeIn();
+				
+				executeDocumentReady();
+			});
 		});
 	});
 		

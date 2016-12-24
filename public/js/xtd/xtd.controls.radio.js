@@ -119,7 +119,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<input />').attr('type','radio').attr('name', 'gender').attr('id', 'rdo_'+this.__id).addClass('form-control')
+									$('<input />').attr('type','radio').attr('name', this.__id).attr('id', 'rdo_'+this.__id)//.addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
@@ -154,6 +154,7 @@ try {
 		this.control = new XTD.controls.Radio(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
+			output.find('#lbl_'+this.control.__id).append($("<div />").addClass("pull-right box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>'));
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {

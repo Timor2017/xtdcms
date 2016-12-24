@@ -231,6 +231,15 @@ try {
 					}
 				});
 			};
+			
+			this.is = function(type, obj) {
+				var clas = Object.prototype.toString.call(obj).slice(8, -1);
+				console.log($.type(obj));
+				//console.log(typeof obj);
+				//console.log(obj instanceof XTD.controls.EditableSingleline);
+				return obj !== undefined && obj !== null && clas === type;
+			}
+
 			window.XTD = this;
 			
         }).call(global);

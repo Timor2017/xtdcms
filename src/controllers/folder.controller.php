@@ -37,7 +37,7 @@ class FolderController extends BaseController{
 	}	
 	
 	public function getForms($id) {
-		$forms = \App\Models\Forms::where('folder_id','=',$id)->get();
+		$forms = \App\Models\Forms::where([['folder_id','=',$id],['status','=',STATUS_ACTIVE]])->get();
 		$result = [];
 		if (!empty($forms)) {
 			foreach ($forms as $key => $form) {

@@ -91,6 +91,11 @@ try {
 			this.items.insert(index, XTD.factories[item.type+"Factory"].create(item));
 		};
 		
+		this.__removeItem = function (index) {
+			//this.items.add(XTD.factories[item.type+"Factory"].createEditable(item).subscribe(this.changeControlHandler));
+			this.items.removeAt(index);
+		};
+		
 		this.render = function () {
 			var style = '';
 			var container = $('<div />');
@@ -126,6 +131,11 @@ try {
 		this.control.insertItem = function (index, item) {
 			$this.control.items.insert(index, XTD.factories[item.type+"Factory"].createEditable(item).subscribe($this.changeControlHandler));
 			$this.control.definition.items.push($this.control.items.at(index).control.definition);
+		};
+		
+		this.control.removeItem = function (index) {
+			$this.control.items.removeAt(index);
+			$this.control.definition.items.splice(index, 1);
 		};
 		
 		this.render = function () {

@@ -67,8 +67,12 @@ $app->get('/group/{id}', function ($request, $response, $args) use ($app, $conta
 	$args['permission_update'] = 		ACCESS_RIGHT_UPDATE;
 	$args['permission_view'] = 			ACCESS_RIGHT_READ;
 	$args['permission_delete'] = 		ACCESS_RIGHT_DELETE;
-	$args['permission_add'] = 			ACCESS_RIGHT_ADD;
+	$args['permission_add'] = 				ACCESS_RIGHT_ADD;
 	$args['permission_remove'] = 	ACCESS_RIGHT_REMOVE;
+	
+	$users = \App\Models\Members::where('status','=',STATUS_ACTIVE)->get();
+	
+	$args['users'] = 	$users;
 	
 	return $this->view->render($response, 'group.details.html', $args);
 })->setName("group.details");
@@ -151,6 +155,13 @@ $app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $c
 $app->get('/form/[{id}]', function ($request, $response, $args) use ($app, $container)  {
 	$id = (isset($args['id'])) ? $args['id'] : '';
 	$can_read = has_form_permission($id, PERMISSION_READ);
+	$can_update = has_form_permission($id, PERMISSION_UPDATE);
+	$can_modify = has_form_permission($id, PERMISSION_ACCESS_ADD);
+	$can_delete = has_form_permission($id, PERMISSION_DELETE);
+	$args['can_update'] = $can_update;
+	$args['can_modify'] = $can_modify;
+	$args['can_delete'] = $can_delete;
+
 	if ($can_read) {
 		return $this->view->render($response, 'form.html', $args);
 	} else {

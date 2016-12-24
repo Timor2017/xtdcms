@@ -35,7 +35,8 @@ try {
 					delete this._items[item.name];
 					for (var i = 0; i < this._count; i++) {
 						if (this._keys[i] == item.name) {
-							delete this._keys[i];
+							//delete this._keys[i];
+							this._keys.splice(i, 1);
 							break;
 						}
 					}
@@ -51,7 +52,8 @@ try {
 		removeAt: function (index) {
 			if ((index >= 0) && (index < this._count)) {
 				delete this._items[this._keys[index]];
-				delete this._keys[index];
+				//delete this._keys[index];
+				this._keys.splice(index, 1);
 				--this._count;
 			}
 		},

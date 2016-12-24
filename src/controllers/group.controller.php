@@ -6,6 +6,7 @@ class GroupController extends BaseController{
 		
 	}
 	public function definition(){
+		$this->app->post('/permission/manage/users[/]', 'App\Controllers\GroupController:addMembers')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/permission/manage[/]', 'App\Controllers\GroupController:updatePermission')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 
 		$this->app->post('/manage[/]','App\Controllers\GroupController:createGroup')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
@@ -214,6 +215,27 @@ class GroupController extends BaseController{
 		}		
 	}
 	
+	public function addMembers($request, $response, $args) {
+		$parsedBody = $request->getParsedBody();
+		$id = isset($parsedBody['id']) ? $parsedBody['id'] : '';
+		$member_ids = isset($parsedBody['member_id']) ? $parsedBody['member_id'] : '';
+		if (!empty($id)) {
+			foreach ($member_ids as $member_id) {
+				$groupMembers = \App\Models\GroupMembers::where([['group_id','=',$id],['member_id','=',$member_id]])->get();
+				if ($groupMembers->count() == 0) {
+					$groupMember = new \App\Models\GroupMembers();
+					$groupMember->status = STATUS_ACTIVE;
+					$groupMember->group_id = $id;
+					$groupMember->member_id = $member_id;
+					$groupMember->save();
+				}
+			}
+			return $this->toJSON(true);
+		} else {
+			return $this->toJSON(false, ERR_GROUP_NOT_FOUND, ERR_GROUP_NOT_FOUND);
+		}
+	}
+	
 	public function updatePermission($request, $response, $args) {
 		$parsedBody = $request->getParsedBody();
 		$id = isset($parsedBody['id']) ? $parsedBody['id'] : '';
@@ -235,6 +257,6 @@ class GroupController extends BaseController{
 			
 			$group->permissions()->save($groupPermission);
 		}
-		return true;
+		return $this->toJSON(true);
 	}
 }

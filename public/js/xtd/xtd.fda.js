@@ -116,6 +116,10 @@ if (XTD) {
 				$this.form.control.insertItem(index, definition);
 			};
 			
+			this.removeItem = function (index) {
+				$this.form.control.removeItem(index);
+			};
+			
 			this.serializeItem = function () {
 				return this.form.control.definition;
 			};

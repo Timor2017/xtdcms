@@ -52,6 +52,7 @@ return array(
 		,'//css/dragula.css'
 		,'//css/style.css'
 		,'//css/bootstrap-datetimepicker.min.css'
+		,'//js/plugins/select2/select2.min.css'
 	),
     // 'js' => array('//js/file1.js', '//js/file2.js'),
     // 'css' => array('//css/file1.css', '//css/file2.css'),

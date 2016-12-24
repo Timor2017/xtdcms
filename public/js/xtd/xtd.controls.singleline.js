@@ -120,7 +120,15 @@ try {
 								$('<div />').addClass('item-control')
 								.append(
 									$('<input />').attr('type','text').attr('name', this.__id).attr('id', 'txt_'+this.__id).addClass('form-control')
-										.val(this.properties.get('common.default_value').getValue())
+										.val(
+											(this.parent.control) ? 
+												this.properties.get('common.default_value').getValue()  : 
+													this.properties.get('common.default_value').getValue().indexOf('me.') >= 0 ? 
+														(this.profile != null) ? 
+														this.profile[this.properties.get('common.default_value').getValue().substring(3)] : 
+														'' : 
+												this.properties.get('common.default_value').getValue()
+										)
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
@@ -154,6 +162,7 @@ try {
 		this.control = new XTD.controls.Singleline(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
+			output.find('#lbl_'+this.control.__id).append($("<div />").addClass("pull-right box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>'));
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {

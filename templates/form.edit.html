@@ -13,7 +13,9 @@
 				<div class="box-header with-border"><h1 id="form_title"></h1></div>
 				<form action="" method="post">
 					<div id="form-items-container" class="form-items-container edit-mode box-body"></div>
-					<div class="box-footer"><input type="button" class="btn btn-primary multi-lang" value="Save" onclick="serializeItem();" /></div>
+					<div class="box-footer">
+						<button type="button" class="btn btn-primary multi-lang" onclick="serializeItem();">Save</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -74,6 +76,24 @@
 			}
 		});
 
+	}
+	
+	function remove(item) {
+		for (var i = 0; i < fda.definition.items.length; i++) {
+		//console.log(i);
+		//console.log(fda.definition.items[i].name);
+		//console.log($(item).data('id'));
+		//console.log('');
+			if (fda.definition.items[i].name == $(item).data('id')) {
+				console.log(i);
+				var result = confirm(XTD.__('Are you sure to remove this control?'));
+				if (result) {
+					fda.removeItem(i);
+					fda.renderAll();
+				}
+				break;
+			}
+		}
 	}
 	
 	var debug = 0;
