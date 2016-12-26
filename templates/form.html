@@ -33,6 +33,7 @@
 	</div>
 </section>
 <script>
+	var isWorking = false;
 	var fda = {};
 	var documentReady = function () {
 		XTD.api('/form/def/{{id}}', function (data) {
@@ -45,11 +46,15 @@
 	
 	function serializeItem() {
 		//console.log(fda.serializeValue());
-		XTD.api('/form/data/{{id}}', 'POST', fda.serializeValue(), function (data) {
-			if (data.result) {
-				History.back();
-			}
-		});
+		if (!isWorking) {
+			isWorking = true;
+			XTD.api('/form/data/{{id}}', 'POST', fda.serializeValue(), function (data) {
+				if (data.result) {
+					History.back();
+				}
+				isWorking = false;
+			});
+		}
 	}
 {% if can_update %}
 	$("#btn-edit").click(function () { 

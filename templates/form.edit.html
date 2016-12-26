@@ -22,6 +22,7 @@
 	</div>
 </section>
 <script>
+	var isWorking = false;
 	var fda = {};
 	var documentReady = function () {
 		XTD.api('/form/def/{{id}}', function (data) {
@@ -64,17 +65,21 @@
 	};
 	
 	function serializeItem() {
+		if (!isWorking) {
+			isWorking = true;
 		//console.log(fda.serializeItem());
 {% if folder_id != '' %}
-		XTD.api('/form/def/{{folder_id}}', 'POST', fda.serializeItem(), function (data) {
+			XTD.api('/form/def/{{folder_id}}', 'POST', fda.serializeItem(), function (data) {
 {% elseif id %}
-		XTD.api('/form/def/{{id}}', 'PUT', fda.serializeItem(), function (data) {
+			XTD.api('/form/def/{{id}}', 'PUT', fda.serializeItem(), function (data) {
 {% endif %}
 			//console.log(data);
-			if (data.result) {
-				History.back();
-			}
-		});
+				if (data.result) {
+					History.back();
+				}
+				isWorking = false;
+			});
+		}
 
 	}
 	
