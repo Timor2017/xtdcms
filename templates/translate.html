@@ -1,3 +1,4 @@
+
 {% if request.ajax == false %}
 {% extends "layout.html" %}
 
@@ -138,10 +139,10 @@
 				$(data.result).each(function (index, translate) {
 							var row = $("<tr />").data("id", translate.id)
 							.append(
-								$("<td />").addClass("translate-name").append($("<a />").attr("href", "/profile/" + translate.id).html(translate.grouping))
+								$("<td />").addClass("translate-name").append($("<a />").html(translate.grouping))
 							)
 							.append(
-								$("<td />").addClass("translate-name").append($("<a />").attr("href", "/profile/" + translate.id).html(XTD.__(translate.content)))
+								$("<td />").addClass("translate-name").append($("<a />").html(XTD.__(translate.content)))
 							)
 							.click(function () {
 								$("tr.selected").removeClass("selected");

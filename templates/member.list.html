@@ -130,6 +130,7 @@
 	</div>
 </div>
 <script>
+	var isWorking = false;
 	var documentReady = function () {
 		showMemberList();
 		
@@ -175,23 +176,26 @@
 			alert(XTD.__("Password cannot be empty"));
 			return;
 		}
-		
-		XTD.api('/user/profile/manage/', XTD.method.POST, 
-		{
-			display_name: display_name,
-			username: username,
-			password: password,
-			phone: phone,
-			email: email,
-			photo: photo,
-			status: status
-		}, function (data) {
-			if (data.result) {
-				showMemberList();
-				$('#new-member-form').modal('hide')
-			} else {
-			}
-		});
+		if (!isWorking) {
+			isWorking = true;
+			XTD.api('/user/profile/manage/', XTD.method.POST, 
+			{
+				display_name: display_name,
+				username: username,
+				password: password,
+				phone: phone,
+				email: email,
+				photo: photo,
+				status: status
+			}, function (data) {
+				if (data.result) {
+					showMemberList();
+					$('#new-member-form').modal('hide')
+				} else {
+				}
+				isWorking = false;
+			});
+		}
 	});
 	var showMemberList = function () {
 		var members = XTD.api('/user/', function (data) {
