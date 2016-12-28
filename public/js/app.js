@@ -59,6 +59,7 @@ $(document).ready(function () {
 	History.Adapter.bind(window,'statechange',function() {
 		var State = History.getState();
 		$('.content-wrapper > div').fadeOut(400, function () {
+			$("#loading").show();
 			$.get(State.url, function(response) {
 				executeDocumentUnload();
 				
@@ -72,6 +73,7 @@ $(document).ready(function () {
 
 				var sidebar = html.find('.control-sidebar');
 				$('.control-sidebar').html(sidebar.html()); 
+				$("#loading").hide();
 				$('.content-wrapper > div').fadeIn();
 				
 				executeDocumentReady();

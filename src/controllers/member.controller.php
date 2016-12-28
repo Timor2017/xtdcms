@@ -163,6 +163,8 @@ class MemberController extends BaseController {
 			$member->email = $parsedBody['email'];
 			$member->phone = $parsedBody['phone'];
 			$member->status = $parsedBody['status'];
+			$member->code = '';
+			$member->photo = '';
 			$member->save();
 				
 			return $this->toJSON(true);

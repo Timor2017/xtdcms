@@ -182,6 +182,17 @@ tr.selected {
 	background-color: #ffd !important;
 }
 
+#loading {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+}
+	#loading i {
+		font-size: 2em;
+		margin-top:  -50%;
+		margin-left:  -50%;
+	}
+
 /*
  * Off Canvas
  * --------------------------------------------------

@@ -14,6 +14,7 @@ try {
 			method: {
 				GET: 'GET',
 				POST: 'POST',
+				POSTFILE: 'POSTFILE',
 				PUT: 'PUT',
 				DELETE: 'DELETE',
 			}
@@ -65,11 +66,18 @@ try {
 				{
 					m = global.method.GET;
 				}
+				var processData = true;
+				var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+				if (m == global.method.POSTFILE) {
+					processData = false;
+					contentType = false;
+					m = global.method.POST;
+				}
 				var req = $.ajax({
 					url: apiUrl+p,
 					type: m,
-					//processData: false,
-					//contentType: false,
+					processData: processData,
+					contentType: contentType,
 					data: o,
 					beforeSend: function(xhr){
 						xhr.setRequestHeader('X-XTD-APP-ID', config.appId);

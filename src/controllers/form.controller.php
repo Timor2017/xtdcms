@@ -14,8 +14,10 @@ class FormController extends BaseController {
 	}
 	
 	public function data()  {
-		$this->app->post('/{id}', 'App\Controllers\FormController:submitForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->put('/{id}[/{data_id}]', 'App\Controllers\FormController:submitForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->post('/import/{id}', 'App\Controllers\FormController:importFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->post('/{id}', 'App\Controllers\FormController:submitFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->put('/{id}[/{data_id}]', 'App\Controllers\FormController:submitFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('/{id}', 'App\Controllers\FormController:getFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		
 	}
 	public function deleteForm($request, $response, $args)  {
@@ -305,9 +307,10 @@ class FormController extends BaseController {
 		$item->properties()->saveMany($new_properties);
 	}
 	
-	public function submitForm($request, $response, $args) {
+	public function submitFormData($request, $response, $args) {
 		$id = (isset($args['id'])) ? $args['id'] : '';
 		$data_id = (isset($args['data_id'])) ? $args['data_id'] : '';
+		$parsedBody = $request->getParsedBody();
 		
 		if (!empty($id)) {
 			$form = \App\Models\Forms::find($id);
@@ -321,11 +324,10 @@ class FormController extends BaseController {
 				//		return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
 				//	}
 				//}
-				$parsedBody = $request->getParsedBody();
 				
 				$is_valid = true;
 				foreach ($form->items as $item) {
-					if (!isset($parsedBody[$item->id])) {
+					if (!isset($parsedBody[$item->id]) && !isset($parsedBody[$item->display])) {
 						$isvalid = false;
 						break;
 					}
@@ -353,17 +355,20 @@ class FormController extends BaseController {
 							$value->form_item_id = $item->id;
 							$value->item_version = $form->version;
 							$value->data_version = $form_data->version;
+							
+							$data_value = isset($parsedBody[$item->display]) ? $parsedBody[$item->display] : $parsedBody[$item->id];
+							($data_value !== null) ? $data_value : '';
 							switch ($item->value_type) {
 								case 'number':
-									$value->number_value = $parsedBody[$item->id];
+									$value->number_value = $data_value;
 									break;
 								case 'file':
 								case 'image':
-									$value->file_value = $parsedBody[$item->id];
+									$value->file_value = $data_value;
 									break;
 								default:
 								//echo $parsedBody[$item->id];
-									$value->text_value = $parsedBody[$item->id];
+									$value->text_value = $data_value;
 									break;
 							}
 							$value->status = STATUS_ACTIVE;
@@ -379,4 +384,99 @@ class FormController extends BaseController {
 
 	}
 
+	
+	public function importFormData($request, $response, $args) {
+		$id = (isset($args['id'])) ? $args['id'] : '';
+		$data_id = (isset($args['data_id'])) ? $args['data_id'] : '';
+		
+		$files = $request->getUploadedFiles();
+		if (!empty($id)) {
+			$form = \App\Models\Forms::find($id);
+			if (!empty($form)) {
+				$csvfile = $files['csvfile'];
+				if ($csvfile->getError() === UPLOAD_ERR_OK) {
+					$row = 1;
+					if (($handle = fopen($csvfile->file, 'r')) !== FALSE) {
+						$columns = [];
+						while (($data = fgetcsv($handle)) !== FALSE) {
+							$num = count($data);
+							//echo "<p> $num fields in line $row: <br /></p>\n";
+							if ($row == 1) {
+								$columns = $data;
+								$is_valid = true;
+								foreach ($form->items as $item) {
+									if (!isset($parsedBody[$item->id]) && !isset($parsedBody[$item->display])) {
+										$isvalid = false;
+										break;
+									}
+								}
+								if (!$is_valid) {
+									break;
+								}
+							} else { 
+								$rowdata = [];
+								for ($c=0; $c < $num; $c++) {
+									$rowdata[$columns[$c]] = $data[$c];
+								}
+								$form_data = new \App\Models\FormDatas();
+								$form_data->form_id = $id;
+								$form_data->version = 1;
+								$form_data->status = STATUS_ACTIVE;
+								$form_data->save();
+								if ($form_data != null) {
+									$values = [];
+									//print_r($parsedBody);
+									foreach ($form->items as $item) {
+										$value = new \App\Models\FormDataValues();
+										$value->form_id = $id;
+										$value->form_item_id = $item->id;
+										$value->item_version = $form->version;
+										$value->data_version = $form_data->version;
+										
+										$data_value = $rowdata[$item->display];
+										//print_r($rowdata);
+										//print_r($item->display);
+										//print_r($rowdata[$item->display]);
+										//exit;
+										($data_value !== null) ? $data_value : '';
+										switch ($item->value_type) {
+											case 'number':
+												$value->number_value = $data_value;
+												break;
+											case 'file':
+											case 'image':
+												$value->file_value = $data_value;
+												break;
+											default:
+												$value->text_value = $data_value;
+												break;
+										}
+										$value->status = STATUS_ACTIVE;
+										$values[] = $value;
+									}
+									$form_data->values()->saveMany($values);
+								}
+							}
+							$row++;
+						}
+					}
+					//exit;
+				}
+			}
+		}
+		return $this->toJSON(true);;
+		//return $this->toJSON(false, ERR_INVALID_FORM_ID, ERR_INVALID_FORM_ID);;
+
+	}
+	
+	public function getFormData($request, $response, $args) {
+		$id = (isset($args['id'])) ? $args['id'] : '';
+		$data = \App\Models\FormDatas::find($id);
+		$result = [];
+		foreach ($data->values as $value) {
+			$result[$value->form_item_id] = $value->text_value;
+		}
+		
+		return $this->toJSON($result);
+	}
 }

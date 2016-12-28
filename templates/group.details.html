@@ -46,14 +46,15 @@
 					<div class="table-controls">
 						<div class="btn-group" style="did">
 							<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-plus-square-o"></i><span class="multi-lang">Create</span></button>
-							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-pencil-square-o"></i><span class="multi-lang">Update</span></button>
-							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-check-square-o"></i><span class="multi-lang">View</span></button>
-							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-minus-square-o"></i><span class="multi-lang">Delete</span></button>
-							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-user-plus"></i><span class="multi-lang">Add User</span></button>
-							<button type="button" class="btn btn-default btn-sm"><i class=" fa-fw fa fa-user-times"></i><span class="multi-lang">Remove User</span></button>
+							<button type="button" class="btn btn-default btn-sm" data-value="{{ permission_create }}"><i class=" fa-fw fa fa-plus-square-o"></i><span class="multi-lang">Create</span></button>
+							<button type="button" class="btn btn-default btn-sm" data-value="{{ permission_update }}"><i class=" fa-fw fa fa-pencil-square-o"></i><span class="multi-lang">Update</span></button>
+							<button type="button" class="btn btn-default btn-sm" data-value="{{ permission_view }}"><i class=" fa-fw fa fa-check-square-o"></i><span class="multi-lang">View</span></button>
+							<button type="button" class="btn btn-default btn-sm" data-value="{{ permission_delete }}"><i class=" fa-fw fa fa-minus-square-o"></i><span class="multi-lang">Delete</span></button>
+							<button type="button" class="btn btn-default btn-sm" data-value="{{ permission_add }}"><i class=" fa-fw fa fa-user-plus"></i><span class="multi-lang">Add User</span></button>
+							<button type="button" class="btn btn-default btn-sm" data-value="{{ permission_remove }}"><i class=" fa-fw fa fa-user-times"></i><span class="multi-lang">Remove User</span></button>
 						</div>
-						<button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i></button>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#add-member-form"><i class="fa fa-plus"></i></button>
+						<button type="button" class="btn btn-default btn-sm"><i class="fa fa-minus"></i></button>
 						<button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
 					</div>
 					<div class="table-responsive table-messages">
@@ -65,11 +66,40 @@
 		</div>
 	</div>
 </section>
+<div class="modal fade" id="add-member-form" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title multi-lang" id="modalLabel">Add Members</h4>
+			</div>
+			<div class="modal-body">
+				<div class="box-body">
+					
+					<div class="form-group">
+						<label for="member_name" class="multi-lang">Member names</label>
+						<select  id="member_name" class="add-member-multiple form-control multi-lang" multiple="multiple" placeholder="Enter member name" name="member_name" style="width: 100%;">
+						  {% for user in users %}
+							<option value="{{ user.id }}">{{ user.display_name }}</option>
+						  {% endfor %}
+						</select>
+					</div>
+
+				</div>				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default multi-lang" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-save multi-lang">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 	id = '{{id}}';
 	var documentReady = function () {
 		showCurrentGroup(id);
 		
+		$(".add-member-multiple").select2();
 		
 		$('.new-sub-group').on("keypress", function(e) {
 			if (e.keyCode == 13) {
@@ -103,6 +133,7 @@
 				var members = data.result.members;
 				var permissions = data.result.permissions;
 				var memberTable = $(".table-member-list");
+				memberTable.empty();
 				$(members).each(function (index, member) { 
 							var row = $("<tr />").append(
 								$("<td />").append($("<input />").attr("type","checkbox"))
@@ -173,7 +204,23 @@
 				).appendTo(container);
 			});
 		}
-							
+
+	$(".btn-save").click(function () {
+		
+		var member_ids = $("#member_name").val();
+		console.log(member_ids);
+		XTD.api('/group/permission/manage/users', XTD.method.POST, 
+		{
+			id: {{id}},
+			member_id: member_ids
+		}, function (data) {
+			if (data.result) {
+				showCurrentGroup(id);
+				$('#add-member-form').modal('hide');
+			} else {
+			}
+		});
+	});
 		//$("<div />").addClass("col-md-2 form-list-item").append(
 		//	$("<a />").attr("href", "/form/"+id).append(
 		//		$("<div />").addClass("box box-default color-palette-box").append(

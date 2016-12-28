@@ -36,6 +36,7 @@ function documentUnload() {
 function getSearchResult() {
 	if (!isSearching) {
 		isSearching = true;
+		$("#loading").show();
 		XTD.api('/search', 'POST', {
 			key: $("[name=q]").val(),
 			page: currentPage
@@ -50,7 +51,7 @@ function getSearchResult() {
 						search_result += idx + ": " + value + "<br />";
 					});
 					$("<div />").addClass("col-lg-3 col-md-4 col-sm-6 form-list-item").append(
-						$("<a />").attr("href", "/form/"+id).append(
+						$("<a />").attr("href", "/form/view/"+id).append(
 							$("<div />").addClass("info-box").append(
 								$("<span />").addClass("info-box-icon bg-blue").append(
 									$("<i />").addClass("fa fa-edit")
@@ -67,6 +68,7 @@ function getSearchResult() {
 					
 				});
 			}
+			$("#loading").hide();
 			isSearching = false;
 		});
 	}

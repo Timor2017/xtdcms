@@ -152,6 +152,30 @@ $app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $c
 	}
 })->setName("form.edit");
 
+$app->get('/form/view/[{id}]', function ($request, $response, $args) use ($app, $container)  {
+	$id = (isset($args['id'])) ? $args['id'] : '';
+	$data = \App\Models\FormDatas::find($id);
+	if (!empty($data)) {
+		$args['id'] = $data->form_id;
+		$args['data_id'] = $id;
+		$data_id = $id;
+		$id = $data->form_id;
+		$can_read = has_form_permission($id, PERMISSION_READ);
+		$can_update = has_form_permission($id, PERMISSION_UPDATE);
+		$can_modify = has_form_permission($id, PERMISSION_ACCESS_ADD);
+		$can_delete = has_form_permission($id, PERMISSION_DELETE);
+		$args['can_update'] = $can_update;
+		$args['can_modify'] = $can_modify;
+		$args['can_delete'] = $can_delete;
+		if ($can_read) {
+			return $this->view->render($response, 'form.view.html', $args);
+		} else {
+			$url = $container->router->pathFor('dashboard');
+			return $response->withRedirect($url);
+		}
+	}
+})->setName("formdata.form");
+
 $app->get('/form/[{id}]', function ($request, $response, $args) use ($app, $container)  {
 	$id = (isset($args['id'])) ? $args['id'] : '';
 	$can_read = has_form_permission($id, PERMISSION_READ);

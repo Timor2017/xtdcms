@@ -14,6 +14,7 @@
 					<h1 id="form_title"></h1>
 					<div class="pull-right box-tools">
 {% if can_update %}
+					<button type="button" class="btn btn-info btn-sm"  title="Import" id="btn-import" data-toggle="modal" data-target="#new-import-form"><i class="fa fa-upload"></i></button>
 					<button type="button" class="btn btn-info btn-sm"  title="Edit" id="btn-edit"><i class="fa fa-edit"></i></button>
 {% endif %}
 {% if can_modify %}
@@ -32,6 +33,32 @@
 		</div>
 	</div>
 </section>
+{% if can_update %}
+<div class="modal fade" id="new-import-form" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title multi-lang" id="modalLabel">New Import</h4>
+			</div>
+			<div class="modal-body">
+				<div class="box-body">
+					
+					<div class="form-group">
+						<label for="csvfile" class="multi-lang">Import File</label>
+						<input type="file" class="form-control multi-lang" id="csvfile" placeholder="" name="csvfile" />
+					</div>
+
+				</div>				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default multi-lang" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-save multi-lang">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
 <script>
 	var isWorking = false;
 	var fda = {};
@@ -48,7 +75,7 @@
 		//console.log(fda.serializeValue());
 		if (!isWorking) {
 			isWorking = true;
-			XTD.api('/form/data/{{id}}', 'POST', fda.serializeValue(), function (data) {
+			XTD.api('/form/data/{{id}}', XTD.method.POST, fda.serializeValue(), function (data) {
 				if (data.result) {
 					History.back();
 				}
@@ -59,6 +86,22 @@
 {% if can_update %}
 	$("#btn-edit").click(function () { 
 		History.pushState(null, 'edit', '{{ path_for('form.edit', {id: id}) }}');
+	});
+	$(".btn-save").click(function () { 
+		//if (!isWorking) {
+		//	isWorking = true;
+			var formData = new FormData();
+			console.log($("#csvfile")[0].files[0]);
+			formData.append('csvfile', $("#csvfile")[0].files[0]);
+			XTD.api('/form/data/import/{{id}}', XTD.method.POSTFILE, formData, function (data) {
+				if (data.result) {
+					alert('ok');
+				} else {
+					alert('error');
+				}
+		//			isWorking = false;
+			});
+		//}
 	});
 {% endif %}
 {% if can_modify %}

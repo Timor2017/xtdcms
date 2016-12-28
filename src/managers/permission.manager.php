@@ -106,7 +106,6 @@ function is_admin($groups) {
 	$result = false;
 	foreach ($groups as $group) {
 		if ($group->name == '__admin') {
-			
 			$result = true;
 			break;
 		}

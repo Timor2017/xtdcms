@@ -51,13 +51,13 @@ try {
 				$('#lbl_'+$(this).attr('data-parent-id')).html(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.default_value).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).val(value);
+				$('#'+$(this).attr('data-parent-id')).val(value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.placeholder).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).attr('placeholder', value);
+				$('#'+$(this).attr('data-parent-id')).attr('placeholder', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).attr('title', value);
+				$('#'+$(this).attr('data-parent-id')).attr('title', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_searchable).setParent(this));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_list).setParent(this));
@@ -65,49 +65,49 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.sort_sequence).setParent(this));
 			
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.width).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('width', value);
+				$('#'+$(this).attr('data-parent-id')).css('width', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.height).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('height', value);
+				$('#'+$(this).attr('data-parent-id')).css('height', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.horizontalAlignment).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('text-aign', value);
+				$('#'+$(this).attr('data-parent-id')).css('text-aign', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.verticalAlignment).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('vertical-align', value);
+				$('#'+$(this).attr('data-parent-id')).css('vertical-align', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginTop).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('margin-top', value);
+				$('#'+$(this).attr('data-parent-id')).css('margin-top', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginRight).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('margin-right', value);
+				$('#'+$(this).attr('data-parent-id')).css('margin-right', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginBottom).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('margin-bottom', value);
+				$('#'+$(this).attr('data-parent-id')).css('margin-bottom', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.layout.marginLeft).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('margin-left', value);
+				$('#'+$(this).attr('data-parent-id')).css('margin-left', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundColor).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('background-color', value);
+				$('#'+$(this).attr('data-parent-id')).css('background-color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.backgroundImage).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('background-image', value);
+				$('#'+$(this).attr('data-parent-id')).css('background-image', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.brush.foregroundColor).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('color', value);
+				$('#'+$(this).attr('data-parent-id')).css('color', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.size).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('font-size', value);
+				$('#'+$(this).attr('data-parent-id')).css('font-size', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.weight).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('font-weight', value);
+				$('#'+$(this).attr('data-parent-id')).css('font-weight', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.textDecoration).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('text-decoration', value);
+				$('#'+$(this).attr('data-parent-id')).css('text-decoration', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.text.style).setParent(this).subscribe(function (value) {
-				$('#fileup_'+$(this).attr('data-parent-id')).css('font-style', value);
+				$('#'+$(this).attr('data-parent-id')).css('font-style', value);
 			}));
 			
 		};
@@ -119,7 +119,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control')
 								.append(   
-									$('<input />').attr('type','file').attr('multiple','multiple').attr('name','files[]').attr('id', 'fileupload'+this.__id).addClass('form-control')
+									$('<input />').attr('type','file').attr('multiple','multiple').attr('name','files[]').attr('id', ''+this.__id).addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
