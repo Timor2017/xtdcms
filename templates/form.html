@@ -77,6 +77,7 @@
 			isWorking = true;
 			XTD.api('/form/data/{{id}}', XTD.method.POST, fda.serializeValue(), function (data) {
 				if (data.result) {
+					alert(XTD.__("Form submitted successfully. the page will redirect to the previous section."));
 					History.back();
 				}
 				isWorking = false;
@@ -95,9 +96,9 @@
 			formData.append('csvfile', $("#csvfile")[0].files[0]);
 			XTD.api('/form/data/import/{{id}}', XTD.method.POSTFILE, formData, function (data) {
 				if (data.result) {
-					alert('ok');
+					alert(XTD.__('data import successfully.'));
 				} else {
-					alert('error');
+					alert(XTD.__('data import failure, please ask administrator for check the error.'));
 				}
 		//			isWorking = false;
 			});

@@ -42,36 +42,50 @@ function getSearchResult() {
 			page: currentPage
 		}, function (data) {
 			if (data.result) {
-				var container = $(".result-container");
-				container.empty();
-				$("#total_count").html(data.result.total);
-				$.each(data.result.data, function (id, element) {
-					var search_result = '';
-					$.each(element.fields, function (idx, value) {
-						search_result += idx + ": " + value + "<br />";
-					});
-					$("<div />").addClass("col-lg-3 col-md-4 col-sm-6 form-list-item").append(
-						$("<a />").attr("href", "/form/view/"+id).append(
-							$("<div />").addClass("info-box").append(
-								$("<span />").addClass("info-box-icon bg-blue").append(
-									$("<i />").addClass("fa fa-edit")
-								)
-							).append(
-								$("<div />").addClass("info-box-content").append(
-									$("<span />").addClass("info-box-text multi-lang").html(element.form.name)
-								).append(
-									$("<span />").addClass("info-box-result").html(search_result)
-								)
-							)
-						)
-					).appendTo(container);
-					
-				});
+				generateContent(data.result);
 			}
 			$("#loading").hide();
 			isSearching = false;
 		});
 	}
+}
+
+function generateContent(result) {
+	result.url = '/search';
+	result.callback = generateContent;
+	result.options = {
+		key: $("[name=q]").val(),
+	};
+	var container = $(".result-container");
+	container.empty();
+	$("#total_count").html(result.total);
+	var keys = $("[name=q]").val().split(/(\s)/);
+	$.each(result.data, function (id, element) {
+		var search_result = '';
+		$.each(element.fields, function (idx, value) {
+			var marked_value = value;
+			$.each(keys, function(index, key) {
+				marked_value = marked_value.replace(key, '<mark>'+key+'</mark>');
+			});
+			search_result += idx + ": " + marked_value + "<br />";
+		});
+		$("<div />").addClass("col-lg-3 col-md-4 col-sm-6 form-list-item").append(
+			$("<a />").attr("href", "/form/view/"+element.form.id+'/'+id).append(
+				$("<div />").addClass("info-box").append(
+					$("<span />").addClass("info-box-icon bg-blue").append(
+						$("<i />").addClass("fa fa-edit")
+					)
+				).append(
+					$("<div />").addClass("info-box-content").append(
+						$("<span />").addClass("info-box-text multi-lang").html(element.form.name)
+					).append(
+						$("<span />").addClass("info-box-result").html(search_result)
+					)
+				)
+			)
+		).appendTo(container);
+	});
+	container.append($("<div />").addClass("col-lg-12 col-md-12 col-sm-12").append(generatePaging(result)));
 }
 </script>
 {% endblock %}

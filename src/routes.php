@@ -152,14 +152,15 @@ $app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $c
 	}
 })->setName("form.edit");
 
-$app->get('/form/view/[{id}]', function ($request, $response, $args) use ($app, $container)  {
+$app->get('/form/view/{id}/[{data_id}]', function ($request, $response, $args) use ($app, $container)  {
 	$id = (isset($args['id'])) ? $args['id'] : '';
-	$data = \App\Models\FormDatas::find($id);
+	$data_id = (isset($args['data_id'])) ? $args['data_id'] : '';
+	$data = \App\Models\FormDatas::find($data_id);
 	if (!empty($data)) {
-		$args['id'] = $data->form_id;
-		$args['data_id'] = $id;
-		$data_id = $id;
-		$id = $data->form_id;
+		//$args['id'] = $data->form_id;
+		//$args['data_id'] = $id;
+		//$data_id = $id;
+		//$id = $data->form_id;
 		$can_read = has_form_permission($id, PERMISSION_READ);
 		$can_update = has_form_permission($id, PERMISSION_UPDATE);
 		$can_modify = has_form_permission($id, PERMISSION_ACCESS_ADD);
@@ -174,7 +175,26 @@ $app->get('/form/view/[{id}]', function ($request, $response, $args) use ($app, 
 			return $response->withRedirect($url);
 		}
 	}
-})->setName("formdata.form");
+})->setName("formdata.form.view");
+
+$app->get('/form/list/[{id}]', function ($request, $response, $args) use ($app, $container)  {
+	$id = (isset($args['id'])) ? $args['id'] : '';
+	$form = \App\Models\Forms::find($id);
+	
+	if (!empty($form)) {
+		$can_read = has_form_permission($id, PERMISSION_READ);
+		$can_create = has_form_permission($id, PERMISSION_CREATE);
+		$can_update = has_form_permission($id, PERMISSION_UPDATE);
+		$args['can_create'] = $can_create;
+		$args['can_update'] = $can_update;
+		if ($can_read) {
+			return $this->view->render($response, 'form.list.html', $args);
+		} else {
+			$url = $container->router->pathFor('dashboard');
+			return $response->withRedirect($url);
+		}
+	}
+})->setName("formdata.form.list");
 
 $app->get('/form/[{id}]', function ($request, $response, $args) use ($app, $container)  {
 	$id = (isset($args['id'])) ? $args['id'] : '';

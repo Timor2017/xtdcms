@@ -32,38 +32,38 @@ return [
 			'database' => [
 				'archive' => [
 					'dbname' => 'xtd_archives',
-					'username' => 'xtd',
-					'password' => '',
+					'username' => 'xtd_dba',
+					'password' => 'Xc4INrD1vIiRVk9F',
 				],
 				'core' => [
 					'dbname' => 'xtd_core',
-					'username' => 'xtd',
-					'password' => '',
+					'username' => 'xtd_dba',
+					'password' => 'Xc4INrD1vIiRVk9F',
 				],
 				'datapool' => [
 					'dbname' => 'xtd_datapool',
-					'username' => 'xtd',
-					'password' => '',
+					'username' => 'xtd_dba',
+					'password' => 'Xc4INrD1vIiRVk9F',
 				],
 				'form_definition' => [
 					'dbname' => 'xtd_form_definition',
-					'username' => 'xtd',
-					'password' => '',
+					'username' => 'xtd_dba',
+					'password' => 'Xc4INrD1vIiRVk9F',
 				],
 				'membership' => [
 					'dbname' => 'xtd_membership',
-					'username' => 'xtd',
-					'password' => '',
+					'username' => 'xtd_dba',
+					'password' => 'Xc4INrD1vIiRVk9F',
 				],
 				'process_definition' => [
 					'dbname' => 'xtd_process_definition',
-					'username' => 'xtd',
-					'password' => '',
+					'username' => 'xtd_dba',
+					'password' => 'Xc4INrD1vIiRVk9F',
 				],
 				'report_definition' => [
 					'dbname' => 'xtd_report_definition',
-					'username' => 'xtd',
-					'password' => '',
+					'username' => 'xtd_dba',
+					'password' => 'Xc4INrD1vIiRVk9F',
 				]
 			],
 			'charset'   => 'utf8',

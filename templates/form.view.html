@@ -20,7 +20,7 @@
 					<button type="button" class="btn btn-info btn-sm" title="Modify" id="btn-modify"><i class="fa fa-gears"></i></button>
 {% endif %}
 {% if can_delete %}
-					<button type="button" class="btn btn-info btn-sm" title="Remove" id="btn-remove"><i class="fa fa-remove"></i></button>
+					<button type="button" class="btn btn-info btn-sm" title="Delete" id="btn-delete"><i class="fa fa-remove"></i></button>
 {% endif %}
 					</div>
 				</div>
@@ -37,9 +37,11 @@
 			if (data.result) {
 				fda = new XTD.FDA(data.result, false).setItemContainerId('form-items-container');
 				fda.renderAll();
-				XTD.api('/form/data/{{data_id}}', function (data) {
+				XTD.api('/form/data/{{id}}/{{data_id}}', function (data) {
 					if (data.result) {
 						$.each(data.result, function(index, value) {
+						console.log(index);
+						console.log(value);
 							$("#"+index).val(value).prop('disabled', true);
 						});
 					}
@@ -58,10 +60,10 @@
 	});
 {% endif %}
 {% if can_delete %}
-	$("#btn-remove").click(function () { 
-		var result =confirm(XTD.__("Are you sure to delete this form?"));
+	$("#btn-delete").click(function () { 
+		var result =confirm(XTD.__("Are you sure to delete this record?"));
 		if (result) {
-			XTD.api('/form/def/{{id}}', 'DELETE', function (data) {
+			XTD.api('/form/data/{{id}}/{{data_id}}', 'DELETE', function (data) {
 				if (data.result) {
 					History.back();
 				}

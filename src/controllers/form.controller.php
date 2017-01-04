@@ -8,7 +8,6 @@ class FormController extends BaseController {
 	public function definition()  {
 		$this->app->get('[/[{id}]]', 'App\Controllers\FormController:loadForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('/{folder_id}[/]', 'App\Controllers\FormController:createForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		//$this->app->put('/{folder_id}[/[{id}]]', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/{id}[/]', 'App\Controllers\FormController:updateForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->delete('/{id}[/]', 'App\Controllers\FormController:deleteForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
@@ -17,8 +16,9 @@ class FormController extends BaseController {
 		$this->app->post('/import/{id}', 'App\Controllers\FormController:importFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('/{id}', 'App\Controllers\FormController:submitFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/{id}[/{data_id}]', 'App\Controllers\FormController:submitFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		$this->app->get('/{id}', 'App\Controllers\FormController:getFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
-		
+		$this->app->post('/paging/{id}', 'App\Controllers\FormController:getFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->get('/{id}[/{data_id}]', 'App\Controllers\FormController:getFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
+		$this->app->delete('/{id}/{data_id}', 'App\Controllers\FormController:deleteFormData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	public function deleteForm($request, $response, $args)  {
 		$id = $args['id'];
@@ -30,29 +30,14 @@ class FormController extends BaseController {
 				$form->save();
 				//同时也删除和form相关联的
 				
-					
-				//$formItems = \App\Models\FormItems::where('form_id','=',$form->id)->get();
-				if ($form->items->count()>=1){
-					foreach ($form->items as $formItem) {
-						$formItem->status=STATUS_DELETED;
-						$formItem->save();
-					}
+				foreach ($form->items as $formItem) {
+					$formItem->status=STATUS_DELETED;
+					$formItem->save();
 				}
 				
-				//$formListItems = \App\Models\FormListItems::where('form_id','=',$form->id)->get();
-				//if ($formListItems->count()>=1){
-				//	foreach ($formListItems as $formListItem) {
-				//		$formListItem->status=STATUS_DELETED;
-				//		$formListItem->save();
-				//	}
-				//}
-				
-				//$formPermissions = \App\Models\FormPermissions::where('form_id','=',$form->id)->get();
-				if ($form->permissions->count()>=1){
-					foreach ($form->permissions as $formPermission) {
-						$formPermission->status=STATUS_DELETED;
-						$formPermission->save();
-					}
+				foreach ($form->permissions as $formPermission) {
+					$formPermission->status=STATUS_DELETED;
+					$formPermission->save();
 				}
 					
 				return $this->toJSON(true);
@@ -128,12 +113,6 @@ class FormController extends BaseController {
 					$result['name'] = $property->value;
 				}
 				$value = $property->value;
-				//if ($property->name == 'default_value') {
-				//	if (strpos($value, 'me.') !== false) { 
-				//		$key = substr($value, 3);
-				//		$value = $this->container->user->info->$key;
-				//	}
-				//}
 				$result[$property->group][$property->name] = array('group'=>$property->group, 'name'=>$property->name,'type'=>$property->type,'value'=>$value);
 			}
 		}
@@ -273,7 +252,6 @@ class FormController extends BaseController {
 			if (is_array($group)) {
 				foreach ($group as $name => $prop) {
 					$property = new \App\Models\ItemProperties();
-					//$property->form_id = $form_id;
 					$property->name = $name;
 					$property->group = $group_name;
 					$property->rule = '';
@@ -292,7 +270,6 @@ class FormController extends BaseController {
 				if (empty($property)) {
 					$property = new \App\Models\ItemProperties();
 				}
-				//$property->form_id = $form_id;
 				$property->name = '';
 				$property->group = 'validations';
 				$property->rule = $validation['rule'];
@@ -315,16 +292,6 @@ class FormController extends BaseController {
 		if (!empty($id)) {
 			$form = \App\Models\Forms::find($id);
 			if (!empty($form)) {
-				//if (empty($data_id)) {
-				//	if (!has_form_permission($form->id, PERMISSION_CREATE)){
-				//		return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
-				//	}
-				//} else {
-				//	if (!has_form_permission($form->id, PERMISSION_UPDATE)){
-				//		return $this->toJSON(false, ERR_NO_PERMISSION, ERR_NO_PERMISSION);;
-				//	}
-				//}
-				
 				$is_valid = true;
 				foreach ($form->items as $item) {
 					if (!isset($parsedBody[$item->id]) && !isset($parsedBody[$item->display])) {
@@ -348,7 +315,6 @@ class FormController extends BaseController {
 					}
 					if ($form_data != null) {
 						$values = [];
-						//print_r($parsedBody);
 						foreach ($form->items as $item) {
 							$value = new \App\Models\FormDataValues();
 							$value->form_id = $id;
@@ -367,7 +333,6 @@ class FormController extends BaseController {
 									$value->file_value = $data_value;
 									break;
 								default:
-								//echo $parsedBody[$item->id];
 									$value->text_value = $data_value;
 									break;
 							}
@@ -400,7 +365,6 @@ class FormController extends BaseController {
 						$columns = [];
 						while (($data = fgetcsv($handle)) !== FALSE) {
 							$num = count($data);
-							//echo "<p> $num fields in line $row: <br /></p>\n";
 							if ($row == 1) {
 								$columns = $data;
 								$is_valid = true;
@@ -425,7 +389,6 @@ class FormController extends BaseController {
 								$form_data->save();
 								if ($form_data != null) {
 									$values = [];
-									//print_r($parsedBody);
 									foreach ($form->items as $item) {
 										$value = new \App\Models\FormDataValues();
 										$value->form_id = $id;
@@ -434,10 +397,6 @@ class FormController extends BaseController {
 										$value->data_version = $form_data->version;
 										
 										$data_value = $rowdata[$item->display];
-										//print_r($rowdata);
-										//print_r($item->display);
-										//print_r($rowdata[$item->display]);
-										//exit;
 										($data_value !== null) ? $data_value : '';
 										switch ($item->value_type) {
 											case 'number':
@@ -460,7 +419,6 @@ class FormController extends BaseController {
 							$row++;
 						}
 					}
-					//exit;
 				}
 			}
 		}
@@ -471,12 +429,84 @@ class FormController extends BaseController {
 	
 	public function getFormData($request, $response, $args) {
 		$id = (isset($args['id'])) ? $args['id'] : '';
-		$data = \App\Models\FormDatas::find($id);
+		$data_id = (isset($args['data_id'])) ? $args['data_id'] : '';
 		$result = [];
-		foreach ($data->values as $value) {
-			$result[$value->form_item_id] = $value->text_value;
+		if (!empty($id)) {
+			if (!empty($data_id)) {
+				$data = \App\Models\FormDatas::find($data_id);
+				foreach ($data->values as $value) {
+					$result[$value->form_item_id] = $value->text_value;
+				}
+			} else {
+				$parsedBody = $request->getParsedBody();
+				$page = isset($parsedBody['page']) ? $parsedBody['page'] : 1;
+				$size = isset($parsedBody['size']) ? $parsedBody['size'] : 25;
+				if (--$page < 0) $page = 0;
+				$offset = $page * $size;
+				$search_range = $offset + $size;
+				$form = \App\Models\Forms::find($id);
+				$display_items = [];
+				$result['columns'] = [];
+				$result['info'] = $form;
+				unset($result['info']->created_by);
+				unset($result['info']->created_date);
+				unset($result['info']->last_modified_by);
+				unset($result['info']->last_modified_date);
+				unset($result['info']->concurrent_id);
+				foreach ($form->items as $item) {
+					if ($item->is_show_in_list > 0) {
+						$display_items[$item->id] = $item->display;
+						$result['columns'][] = $item->display;
+					}
+				}
+				$count = 0;
+				$result['total'] = $form->datas->count();
+				$result['page_size'] = $size;
+				$result['current_page'] = $page + 1;
+				$result['total_page'] = ceil($result['total'] / $result['page_size']);
+				foreach ($form->datas as $data) {
+					$count++;
+					if ($count <= $offset) continue;
+					if ($count > $search_range) break;
+					$result['data'][$data->id] = [];
+					foreach ($data->values as $value) {
+						if (isset($display_items[$value->form_item_id])) {
+							$result['data'][$data->id][$display_items[$value->form_item_id]] = $value->text_value;
+						}
+					}
+				}
+				unset($result['info']->datas);
+				unset($result['info']->items);
+				unset($result['info']->is_featured);
+				
+			}
 		}
-		
 		return $this->toJSON($result);
+	}
+	
+	public function deleteFormData($request, $response, $args) {
+		$id = $args['id'];
+		$data_id = $args['data_id'];
+		if (!empty($id)) {
+			$form = \App\Models\Forms::find($id);
+			if (!empty($form)) {
+				$data = \App\Models\FormDatas::find($data_id);
+				if (!empty($data)) {
+					$data->status=STATUS_DELETED;
+					$data->save();
+					if ($data->values->count()>=1){
+						foreach ($data->values as $value) {
+							$value->status=STATUS_DELETED;
+							$value->save();
+						}
+					}
+				}
+				return $this->toJSON(true);
+			} else {
+				return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+			}
+		} else {
+			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+		}
 	}
 }

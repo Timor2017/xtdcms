@@ -6,7 +6,6 @@ class SearchController extends BaseController {
 	}
 
 	public function search()  {
-		//$this->app->get('[/k/{key:.*}][/p/{page}][/]', 'App\Controllers\SearchController:loadForm')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('[/]', 'App\Controllers\SearchController:searchData')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
@@ -14,10 +13,9 @@ class SearchController extends BaseController {
 		$parsedBody = $request->getParsedBody();
 		$search_key = isset($parsedBody['key']) ? $parsedBody['key'] : '';
 		if (!empty($search_key)) {
-			$page = isset($parsedBody['page']) ? $parsedBody['page'] : 2;
+			$page = isset($parsedBody['page']) ? $parsedBody['page'] : 1;
 			if (--$page < 0) $page = 0;
 			$size = isset($parsedBody['size']) ? $parsedBody['size'] : 24;
-			//$search_key = $_GET['key'];
 			$search_keys = explode(' ', $search_key);
 			
 			$forms = \App\Models\Forms::get();
@@ -28,7 +26,7 @@ class SearchController extends BaseController {
 				}
 			}
 			
-			$db_query = \App\Models\FormDataValues::whereIn('form_id',$allowed_form_list)->where(function ($query) use ($search_keys) {
+			$db_query = \App\Models\FormDataValues::where('status','=',STATUS_ACTIVE)->whereIn('form_id',$allowed_form_list)->where(function ($query) use ($search_keys) {
 				foreach ($search_keys as $key) {
 					$query->orWhere('text_value','like','%'.$key.'%');	
 				}
@@ -44,42 +42,60 @@ class SearchController extends BaseController {
 			$offset = $page * $size;
 			$search_range = $offset + $size;
 			$columns = [];
+			$items = [];
 			$forms = [];
 			foreach ($values as $value) {
-			//for ($count = $offset; $count < $search_range; $count++) {
-			//	$value = $values[$count];
 				if (!in_array($value->form_data_id, $rc)) {
 					$rc[] = $value->form_data_id;
 					$count++;
 				}
 				if ($count <= $offset) continue;
 				if ($count > $search_range) break;
-				
-				if (!isset($r[$value->form_data_id])) {
-					$r[$value->form_data_id] = [];
+				$form_data_id = $value->form_data_id;
+				$form_item_id = $value->form_item_id;
+				if (!isset($r[$form_data_id])) {
+					$r[$form_data_id] = [];
 					if (!isset($forms[$value->form_id])) {
-						$forms[$value->form_id]['id'] = $value->form->id;
-						$forms[$value->form_id]['name'] = $value->form->name;
+						$forms[$value->form_id]['id'] = $value->form_id;
+						$forms[$value->form_id]['name'] = $value->form['name'];
 					}
-					//$form = $value->form;
 					unset($form->created_date);
 					unset($form->created_by);
 					unset($form->last_modified_date);
 					unset($form->last_modified_by);
 					unset($form->concurrent_id);
-					$r[$value->form_data_id]['form'] = $forms[$value->form_id]; //$form;
+					$r[$form_data_id]['form'] = $forms[$value->form_id]; 
 				}
-				if (!isset($columns[$value->form_item_id])) {
-					$columns[$value->form_item_id] = $value->item->display;
+				if (!isset($columns[$form_item_id])) {
+					$columns[$form_item_id] = $value->item->display;
+					$items[$form_item_id] = $value->item->is_show_in_list;
 				}
-				$r[$value->form_data_id]['fields'][$columns[$value->form_item_id]] = $value->text_value;
+				if (!isset($r[$form_data_id]['fields'][$columns[$form_item_id]])) {
+					$r[$form_data_id]['fields'][$columns[$form_item_id]] = $value->text_value;
+				}
+				if (!empty($value->data)) {
+					foreach ($value->data->values as $val) {
+						$form_item_id = $val->form_item_id;	
+						$form_data_id = $val->form_data_id;
+						if (!isset($items[$form_item_id])) {
+							$columns[$form_item_id] = $val->item->display;
+							$items[$form_item_id] = $val->item->is_show_in_list;
+						}
+						if ($items[$form_item_id] > 0) {
+							if (!isset($r[$form_data_id]['fields'][$columns[$form_item_id]])) {
+								$r[$form_data_id]['fields'][$columns[$form_item_id]] = $val->text_value;
+							}
+						}
+					}
+				}
 			}
 
 			$result = null;
 			$result['data'] = $r;
-			$result['total'] = $total; //count($rc);
+			$result['total'] = $total; 
 			$result['current_page'] = $page + 1;
 			$result['page_size'] = $size;
+			$result['total_page'] = ceil($result['total'] / $result['page_size']);
 			
 			//if (!empty($result)) {
 				return $this->toJSON($result);

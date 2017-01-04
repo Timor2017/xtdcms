@@ -1,37 +1,111 @@
 {% extends "layout.html" %}
-{% block title %}Forms{% endblock %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
 
 {% block content %}
-	<div class="row row-offcanvas row-offcanvas-right">
-
-		<div class="col-xs-12 col-sm-9">
-			<p class="pull-right visible-xs">
-				<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-			</p>
-			<div class="jumbotron">
-				<h1>{{ notice_title }}</h1>
-				<p>{{ notice_message }}</p>
-			</div>
-			<div class="row">
-				{% for form in values %}
-				<div class="col-xs-6 col-md-4 col-lg-3">
-					<div class="box form" data-id="{{form.id}}">
-						<h2>{{form.fruit_name}}</h2>
-						<p><img src="" alt=""></p>
-						<p class="bottom">
-							第 {{form.version}} 版 
-						</p>
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h1 id="form_title"></h1>
+					<div class="pull-right box-tools">
+{% if can_create %}
+					<button type="button" class="btn btn-info btn-sm"  title="Create" id="btn-create"><i class="fa fa-edit"></i></button>
+{% endif %}
+{% if can_modify %}
+					<button type="button" class="btn btn-info btn-sm" title="Modify" id="btn-modify"><i class="fa fa-gears"></i></button>
+{% endif %}
+{% if can_delete %}
+					<button type="button" class="btn btn-info btn-sm" title="Remove" id="btn-remove"><i class="fa fa-remove"></i></button>
+{% endif %}
 					</div>
 				</div>
-				{% endfor %}
+				<div class="form-items-container box-body">
+					<div id="form-items-container" class="table-responsive table-messages">
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-{% endblock %}
-{% block scripts %}
-	<script>
-		$(".form").click(function () {
-			location.href = "{{ path_for('form.details', {'id':''}) }}" + $(this).attr("data-id");
+</section>
+<script>
+	var isWorking = false;
+	var fda = {};
+	var documentReady = function () {
+		XTD.api('/form/data/{{id}}', function (data) {
+			if (data.result) {
+				generateContent(data.result);
+				//for (var i = start_page; i <= end_page; i++) {
+				//	if (i == data.result.current_page) {
+				//		$("<span/>").html(i).appendTo(paging);
+				//	} else {
+				//		$("<a />").html(i).appendTo(paging);
+				//	}
+				//	$("<span>&nbsp;</span>").appendTo(paging);
+				//}
+				//if (start_page > 1) {
+				//	paging.prepend($("<span>&nbsp;</span>"));
+				//	paging.prepend($("<a />").html("..."));
+				//}
+				//if (end_page < data.result.total_page) {
+				//	paging.append($("<a />").html("..."));
+				//	$("<span>&nbsp;</span>").appendTo(paging);
+				//}
+				
+			}
 		});
-	</script>
+	};
+	var generateContent= function(result) {
+		result.url = '/form/data/paging/{{id}}';
+		result.callback = generateContent;
+		result.options = {};
+		$("#form_title").html(result.info.name);
+		var table = $("<table />").addClass("form-list").addClass("table table-hover table-striped ");
+		var thr = $("<tr />").appendTo(table);
+		$("<th />").appendTo(thr);
+		$.each(result.columns, function (index, column) {
+			var th = 	$("<th />").append(
+								$("<div />").html(column).attr('title', column).css('overflow','hidden').css('max-width', '100px').css('white-space','nowrap').css('text-overflow','ellipsis')
+							).appendTo(thr);
+		});
+		$.each(result.data, function (id, item) {
+			var tr = $("<tr />").appendTo(table);
+				var td =	 $("<td />").append(
+									$("<a />").attr("href", '/form/view/{{id}}/' + id).append(
+										XTD.__('View')
+									)
+								).appendTo(tr);
+			$.each(result.columns, function (index, column) {
+				var td =	 $("<td />").append(
+									//$("<a />").attr("href", '/form/view/{{id}}/' + id).append(
+										$("<div />").html(item[column]).attr('title', column).css('overflow','hidden').css('max-width', '100px').css('white-space','nowrap').css('text-overflow','ellipsis')
+									//)
+								).appendTo(tr);
+			});
+		});
+		
+		var footer = $("<tr />").appendTo(table);
+		var paging = $("<td />").attr("colspan", result.columns.length + 1).appendTo(footer);
+		paging.append(generatePaging(result));
+		$("#form-items-container").empty().append(table);
+	}
+{% if can_create %}
+	$("#btn-create").click(function () { 
+		History.pushState(null, 'create', '{{ path_for('formdata.form', {id: id}) }}');
+	});
+{% endif %}
+
+</script>
+{% endblock %}
+
+{% block sidebar %}
+		
+	
+{% endblock %}
+
+{% block scripts %}
 {% endblock %}

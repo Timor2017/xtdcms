@@ -14,7 +14,7 @@ class FolderController extends BaseController{
 		$this->app->get('/{id}/forms', 'App\Controllers\FolderController:getAllForms')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 	}
 	
-	
+	//2147483649
 	
 	public function getAllFolders($request, $response, $args)  {
 		$id = isset($args['id']) ? $args['id'] : '0';
@@ -29,11 +29,11 @@ class FolderController extends BaseController{
 	public function getAllForms($request, $response, $args)  {
 		$id = isset($args['id']) ? $args['id'] : '0';
 		$result = $this->getForms($id);
-		if (!empty($result)) {
+		//if (!empty($result)) {
 			return $this->toJSON($result);
-		} else {
-			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
-		}
+		//} else {
+		//	return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);
+		//}
 	}	
 	
 	public function getForms($id) {
@@ -44,6 +44,7 @@ class FolderController extends BaseController{
 				$can_read = has_form_permission($form->id, PERMISSION_READ);
 				$can_create = has_form_permission($form->id, PERMISSION_CREATE);
 				if ($can_read || $can_create) {
+				//if ($can_create) {
 					$form->data_count = \App\Models\FormDatas::where('form_id','=',$form->id)->count();
 					$form->can_read = $can_read;
 					$form->can_create = $can_create;
@@ -62,10 +63,15 @@ class FolderController extends BaseController{
 	}
 	
 	public function getFolders($id)  {
-		$folders = \App\Models\Folders::where('parent_id','=',$id)->orderby('is_featured', 'desc')->orderby('sequence')->get();
-		
+		$folders = \App\Models\Folders::where([['parent_id','=',$id],['status','=',STATUS_ACTIVE]])->orderby('is_featured', 'desc')->orderby('sequence')->get();
+		$result = [];
 		foreach ($folders as $key => $folder) {
+			//echo $folder->name.':'.has_folder_permission($folder->id, PERMISSION_READ);
 			if (!has_folder_permission($folder->id, PERMISSION_READ)){
+					$child = $this->getFolders($folder->id);
+					if (count($child) > 0) {
+						$result = array_merge($result, $child);
+					}
 					unset($folders[$key]);
 			} else {
 				unset($folder->created_date);
@@ -76,10 +82,12 @@ class FolderController extends BaseController{
 				$children = [];
 				$children['folders'] = $this->getFolders($folder->id);
 				$children['forms'] = $this->getForms($folder->id);
+				
 				$folder->children = $children;
+				$result[] = $folder;
 			}
 		}
-		return $folders;
+		return $result;
 	}	
 
 	
@@ -115,7 +123,7 @@ class FolderController extends BaseController{
 			$folder->parent_id = $parent_id;
 			$folder->color =$this->retrieveArray($parsedBody, 'color'); 
 			$folder->icon =$this->retrieveArray($parsedBody, 'icon', 'folder'); 
-			$folder->is_featured =$this->retrieveArray($parsedBody, 'is_featured'); 
+			$folder->is_featured =$this->retrieveArray($parsedBody, 'is_featured', '0'); 
 			$folder->sequence =$this->retrieveArray($parsedBody, 'sequence', '0');
 			$folder->tags =$this->retrieveArray($parsedBody, 'tags'); 
 			$folder->status = STATUS_ACTIVE;
@@ -151,7 +159,7 @@ class FolderController extends BaseController{
 					$folder->name =$this->retrieveArray($parsedBody, 'name'); 
 					$folder->color =$this->retrieveArray($parsedBody, 'color'); 
 					$folder->icon =$this->retrieveArray($parsedBody, 'icon'); 
-					$folder->is_featured =$this->retrieveArray($parsedBody, 'is_featured'); 
+					$folder->is_featured =$this->retrieveArray($parsedBody, 'is_featured'. '0'); 
 					$folder->sequence =$this->retrieveArray($parsedBody, 'sequence', '0');
 					$folder->tags =$this->retrieveArray($parsedBody, 'tags'); 
 					$folder->status = STATUS_ACTIVE;

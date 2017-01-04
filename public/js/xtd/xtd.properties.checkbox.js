@@ -7,13 +7,14 @@ try {
 		
 		this.render = function () {
 			var $this = this;
+			console.log(this._value);
 			return $("<div />").addClass("property-item")
 							.append(
 								$("<label />").addClass("property-item-label").html(this.property.name)
 							).append(
 								$("<div />").addClass("property-item-control")
 								.append(
-									$("<input />").attr('id', 'chb_'+this.__id).attr('data-id', this.__id).attr('data-parent-id', this.parent.__id).addClass("property-item-label  form-control").attr("type", "checkbox").prop('checked' , this._value.toString() == "true").bind('change', function () {
+									$("<input />").attr('id', 'chb_'+this.__id).attr('data-id', this.__id).attr('data-parent-id', this.parent.__id).addClass("property-item-label ").attr("type", "checkbox").prop('checked' , this._value.toString() == "true" || this.value == 1).bind('change', function () {
 										$this.setValue($(this).prop('checked'));
 										$this.property.value = $this._value;
 										$this.fire($(this).prop('checked'), this);

@@ -75,6 +75,8 @@
 {% endif %}
 			//console.log(data);
 				if (data.result) {
+					alert(XTD.__("Form submitted successfully. the page will redirect to the previous section."));
+					generateGroups(true);
 					History.back();
 				}
 				isWorking = false;

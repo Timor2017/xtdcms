@@ -18,7 +18,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
 	<div class="login-logo">
-		<a href="../../index2.html" class="multi-lang"><b>SCJ</b>System</a>
+		<a class="multi-lang"><b>SCJ</b>System</a>
 	</div>
 	<div class="login-box-body">
 		<p class="login-box-msg multi-lang">Sign in to start your session</p>
@@ -64,6 +64,12 @@
 			radioClass: 'iradio_square-blue',
 			increaseArea: '20%'
 		});
+		$(".form-control").keypress(function (event) {
+			if (event.which == 13) {
+				event.preventDefault();
+				$("#btnSignIn").click();
+			}
+		});
 		$('#btnSignIn').click(function () {
 			XTD.login({'username':$('#txtUsername').val(),'password':$('#txtPassword').val()}, function (data) {
 				if (!data.result) {
@@ -73,6 +79,8 @@
 				}
 			});
 		});
+
+		XTD.translate($('body'));
 	});
 </script>
 </body>

@@ -93,8 +93,11 @@ try {
 								ro = JSON.parse(ro);
 							}
 						} catch (e) { console.log(ro); console.log(e); }
-						if ((ro.response) && ro.response.code.toString().indexOf('403') >= 0) {
-							location.href = URL_SIGNIN;
+						if (window.location.href.indexOf(URL_SIGNIN) < 0) {
+							if ((ro.response) && (ro.response.code.toString().indexOf('403') >= 0 || ro.response.code.toString() == '0010001')) {
+							//if ((ro.response) && (ro.response.code.toString().indexOf('403') >= 0)) {
+								location.href = URL_SIGNIN;
+							}
 						}
 						cb(ro);
 					}
@@ -107,7 +110,12 @@ try {
 			this.syncApi = function (p, m, o, cb) {
 				if (typeof o === 'function') {
 					cb = o;
-					o = null;
+					if (typeof o === 'object') {
+						o = m;
+						m = global.method.GET;
+					} else if (typeof o === 'string') {
+						o = null;
+					}
 				}
 				if (typeof m === 'function') {
 					cb = m;
@@ -174,6 +182,8 @@ try {
 					$this.setCookie('folders', '', -7);
 					$this.setCookie('groups', '', -7);
 					$this.setCookie('appCode', '', -7);
+					$this.clearStore();
+					
 					if (cb) {
 						if (typeof cb === 'function') {
 							cb();
@@ -191,6 +201,18 @@ try {
 					}
 				});
 			};
+			
+			this.clearStore = function() {
+				localStorage.clear();
+			}
+			
+			this.setStore = function(cname, cvalue) {
+				localStorage.setItem(cname, cvalue);
+			}
+			
+			this.getStore = function(cname) {
+				return localStorage.getItem(cname);
+			}
 			
 			this.setCookie = function (cname, cvalue, exdays) {
 				var d = new Date();
@@ -216,12 +238,15 @@ try {
 			
 			this.__ = function(content_key, group) {
 				//console.log(content_key, group);
+				//console.log(glossaries);
 				if (glossaries) {
 					if (group) {
 						if (glossaries[group][content_key]) {
+							//console.log('a'+glossaries[group][content_key]);
 							return glossaries[group][content_key];
 						}
 					} else if (glossaries[content_key]) {
+						//console.log('b'+glossaries[content_key]);
 						return glossaries[content_key];
 					}
 				}

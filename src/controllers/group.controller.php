@@ -9,6 +9,7 @@ class GroupController extends BaseController{
 		$this->app->post('/permission/manage/users[/]', 'App\Controllers\GroupController:addMembers')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/permission/manage[/]', 'App\Controllers\GroupController:updatePermission')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 
+		$this->app->post('/check[/]','App\Controllers\GroupController:checkGroup')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->post('/manage[/]','App\Controllers\GroupController:createGroup')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->put('/manage/{id}','App\Controllers\GroupController:updateGroup')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
 		$this->app->delete('/manage/{id}', 'App\Controllers\GroupController:deleteGroup')->add('\App\Middlewares\AuthenticateMiddleware::authUser');
@@ -110,6 +111,19 @@ class GroupController extends BaseController{
 			return $this->toJSON($model);
 		} else {
 			return $this->toJSON(false, ERR_GROUP_NAME_EMPTY, ERR_GROUP_NAME_EMPTY);
+		}
+	}
+	public function checkGroup($request, $response, $args)  {
+		$parsedBody = $request->getParsedBody();
+		$parent_id = isset($parsedBody['parent_id']) ? $parsedBody['parent_id'] : '0';
+		$name = isset($parsedBody['name']) ? $parsedBody['name'] : '';
+		
+		if (!empty($name)) {
+			$model = \App\Models\Groups::where([['name','=',$name],['parent_id','=',$parent_id]])->get();
+			
+			return $this->toJSON($model->count() == 0);
+		} else {
+			return $this->toJSON(true);
 		}
 	}
 	

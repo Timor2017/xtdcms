@@ -104,15 +104,27 @@
 		$('.new-sub-group').on("keypress", function(e) {
 			if (e.keyCode == 13) {
 				$this = this;
-				XTD.api('/group/manage/', XTD.method.POST, 
+				XTD.api('/group/check/', XTD.method.POST, 
 				{
 					parent_id: id,
 					name: $(this).val()
 				}, function (data) {
-					if (data.result) {
-						$($this).val('');
-						generateGroups(true);
-						showCurrentGroup(id);
+					var is_continue = true;
+					if (!data.result) {
+						is_continue = confirm(XTD.__("Same folder name is exists, are you sure to continue?"));
+					}
+					if (is_continue) {
+						XTD.api('/group/manage/', XTD.method.POST, 
+						{
+							parent_id: id,
+							name: $(this).val()
+						}, function (data) {
+							if (data.result) {
+								$($this).val('');
+								generateGroups(true);
+								showCurrentGroup(id);
+							}
+						});
 					}
 				});
 				return false;
@@ -122,7 +134,7 @@
 	var showCurrentGroup = function (id) {
 		var groups = getItems('groups', '/group/');
 		var currentGroup = findItem(groups, 'id', id);
-		if (currentGroup.parent_id) {
+		if (currentGroup.parent_id > 0) {
 			$(".btn-up-one-level").show();
 			$(".btn-up-one-level").attr('href', '/group/'+currentGroup.parent_id);
 		} else {

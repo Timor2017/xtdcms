@@ -107,6 +107,7 @@
 			static_wordings: static_wordings
 		}, function (data) {
 			if (data.result) {
+				$("#static_wordings").val('');
 				showTranslateList();
 				$('#new-translate-form').modal('hide')
 			} else {

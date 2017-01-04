@@ -134,6 +134,7 @@ footer {
 
 .content-wrapper {
 	padding: 0px;
+	margin-top: 50px;
 }
 
 #form_title {
@@ -193,6 +194,89 @@ tr.selected {
 		margin-left:  -50%;
 	}
 
+.tab-content {
+    overflow-y: auto;
+    position: fixed;
+    bottom: 0;
+    top: 88px;
+}
+
+.main-header, .main-sidebar, .control-sidebar {
+	position: fixed;
+	top: 0px;
+}
+
+.main-header {
+	width: 100%;
+}
+
+.sidebar-menu {
+	position: absolute;
+	top: 180px;
+	bottom: 0px;
+	width: 100%;
+	overflow-y: auto;
+}
+	.sidebar-menu:hover {
+		overflow-y: auto;
+	}
+
+table.form-list {
+	border: 1px solid #ddd;
+}
+	table.form-list > tbody > tr:first-child {
+		font-weight: bold;
+		background-color: #367fa9;
+		color: #fff;
+	}
+	table.form-list tr:not(:first-child):not(:last-child):hover{
+		/*background-color: #3c8dbc;*/
+		background-color: #ffffdd;
+		/*color: #fff;*/
+	}
+.paging a {
+	cursor: pointer;
+	
+}
+
+.sidebar-menu>li ,.sidebar-menu>li>a {
+	position: static;
+}
+
+.control-sidebar>.tab-content {
+	width: 230px;
+}
+/*
+.scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+	background-color: #ecf0f5;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+*/
+
+	/*
+	table.form-list tr:nth-child(2n+2) {
+		background-color: #367fa9;
+		color: #fff;
+	}
+	table.form-list tr th{
+		background-color: #1e282c;
+		color: #fff;
+	}
+	table.form-list td, table.form-list th  {
+		padding: 2px;
+		border: 1px solid #ddd;
+	}	
+	*/
 /*
  * Off Canvas
  * --------------------------------------------------
@@ -254,4 +338,11 @@ tr.selected {
     top: 0;
     width: 50%; /* 6 columns */
   }
+	.sidebar-menu {
+		top: 230px;
+	}
+	
+	.content-wrapper {
+		margin-top: 100px;
+	}
 }

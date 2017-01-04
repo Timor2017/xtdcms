@@ -10,7 +10,8 @@
  *
  * See http://code.google.com/p/minify/wiki/CustomSource for other ideas
  **/
-
+ return require '../config/minify.group.config.php';
+/*
 return array(
     'formjs' => array(
 			'//js/xtd/xtd.sequencegenerator.js'
@@ -56,6 +57,7 @@ return array(
 			//,'//js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'
 			//,'//js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'
 			//,'//js/plugins/knob/jquery.knob.js'
+			,'//js/plugins/daterangepicker/moment.js'
 			,'//js/plugins/daterangepicker/daterangepicker.js'
 			,'//js/plugins/datepicker/bootstrap-datepicker.js'
 			,'//js/bootstrap-datetimepicker.min.js'		
@@ -83,3 +85,4 @@ return array(
     // 'js' => array('//js/file1.js', '//js/file2.js'),
     // 'css' => array('//css/file1.css', '//css/file2.css'),
 );
+*/
