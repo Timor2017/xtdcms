@@ -119,7 +119,7 @@ try {
 							.append(
 								$('<div />').addClass('item-control'+this.__id).attr('data-link-field',''+this.__id)
 								.append(
-									$('<input />').addClass('datepicker_show').attr('data-provide',"datepicker").attr('id',''+this.__id).attr('size','16').attr('type','text').addClass('form-control')
+									$('<input />').addClass('datepicker_show').attr('id',''+this.__id).attr('size','16').attr('type','text').addClass('form-control')
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
@@ -165,13 +165,15 @@ try {
 
 		return this;
 	};
-	
-	$('body').on('click',".datepicker_show", function(){
-		$(this).datetimepicker({
-			format: 'mm/dd/yyyy'
+	var language = 'zh-CN';
+	$.getScript(BASE_URL + "/js/plugins/datepicker/locales/bootstrap-datepicker."+language+".js", function( data, textStatus, jqxhr ) {
+		$('body').on('click',".datepicker_show", function(){
+			$(this).datepicker({
+				format: 'dd/mm/yyyy',
+				language: language
+			});
 		});
 	});
-	
 } catch (e) {
  console.log(e);
 }

@@ -7,7 +7,6 @@ try {
 		
 		this.render = function () {
 			var $this = this;
-			console.log(this._value);
 			return $("<div />").addClass("property-item")
 							.append(
 								$("<label />").addClass("property-item-label").html(this.property.name)

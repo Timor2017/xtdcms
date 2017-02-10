@@ -40,7 +40,7 @@ try {
 		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
-		this.definition.properties.common.option = this.definition.properties.common.option || new XTD.properties.DefaultPropertyDefinition('common', 'option', 'option', 'Textarea');
+		this.definition.properties.common.option = this.definition.properties.common.option || new XTD.properties.DefaultPropertyDefinition('common', 'option', '显示内容||内容值', 'Textarea');
 		
 		if (this.definition.id) {
 			this.__id = this.definition.id;
@@ -135,7 +135,7 @@ try {
 									$('<select />').attr('name', this.__id).attr('id', ''+this.__id).addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
-										.append('<option value="0">==Select an option==</option>')
+										.append('<option value="0">=='+XTD.__('Select an option')+'==</option>')
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
 										.css('height', this.properties.get('layout.height').getValue())

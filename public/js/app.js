@@ -128,7 +128,7 @@ var readText = function () {
 
 var generateFolders = function (refresh) {
 	var folders = getItems('folders', '/folder/', refresh);
-	var ul = addItems(folders, {folder: '/folder/', form: '/form/'}, 'folder', true);
+	var ul = addItems(folders, {folder: '/folder/', form: { create: '/form/', list: '/form/list/' }}, 'folder', true);
 	if ($(".sidebar-menu .folder-title").size() == 0) {
 		$(".sidebar-menu").append($("<li />").addClass("header folder-title").html("<span>"+XTD.__('MAIN NAVIGATION')+"</span>").prepend($("<i />").addClass("fa fa-refresh refresh-menu").css("width", "20px").click(function () {
 			generateFolders(true);
@@ -175,7 +175,7 @@ var addItems = function (items, path, className, isTop) {
 	//var ul = $("<ul />").addClass(isTop ? "sidebar-menu" : "treeview-menu").addClass(className);
 	var ul = $("<ul />").addClass(isTop ? "sidebar-menu" : "treeview-menu").addClass(className);
 	$.each(items, function(index, item) {
-		currentPath = (typeof path == 'object') ? (item.icon) ? path.folder : path.form : path;
+		currentPath = (typeof path == 'object') ? (item.icon) ? path.folder : item.can_read ? path.form.list : item.can_create ? path.form.create : '' : path;
 		var li = $("<li />").addClass(isTop ? "treeview" : "").addClass(className).appendTo(ul);
 		var a =$("<a />").attr("href",currentPath+item.id).append(
 				$("<i />").addClass("fa").addClass("fa-" + ((item.icon) ? item.icon : 'edit'))
