@@ -35,15 +35,17 @@ $container['user'] = function ($c) {
 	$user = (object)$c->get('settings')['user'];
 	if ($c['auth.manager']->isAuthenticatedUser()) {
 		$member = \App\Models\Members::where('token','=',$c['auth.manager']->getToken())->first();
-		$groupMembers = \App\Models\GroupMembers::where(['member_id'=>$member->id, 'status'=>STATUS_ACTIVE])->get();
-		$groups = [];
-		foreach ($groupMembers as $gmember) {
-			$groups[] = $gmember->group;
+		if (!empty($member)) {
+			$groupMembers = \App\Models\GroupMembers::where(['member_id'=>$member->id, 'status'=>STATUS_ACTIVE])->get();
+			$groups = [];
+			foreach ($groupMembers as $gmember) {
+				$groups[] = $gmember->group;
+			}
+			$user->id = $member->id;
+			$user->isLoggedIn = true;
+			$user->info = $member;
+			$user->groups = $groups;
 		}
-		$user->id = $member->id;
-		$user->isLoggedIn = true;
-		$user->info = $member;
-		$user->groups = $groups;
 	}
 	return $user;
 };

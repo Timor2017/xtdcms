@@ -64,6 +64,12 @@ if (__IS_DEBUG){
 		return $this->token;
 	}
 
+	public function setSessionToken($token) {
+			//$_COOKIE['appCode'] = $token;
+			setcookie('appCode', $token);
+	}
+
+	
 
 	public function isValidRequest() {
 		$model = \App\Models\ApplicationSecrets::where([
@@ -89,18 +95,22 @@ if (__IS_DEBUG){
 				$token = $session_token = $this->getSessionToken();
 			}
 
-			$model = \App\Models\Members::where('token','=', $token)->get();
-			
-			if ($model->count() == 1) {
-				$username = $model[0]->username;
-				$time = $model[0]->login_time;
-				if (!empty($time)){
-					$time = strtotime($time);
-				}
+			if ($token == $this->getAnonymousToken()){
+				return true;
+			} else {
+				$model = \App\Models\Members::where('token','=', $token)->get();
 				
-				$check_token = $this->getCurrentToken($username, $time);
-				if ($token == $check_token || !empty($session_token)) {
-					return true;
+				if ($model->count() == 1) {
+					$username = $model[0]->username;
+					$time = $model[0]->login_time;
+					if (!empty($time)){
+						$time = strtotime($time);
+					}
+					
+					$check_token = $this->getCurrentToken($username, $time);
+					if ($token == $check_token || !empty($session_token)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -109,11 +119,15 @@ if (__IS_DEBUG){
 	}
 	
 	public function getCurrentToken($username, $time = null) {
-		if ($time == null) {
+		if ($time === null) {
 			$time = time();
 		}
 		$token = md5(session_id() . $username . $time . $_SERVER['REMOTE_ADDR'] . $this->getAppID() . $this->getSecret() . $this->getVersion());
 		
 		return $token;
+	}
+	
+	public function getAnonymousToken() {
+		return $this->getCurrentToken('anonymous_guest','');
 	}
 }

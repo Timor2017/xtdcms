@@ -59,6 +59,11 @@ if (XTD) {
 		
 		this.renderAll = function () {
 			$('#' + $this.__itemContainerId).empty().append($($this.form.render()));
+			if ($('#' + $this.__itemContainerId).children().size() == 0){
+				$('#' + $this.__itemContainerId).append(
+					$("<div />").addClass("empty_control_hints").html(XTD.__("Please drag control from right hand side into here"))
+				);
+			}
 		};
 		
 		this.addItem = function (definition) {
@@ -80,13 +85,27 @@ if (XTD) {
 		};
 		
 		this.serializeValue = function () {
-			console.log($this.form);
 			var result = {};
 			$this.form.items.each(function (property) {
 				result[property.__id] = $("[name=" + property.__id + "]").val();
 			});
 			//return this.form.serialize();
 			return result;
+		};
+		
+		this.validate = function () {
+			var validateResult = { valid: true, message: '' };
+			$this.form.items.each(function (property) {
+				if (typeof property.validate == "function") {
+					var result = property.validate();
+					if (!result.valid) {
+						validateResult.valid = false;
+						validateResult.message += result.message + "\n";
+					}
+				}
+			});
+			
+			return validateResult;
 		};
 
 		if (editable) {

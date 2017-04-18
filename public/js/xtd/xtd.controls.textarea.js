@@ -42,6 +42,12 @@ try {
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
 
+		for (var i = 0; i<this.definition.validations.length; i++){
+			this.validators.add(XTD.factories[this.definition.validations[i].type+"Factory"].create(this.definition.validations[i]));
+		}
+		//this.validators.add(new XTD.validators.Mandatory(''));
+		//this.validators.add(new XTD.validators.CheckExists('1', '7'));
+		
 		if (this.definition.id) {
 			this.__id = this.definition.id;
 		}
@@ -155,7 +161,7 @@ try {
 		this.control = new XTD.controls.Textarea(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
-			$("<div />").addClass("pull-right box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>').insertAfter(output.find('#lbl_'+this.control.__id));
+			$("<div />").addClass("pull-left del-box box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>').insertAfter(output.find('#lbl_'+this.control.__id));
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {

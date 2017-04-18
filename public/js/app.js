@@ -26,7 +26,7 @@ $(document).ready(function () {
 				}
 	
 				generateFolders(false);
-				if (profile.is_admin) {
+				if (profile && profile.is_admin) {
 					generateGroups(false);
 					$(".sidebar-menu").append($("<li />").addClass("header manage").html("<span>"+XTD.__('Manage')+"</span>"));
 					$(".sidebar-menu").append($("<li />").addClass("treeview").append(
@@ -164,10 +164,16 @@ var getItems = function (key, path, refresh) {
 			if (data.response.code == '0') {
 				items = JSON.stringify(data.result);
 				XTD.setStore(key, items);
+			} else {
+				XTD.setStore(key, 'N/A');
 			}
 		});
 	}
-	items = $.parseJSON(items);
+	if (items != 'N/A') {
+		items = $.parseJSON(items);
+	} else {
+		items = null;
+	}
 	
 	return items;
 }

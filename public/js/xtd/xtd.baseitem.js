@@ -39,19 +39,31 @@ try {
 			return this.__id;
 		};
 		this.validate = function () {
-			result = true;
-			var length = this.__basic_validators.length;
-			for (var i = 0; i < length; i++) {
-				result = result && this.__basic_validators[i].validate(this.value);
-				if (!result) break;
-			}
-			if (result) {
-				var length = this.validators.length;
+			var result = { valid: true, message: '' };
+
+			if ($("[name=" + this.__id + "]").size() > 0) {
+				var value = $("[name=" + this.__id + "]").val();
+				var length = 0;
+				length = this.__basic_validators.getCount();
+				$this = this;
 				for (var i = 0; i < length; i++) {
-					result = result && this.validators[i].validate(this.value);
-					if (!result) break;
+					result = this.__basic_validators.at(i).validate(value);
+					if (!result.valid) {
+						return;
+					}
+				}
+
+				if (result.valid) {
+					length = this.validators.getCount();
+					for (var i = 0; i < length; i++) {
+						result = this.validators.at(i).validate(value);
+						if (!result.valid) {
+							break;
+						}
+					}
 				}
 			}
+
 			return result;
 		};
 		

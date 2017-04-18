@@ -40,8 +40,6 @@
 				XTD.api('/form/data/{{id}}/{{data_id}}', function (data) {
 					if (data.result) {
 						$.each(data.result, function(index, value) {
-						console.log(index);
-						console.log(value);
 							$("#"+index).val(value).prop('disabled', true);
 						});
 					}

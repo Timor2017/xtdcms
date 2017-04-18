@@ -19,28 +19,34 @@ try {
 		this.__proto__ = new XTD.definitions.Item(definition.name, (definition.properties.common)?definition.properties.common.display:'');
 		this.definition = definition;
 		this.definition.properties.common.display = this.definition.properties.common.display || new XTD.properties.DefaultPropertyDefinition('common', 'display', 'display', 'TextBox');
-		this.definition.properties.common.default_value = this.definition.properties.common.default_value || new XTD.properties.DefaultPropertyDefinition('common', 'default_value', 'default_value', 'TextBox');
-		this.definition.properties.common.placeholder = this.definition.properties.common.placeholder || new XTD.properties.DefaultPropertyDefinition('common', 'placeholder', 'placeholder', 'TextBox');
-		this.definition.properties.common.tooltips = this.definition.properties.common.tooltips || new XTD.properties.DefaultPropertyDefinition('common', 'tooltips', 'tooltips', 'TextBox');
-		this.definition.properties.common.is_searchable = this.definition.properties.common.is_searchable || new XTD.properties.DefaultPropertyDefinition('common', 'is_searchable', 'is_searchable', 'CheckBox');
-		this.definition.properties.common.is_show_in_list = this.definition.properties.common.is_show_in_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_list', 'is_show_in_list', 'CheckBox');
-		this.definition.properties.common.is_show_in_mobile_list = this.definition.properties.common.is_show_in_mobile_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_mobile_list', 'is_show_in_mobile_list', 'CheckBox');
-		this.definition.properties.common.sort_sequence = this.definition.properties.common.sort_sequence || new XTD.properties.DefaultPropertyDefinition('common', 'sort_sequence', 'sort_sequence', 'TextBox');
-		this.definition.properties.layout.width = this.definition.properties.layout.width || new XTD.properties.DefaultPropertyDefinition('layout', 'width', 'width', 'TextBox');
-		this.definition.properties.layout.height = this.definition.properties.layout.height || new XTD.properties.DefaultPropertyDefinition('layout', 'height', 'height', 'TextBox');
-		this.definition.properties.layout.horizontalAlignment = this.definition.properties.layout.horizontalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'horizontalAlignment', 'horizontalAlignment', 'TextBox');
-		this.definition.properties.layout.verticalAlignment = this.definition.properties.layout.verticalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'verticalAlignment', 'verticalAlignment', 'TextBox');
-		this.definition.properties.layout.marginTop = this.definition.properties.layout.marginTop || new XTD.properties.DefaultPropertyDefinition('layout', 'marginTop', 'marginTop', 'TextBox');
-		this.definition.properties.layout.marginRight = this.definition.properties.layout.marginRight || new XTD.properties.DefaultPropertyDefinition('layout', 'marginRight', 'marginRight', 'TextBox');
-		this.definition.properties.layout.marginBottom = this.definition.properties.layout.marginBottom || new XTD.properties.DefaultPropertyDefinition('layout', 'marginBottom', 'marginBottom', 'TextBox');
-		this.definition.properties.layout.marginLeft = this.definition.properties.layout.marginLeft || new XTD.properties.DefaultPropertyDefinition('layout', 'marginLeft', 'marginLeft', 'TextBox');
-		this.definition.properties.brush.backgroundColor = this.definition.properties.brush.backgroundColor || new XTD.properties.DefaultPropertyDefinition('brush', 'backgroundColor', 'backgroundColor', 'TextBox');
-		this.definition.properties.brush.backgroundImage = this.definition.properties.brush.backgroundImage || new XTD.properties.DefaultPropertyDefinition('brush', 'backgroundImage', 'backgroundImage', 'TextBox');
-		this.definition.properties.brush.foregroundColor = this.definition.properties.brush.foregroundColor || new XTD.properties.DefaultPropertyDefinition('brush', 'foregroundColor', 'foregroundColor', 'TextBox');
-		this.definition.properties.text.size = this.definition.properties.text.size || new XTD.properties.DefaultPropertyDefinition('text', 'size', 'size', 'TextBox');
-		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', 'weight', 'TextBox');
-		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
-		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
+		this.definition.properties.common.default_value = this.definition.properties.common.default_value || new XTD.properties.DefaultPropertyDefinition('common', 'default_value', '', 'TextBox');
+		this.definition.properties.common.placeholder = this.definition.properties.common.placeholder || new XTD.properties.DefaultPropertyDefinition('common', 'placeholder', '', 'TextBox');
+		this.definition.properties.common.tooltips = this.definition.properties.common.tooltips || new XTD.properties.DefaultPropertyDefinition('common', 'tooltips', '', 'TextBox');
+		this.definition.properties.common.maxlength = this.definition.properties.common.maxlength || new XTD.properties.DefaultPropertyDefinition('common', 'maxlength', '', 'TextBox');
+		this.definition.properties.common.is_searchable = this.definition.properties.common.is_searchable || new XTD.properties.DefaultPropertyDefinition('common', 'is_searchable', '0', 'CheckBox');
+		this.definition.properties.common.is_show_in_list = this.definition.properties.common.is_show_in_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_list', '1', 'CheckBox');
+		this.definition.properties.common.is_show_in_mobile_list = this.definition.properties.common.is_show_in_mobile_list || new XTD.properties.DefaultPropertyDefinition('common', 'is_show_in_mobile_list', '1', 'CheckBox');
+		this.definition.properties.common.sort_sequence = this.definition.properties.common.sort_sequence || new XTD.properties.DefaultPropertyDefinition('common', 'sort_sequence', '', 'TextBox');
+		this.definition.properties.layout.width = this.definition.properties.layout.width || new XTD.properties.DefaultPropertyDefinition('layout', 'width', '', 'TextBox');
+		this.definition.properties.layout.height = this.definition.properties.layout.height || new XTD.properties.DefaultPropertyDefinition('layout', 'height', '', 'TextBox');
+		this.definition.properties.layout.horizontalAlignment = this.definition.properties.layout.horizontalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'horizontalAlignment', '', 'TextBox');
+		this.definition.properties.layout.verticalAlignment = this.definition.properties.layout.verticalAlignment || new XTD.properties.DefaultPropertyDefinition('layout', 'verticalAlignment', '', 'TextBox');
+		this.definition.properties.layout.marginTop = this.definition.properties.layout.marginTop || new XTD.properties.DefaultPropertyDefinition('layout', 'marginTop', '', 'TextBox');
+		this.definition.properties.layout.marginRight = this.definition.properties.layout.marginRight || new XTD.properties.DefaultPropertyDefinition('layout', 'marginRight', '', 'TextBox');
+		this.definition.properties.layout.marginBottom = this.definition.properties.layout.marginBottom || new XTD.properties.DefaultPropertyDefinition('layout', 'marginBottom', '', 'TextBox');
+		this.definition.properties.layout.marginLeft = this.definition.properties.layout.marginLeft || new XTD.properties.DefaultPropertyDefinition('layout', 'marginLeft', '', 'TextBox');
+		this.definition.properties.brush.backgroundColor = this.definition.properties.brush.backgroundColor || new XTD.properties.DefaultPropertyDefinition('brush', 'backgroundColor', '', 'TextBox');
+		this.definition.properties.brush.backgroundImage = this.definition.properties.brush.backgroundImage || new XTD.properties.DefaultPropertyDefinition('brush', 'backgroundImage', '', 'TextBox');
+		this.definition.properties.brush.foregroundColor = this.definition.properties.brush.foregroundColor || new XTD.properties.DefaultPropertyDefinition('brush', 'foregroundColor', '', 'TextBox');
+		this.definition.properties.text.size = this.definition.properties.text.size || new XTD.properties.DefaultPropertyDefinition('text', 'size', '', 'TextBox');
+		this.definition.properties.text.weight = this.definition.properties.text.weight || new XTD.properties.DefaultPropertyDefinition('text', 'weight', '', 'TextBox');
+		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', '', 'TextBox');
+		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', '', 'TextBox');
+		//this.definition.properties.text.style = this.definition.properties.text.style || new XTD.validators.List('validation','list','','');
+
+		for (var i = 0; i<this.definition.validations.length; i++){
+			this.validators.add(XTD.factories[this.definition.validations[i].type+"Factory"].create(this.definition.validations[i]));
+		}
 
 		if (this.definition.id) {
 			this.__id = this.definition.id;
@@ -58,6 +64,9 @@ try {
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.tooltips).setParent(this).subscribe(function (value) {
 				$('#'+$(this).attr('data-parent-id')).attr('title', value);
+			}));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.maxlength).setParent(this).subscribe(function (value) {
+				$('#'+$(this).attr('data-parent-id')).attr('maxlength', value);
 			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_searchable).setParent(this));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.is_show_in_list).setParent(this));
@@ -131,6 +140,7 @@ try {
 										)
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
+										.attr('maxlength', this.properties.get('common.maxlength').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
 										.css('height', this.properties.get('layout.height').getValue())
 										.css('text-aign', this.properties.get('layout.horizontalAlignment').getValue())
@@ -146,13 +156,14 @@ try {
 										.css('font-weight', this.properties.get('text.weight').getValue())
 										.css('text-decoration', this.properties.get('text.textDecoration').getValue())
 										.css('font-style', this.properties.get('text.style').getValue())
+										.attr('data-valid', true)
 								)
 							);
 		};
 		
 		//this.serialize = function () {
 		//};
-
+		
 		this.initialize();
 		
 		return this;
@@ -162,7 +173,7 @@ try {
 		this.control = new XTD.controls.Singleline(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
-			$("<div />").addClass("pull-right box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>').insertAfter(output.find('#lbl_'+this.control.__id));
+			$("<div />").addClass("pull-left del-box box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>').insertAfter(output.find('#lbl_'+this.control.__id));
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {

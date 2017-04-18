@@ -95,8 +95,9 @@ try {
 						} catch (e) { console.log(ro); console.log(e); }
 						if (window.location.href.indexOf(URL_SIGNIN) < 0) {
 							if ((ro.response) && (ro.response.code.toString().indexOf('403') >= 0 || ro.response.code.toString() == '0010001')) {
-							//if ((ro.response) && (ro.response.code.toString().indexOf('403') >= 0)) {
-								location.href = URL_SIGNIN;
+								//if ((ro.response) && (ro.response.code.toString().indexOf('403') >= 0)) {
+								//this.logout();
+								//location.href = URL_SIGNIN;
 							}
 						}
 						cb(ro);

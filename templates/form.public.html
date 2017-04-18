@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout.public.html" %}
 
 {% block title %}Index{% endblock %}
 {% block head %}
@@ -80,7 +80,8 @@
 				XTD.api('/form/data/{{id}}', XTD.method.POST, fda.serializeValue(), function (data) {
 					if (data.result) {
 						alert(XTD.__("Form submitted successfully. the page will redirect to the previous section."));
-						History.back();
+						//location.href='{{ path_for('formdata.form.public.thankyou') }}';
+						History.pushState(null, null, '{{ path_for('formdata.form.public.thankyou') }}');
 					}
 					isWorking = false;
 				});
@@ -90,44 +91,6 @@
 			}
 		}
 	}
-{% if can_update %}
-	$("#btn-edit").click(function () { 
-		History.pushState(null, 'edit', '{{ path_for('form.edit', {id: id}) }}');
-	});
-	$(".btn-save").click(function () { 
-		//if (!isWorking) {
-		//	isWorking = true;
-			var formData = new FormData();
-			console.log($("#csvfile")[0].files[0]);
-			formData.append('csvfile', $("#csvfile")[0].files[0]);
-			XTD.api('/form/data/import/{{id}}', XTD.method.POSTFILE, formData, function (data) {
-				if (data.result) {
-					alert(XTD.__('data import successfully.'));
-				} else {
-					alert(XTD.__('data import failure, please ask administrator for check the error.'));
-				}
-		//			isWorking = false;
-			});
-		//}
-	});
-{% endif %}
-{% if can_modify %}
-	$("#btn-modify").click(function () { 
-		History.pushState(null, 'edit', '{{ path_for('form.edit', {id: id}) }}');
-	});
-{% endif %}
-{% if can_delete %}
-	$("#btn-remove").click(function () { 
-		var result =confirm(XTD.__("Are you sure to delete this form?"));
-		if (result) {
-			XTD.api('/form/def/{{id}}', 'DELETE', function (data) {
-				if (data.result) {
-					History.back();
-				}
-			});
-		}
-	});
-{% endif %}
 </script>
 {% endblock %}
 

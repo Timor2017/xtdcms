@@ -160,6 +160,14 @@ class FormController extends BaseController {
 				$form_item->save();
 				
 				$this->extractProperties($form_item, $item);
+				
+				if (!empty($parsedBody['alias'])) {
+					$alias = new \App\Models\FormAliases();
+					$alias->form_id = $form->id;
+					$alias->alias = $parsedBody['alias'];
+					$alias->status = STATUS_ACTIVE;
+					$alias->save();
+				}
 			}
 			$args['id'] = $form->id;
 			return  $this->loadForm($request, $response, $args);
@@ -228,6 +236,17 @@ class FormController extends BaseController {
 				$form_item->save();
 				
 				$this->extractProperties($form_item, $item);
+			}
+				
+			if (!empty($parsedBody['alias'])) {
+				$alias = \App\Models\FormAliases::where('alias','=',$parsedBody['alias'])->first();
+				if (empty($alias)) {
+					$alias = new \App\Models\FormAliases();
+					$alias->form_id = $form->id;
+					$alias->alias = $parsedBody['alias'];
+					$alias->status = STATUS_ACTIVE;
+					$alias->save();
+				}
 			}
 
 			return  $this->loadForm($request, $response, $args);
@@ -322,7 +341,7 @@ class FormController extends BaseController {
 							$value->item_version = $form->version;
 							$value->data_version = $form_data->version;
 							
-							$data_value = isset($parsedBody[$item->display]) ? $parsedBody[$item->display] : $parsedBody[$item->id];
+							$data_value = isset($parsedBody[$item->display]) ? $parsedBody[$item->display] : isset($parsedBody[$item->id]) ? $parsedBody[$item->id] : '';
 							($data_value !== null) ? $data_value : '';
 							switch ($item->value_type) {
 								case 'number':

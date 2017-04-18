@@ -4,6 +4,8 @@ namespace App\Models;
 class Forms extends BaseModel {
 	protected $connection = 'form_definition';
 	protected $table = 'forms';
+
+	protected $available_properties = ['max_record_count'];
 	
 	public function permissions()
 	{

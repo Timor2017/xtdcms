@@ -1,6 +1,6 @@
 try {
-	window.XTD.validators = window.XTD.validators || {};
-	window.XTD.validators.LessThan = window.XTD.validators.LessThan || function (o) {
+	XTD.validators = window.XTD.validators || {};
+	XTD.validators.LessThan = window.XTD.validators.LessThan || function (o) {
 		var compare = Number.MAX_VALUE;;
 		if (o) {
 			compare = o;

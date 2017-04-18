@@ -5,6 +5,8 @@ try {
 			generate: function (definition) {
 				if (definition && definition.type) {
 					return new XTD.definitions.properties[definition.type](definition);
+				} else {
+					return new XTD.definitions.properties.TextBox(definition);
 				}
 				return null;
 			}

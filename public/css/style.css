@@ -246,6 +246,21 @@ table.form-list {
 .control-sidebar>.tab-content {
 	width: 230px;
 }
+
+.empty_control_hints {
+	line-height: 200px;
+	text-align: center;
+	font-size: 1.5em;
+	border: 1px dashed #f00;
+}
+
+.del-box {
+	margin-right: 10px;
+}
+
+.ps-container {
+	padding-bottom: 30px
+}
 /*
 .scroll::-webkit-scrollbar {
     width: 8px;

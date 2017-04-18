@@ -119,8 +119,13 @@ try {
 								$('<label />').attr('id', ''+this.__id).attr('id','lbl_'+this.__id).html(this.properties.get('common.display').getValue())
 							)
 							.append(
-								$('<div />').addClass('item-control')
+								$('<div />').addClass('item-control input-group')
 								.append(
+									$("<div />").addClass("input-group-addon")
+									.append(
+										$("<i />").addClass("fa fa-calendar")
+									)
+								).append(
 									$('<input />').addClass('daterangepicker_show').attr('id', ''+this.__id).attr('size','16').attr('type','text').addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
@@ -156,7 +161,7 @@ try {
 		this.control = new XTD.controls.Daterangepicker(definition).setParent(this);
 		this.render = function () {
 			var output = this.control.render();
-			$("<div />").addClass("pull-right box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>').insertAfter(output.find('#lbl_'+this.control.__id));
+			$("<div />").addClass("pull-left del-box box-tools").append('<button type="button" class="btn btn-info btn-xs" data-id="'+this.control.definition.name+'" title="Remove" onclick="remove(this)"><i class="fa fa-remove"></i></button>').insertAfter(output.find('#lbl_'+this.control.__id));
 			var properties = this.control.properties;
 			var $this = this;
 			output.bind('click', function () {

@@ -17,6 +17,8 @@ try {
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.display).setParent(this).subscribe(function (value) {
 				$('#form_title').html(value);
 			}));
+			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.max_record_count).setParent(this).subscribe(function (value) {
+			}));
 			this.properties.add(XTD.factories.PropertyFactory.generate(this.definition.properties.common.description).setParent(this).subscribe(function (value) {
 				$('#container_'+$this.__id).html(value);
 			}));

@@ -12,7 +12,7 @@ $app->get('/min/f/{f:.*}', function ($request, $response, $args) use ($app, $con
 		$_GET['b'] = $b;
 	}
 
-	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
+	require __DIR__ .'/../../vendor/mrclay/minify/min/index.php';
 	exit;
 });
 $app->get('/min/g/{g:.*}', function ($request, $response, $args) use ($app, $container) {
@@ -22,7 +22,7 @@ $app->get('/min/g/{g:.*}', function ($request, $response, $args) use ($app, $con
 		$_GET['b'] = $b;
 	}
 
-	require __DIR__ .'/../vendor/mrclay/minify/min/index.php';
+	require __DIR__ .'/../../vendor/mrclay/minify/min/index.php';
 	exit;
 });
 /*
@@ -129,6 +129,8 @@ $app->get('/form/create/{folder_id}', function ($request, $response, $args) use 
 
 	$can_create = has_folder_permission($folder_id, PERMISSION_CREATE);
 	if ($can_create) {
+		$args['key'] = generateRandomString();
+		$args['domain'] = $_SERVER['SERVER_NAME'];
 		return $this->view->render($response, 'form.edit.html', $args);
 	} else {
 		$url = $container->router->pathFor('dashboard');
@@ -145,6 +147,13 @@ $app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $c
 	$id = (isset($args['id'])) ? $args['id'] : '';
 	$can_update = has_form_permission($id, PERMISSION_UPDATE);
 	if ($can_update) {
+		$alias = \App\Models\FormAliases::where('form_id','=',$id)->first();
+		if (empty($alias)) {
+			$args['key'] = generateRandomString();
+		} else {
+			$args['key'] = $alias->alias;
+		} 
+		$args['domain'] = $_SERVER['SERVER_NAME'];
 		return $this->view->render($response, 'form.edit.html', $args);
 	} else {
 		$url = $container->router->pathFor('dashboard');
@@ -213,6 +222,44 @@ $app->get('/form/[{id}]', function ($request, $response, $args) use ($app, $cont
 		return $response->withRedirect($url);
 	}
 })->setName("formdata.form");
+
+$app->get('/thankyou', function ($request, $response, $args) use ($app, $container)  {
+	return $this->view->render($response, 'thankyou.public.html', $args);
+})->setName("formdata.form.public.thankyou");
+
+$app->get('/f/[{alias}]', function ($request, $response, $args) use ($app, $container)  {
+	$alias = (isset($args['alias'])) ? $args['alias'] : '';
+	$value = \App\Models\FormAliases::where('status','=',STATUS_ACTIVE)->where('alias','=',$alias)->get()->first();
+	if (!empty($value)) {
+		$id = $value->id;
+		
+		$continue = empty($value->password);
+		if (!empty($value->password) && true){
+		}
+		
+		if ($continue) {
+			if (empty($container['auth.manager']->getToken())) {
+				$container['auth.manager']->setSessionToken($container['auth.manager']->getAnonymousToken());
+			}
+			$args['id'] = $value->form_id;
+		//$can_read = has_form_permission($id, PERMISSION_READ);
+		//$can_update = has_form_permission($id, PERMISSION_UPDATE);
+		//$can_modify = has_form_permission($id, PERMISSION_ACCESS_ADD);
+		//$can_delete = has_form_permission($id, PERMISSION_DELETE);
+		//$args['can_update'] = $can_update;
+		//$args['can_modify'] = $can_modify;
+		//$args['can_delete'] = $can_delete;
+
+			return $this->view->render($response, 'form.public.html', $args);
+		} else {
+			return $this->view->render($response, 'enter.password.html', $args);
+		}
+	} else {
+		$url = $container->router->pathFor('member.signin');
+		return $response->withRedirect($url);
+	}
+})->setName("formdata.form.public");
+
 
 
 
