@@ -9,25 +9,25 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
-			<div class="box box-primary">
+			<div class="box box-success">
 				<div class="box-header with-border">
 					<h1 id="form_title"></h1>
 					<div class="pull-right box-tools">
 {% if can_update %}
-					<button type="button" class="btn btn-info btn-sm"  title="Import" id="btn-import" data-toggle="modal" data-target="#new-import-form"><i class="fa fa-upload"></i></button>
-					<button type="button" class="btn btn-info btn-sm"  title="Edit" id="btn-edit"><i class="fa fa-edit"></i></button>
+					<button type="button" class="btn btn-success btn-sm"  title="Import" id="btn-import" data-toggle="modal" data-target="#new-import-form"><i class="fa fa-upload"></i></button>
+					<button type="button" class="btn btn-success btn-sm"  title="Edit" id="btn-edit"><i class="fa fa-edit"></i></button>
 {% endif %}
 {% if can_modify %}
-					<button type="button" class="btn btn-info btn-sm" title="Modify" id="btn-modify"><i class="fa fa-gears"></i></button>
+					<button type="button" class="btn btn-success btn-sm" title="Modify" id="btn-modify"><i class="fa fa-gears"></i></button>
 {% endif %}
 {% if can_delete %}
-					<button type="button" class="btn btn-info btn-sm" title="Remove" id="btn-remove"><i class="fa fa-remove"></i></button>
+					<button type="button" class="btn btn-success btn-sm" title="Remove" id="btn-remove"><i class="fa fa-remove"></i></button>
 {% endif %}
               </div>
 			  </div>
 				<form action="" method="post">
 					<div id="form-items-container" class="form-items-container edit-mode box-body"></div>
-					<div class="box-footer"><button type="button" class="btn btn-primary multi-lang" onclick="serializeItem();">Save</button></div>
+					<div class="box-footer"><button type="button" class="btn btn-success multi-lang" onclick="serializeItem();">Save</button></div>
 				</form>
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default multi-lang" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary btn-save multi-lang">Submit</button>
+				<button type="button" class="btn btn-success btn-save multi-lang">Submit</button>
 			</div>
 		</div>
 	</div>

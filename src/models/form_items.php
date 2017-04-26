@@ -17,12 +17,12 @@ class FormItems extends BaseModel {
 
 	public function properties()
 	{
-		return $this->morphMany('\App\Models\ItemProperties', 'target')->where('status', STATUS_ACTIVE);
+		return $this->morphMany('\App\Models\ItemProperties', 'target')->where('status', STATUS_ACTIVE)->orderBy('sequence');
 	}	
 
 	public function all_properties()
 	{
-		return $this->morphMany('\App\Models\ItemProperties', 'target');
+		return $this->morphMany('\App\Models\ItemProperties', 'target')->orderBy('sequence');
 	}	
 	
 	public function glossaries()

@@ -226,7 +226,7 @@ table.form-list {
 }
 	table.form-list > tbody > tr:first-child {
 		font-weight: bold;
-		background-color: #367fa9;
+		background-color: #00a65a;
 		color: #fff;
 	}
 	table.form-list tr:not(:first-child):not(:last-child):hover{
@@ -261,6 +261,12 @@ table.form-list {
 .ps-container {
 	padding-bottom: 30px
 }
+
+
+.lbl-mandatory {
+	color: #f00;
+}
+
 /*
 .scroll::-webkit-scrollbar {
     width: 8px;

@@ -6,7 +6,7 @@
 		<meta charset="utf-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{% block title %}{% endblock %} - SCJ</title>
+		<title>{% block title %}{% endblock %} - podo</title>
 		<link rel="stylesheet" href="{{ base_url() }}/min/g/css?rev={{css_version}}">
 		<script src="{{ base_url() }}/plugins/jquery/jquery-2.2.4.min.js"></script>
 		<script src="{{ base_url() }}/js/jquery.ext.js"></script>
@@ -25,7 +25,7 @@
 				<a href="/" class="logo">
 					<span class="logo-mini multi-lang"><b>S</b>CJ</span>
 					<!-- logo for regular state and mobile devices -->
-					<span class="logo-lg multi-lang"><b>SCJ</b>System</span>
+					<span class="logo-lg multi-lang"><b>podo</b>System</span>
 				</a>
 				<!-- Header Navbar: style can be found in header.less -->
 				<nav class="navbar navbar-static-top">
@@ -35,7 +35,7 @@
 					</a>
 
 					<div class="navbar-custom-menu">
-						<ul class="nav navbar-nav">
+						<ul class="nav navbar-nav">		
 							<!-- Messages: style can be found in dropdown.less-->
 							<li class="dropdown messages-menu">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -226,6 +226,13 @@
 				</div>
 			</div>
 			<section id="loading"><i class="fa fa-refresh fa-spin fa-3x fa-fw"></i></section>
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong class="title"></strong> 
+				<label class="message"></label>
+			</div>
 			<footer class="main-footer">
 				{% block footer %}{% endblock %}
 				<div class="pull-right hidden-xs">

@@ -43,6 +43,10 @@ try {
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
 
+		for (var i = 0; i<this.definition.validations.length; i++){
+			this.validators.add(XTD.factories[this.definition.validations[i].type+"Factory"].create(this.definition.validations[i]));
+		}
+
 		if (this.definition.id) {
 			this.__id = this.definition.id;
 		}
@@ -114,9 +118,17 @@ try {
 		};
 		
 		this.render = function () {
+			var mandatory = "";
+			for (var i = 0; i<this.validators.getCount(); i++){
+				if (this.validators.at(i).name == "Mandatory") {
+					mandatory = '*';
+					break;
+				}
+			}
 			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', ''+this.__id).attr('id','lbl_'+this.__id).html(this.properties.get('common.display').getValue())
+								.append($('<label />').html(mandatory).addClass("lbl-mandatory"))
 							)
 							.append(
 								$('<div />').addClass('item-control input-group')
@@ -126,7 +138,7 @@ try {
 										$("<i />").addClass("fa fa-calendar")
 									)
 								).append(
-									$('<input />').addClass('daterangepicker_show').attr('id', ''+this.__id).attr('size','16').attr('type','text').addClass('form-control')
+									$('<input />').addClass('daterangepicker_show').attr('name',''+this.__id).attr('id', ''+this.__id).attr('type','text').addClass('form-control')
 										.val(this.properties.get('common.default_value').getValue())
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())

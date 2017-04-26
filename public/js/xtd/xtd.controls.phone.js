@@ -43,6 +43,10 @@ try {
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', '', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', '', 'TextBox');
 
+		for (var i = 0; i<this.definition.validations.length; i++){
+			this.validators.add(XTD.factories[this.definition.validations[i].type+"Factory"].create(this.definition.validations[i]));
+		}
+
 		if (this.definition.id) {
 			this.__id = this.definition.id;
 		}
@@ -116,9 +120,17 @@ try {
 			
 		};
 		this.render = function () {
+			var mandatory = "";
+			for (var i = 0; i<this.validators.getCount(); i++){
+				if (this.validators.at(i).name == "Mandatory") {
+					mandatory = '*';
+					break;
+				}
+			}
 			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
+								.append($('<label />').html(mandatory).addClass("lbl-mandatory"))
 							)
 							.append(
 								$('<div />').addClass('item-control input-group')

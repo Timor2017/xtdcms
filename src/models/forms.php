@@ -14,7 +14,7 @@ class Forms extends BaseModel {
 	
 	public function properties()
 	{
-		return $this->morphMany('\App\Models\ItemProperties', 'target')->where('status', STATUS_ACTIVE);
+		return $this->morphMany('\App\Models\ItemProperties', 'target')->where('status', STATUS_ACTIVE)->orderBy('sequence');
 		//return $this->hasMany('App\Models\FormProperties', 'form_id', 'id');
 	}	
 	
@@ -35,7 +35,7 @@ class Forms extends BaseModel {
 	
 	public function all_properties()
 	{
-		return $this->morphMany('\App\Models\ItemProperties', 'target');
+		return $this->morphMany('\App\Models\ItemProperties', 'target')->orderBy('sequence');
 		//return $this->hasMany('App\Models\FormProperties', 'form_id', 'id');
 	}	
 	

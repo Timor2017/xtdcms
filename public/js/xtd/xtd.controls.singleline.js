@@ -121,14 +121,22 @@ try {
 			
 		};
 		this.render = function () {
+			var mandatory = "";
+			for (var i = 0; i<this.validators.getCount(); i++){
+				if (this.validators.at(i).name == "Mandatory") {
+					mandatory = '*';
+					break;
+				}
+			}
 			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
+								.append($('<label />').html(mandatory).addClass("lbl-mandatory"))
 							)
 							.append(
 								$('<div />').addClass('item-control')
 								.append(
-									$('<input />').attr('type','text').attr('name', this.__id).attr('id', ''+this.__id).addClass('form-control')
+									$('<input />').attr('type','text').attr('name', ''+this.__id).attr('id', ''+this.__id).addClass('form-control')
 										.val(
 											(this.parent.control) ? 
 												this.properties.get('common.default_value').getValue()  : 

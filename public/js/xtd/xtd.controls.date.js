@@ -42,6 +42,10 @@ try {
 		this.definition.properties.text.textDecoration = this.definition.properties.text.textDecoration || new XTD.properties.DefaultPropertyDefinition('text', 'textDecoration', 'textDecoration', 'TextBox');
 		this.definition.properties.text.style = this.definition.properties.text.style || new XTD.properties.DefaultPropertyDefinition('text', 'style', 'style', 'TextBox');
 
+		for (var i = 0; i<this.definition.validations.length; i++){
+			this.validators.add(XTD.factories[this.definition.validations[i].type+"Factory"].create(this.definition.validations[i]));
+		}
+
 		if (this.definition.id) {
 			this.__id = this.definition.id;
 		}
@@ -112,19 +116,41 @@ try {
 			
 		};
 		this.render = function () {
+			var date = new Date();
+			var day = date.getDate();
+			var monthIndex = date.getMonth();
+			var year = date.getFullYear();
+			var mandatory = "";
+			for (var i = 0; i<this.validators.getCount(); i++){
+				if (this.validators.at(i).name == "Mandatory") {
+					mandatory = '*';
+					break;
+				}
+			}
+  
 			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('for',''+this.__id).attr('id','lbl_'+this.__id).html(this.properties.get('common.display').getValue())
+								.append($('<label />').html(mandatory).addClass("lbl-mandatory"))
 							)
 							.append(
-								$('<div />').addClass('item-control'+this.__id+'  input-group').attr('data-link-field',''+this.__id)
+								$('<div />').addClass('item-control'+this.__id+'  input-group date xtd-date').attr('data-link-field',''+this.__id)
 								.append(
 									$("<div />").addClass("input-group-addon")
 									.append(
 										$("<i />").addClass("fa fa-calendar")
 									)
 								).append(
-									$('<input />').addClass('datepicker_show').attr('id',''+this.__id).attr('size','16').attr('type','text').addClass('form-control')
+									$('<input />').addClass('datepicker_show').attr('id',''+this.__id).attr('name',''+this.__id).attr('type','text').addClass('form-control')
+										.val(
+											(this.parent.control) ? 
+												this.properties.get('common.default_value').getValue()  
+											: 
+												this.properties.get('common.default_value').getValue()== 'now' ? 
+													padLeft(day,2) + "/" + padLeft(monthIndex+1, 2) + "/" + year
+												: 
+													this.properties.get('common.default_value').getValue()
+										)
 										.attr('placeholder', this.properties.get('common.placeholder').getValue())
 										.attr('title', this.properties.get('common.tooltips').getValue())
 										.css('width', this.properties.get('layout.width').getValue())
@@ -142,7 +168,13 @@ try {
 										.css('font-weight', this.properties.get('text.weight').getValue())
 										.css('text-decoration', this.properties.get('text.textDecoration').getValue())
 										.css('font-style', this.properties.get('text.style').getValue())
-									)
+								)
+								.datepicker({
+									format: 'dd/mm/yyyy',
+									autoclose: true,
+									todayHighlight: true,
+									language: XTD.language
+								})
 							);
 		};
 		
@@ -170,14 +202,14 @@ try {
 
 		return this;
 	};
-	var language = 'zh-CN';
-	$.getScript(BASE_URL + "/plugins/datepicker/locales/bootstrap-datepicker."+language+".js", function( data, textStatus, jqxhr ) {
-		$('body').on('click',".datepicker_show", function(){
-			$(this).datepicker({
-				format: 'dd/mm/yyyy',
-				language: language
-			});
-		});
+	XTD.language = 'zh-CN';
+	$.getScript(BASE_URL + "/plugins/datepicker/locales/bootstrap-datepicker."+XTD.language+".js", function( data, textStatus, jqxhr ) {
+		//$('body').on('click',".xtd-date", function(){
+		//	$(this).datepicker({
+		//		format: 'dd/mm/yyyy',
+		//		language: language
+		//	});
+		//});
 	});
 } catch (e) {
  console.log(e);

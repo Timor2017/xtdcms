@@ -95,7 +95,7 @@ class FormController extends BaseController {
 				if ($property->group != 'validations') {
 					continue;
 				}
-				$result[] = array('type'=>$property->type, 'rule'=>$property->rule,'message'=>$property->value,'sequence'=>$property->sequence);
+				$result[] = array('type'=>$property->type, 'name'=>$property->name, 'rule'=>$property->rule, 'message'=>$property->value, 'sequence'=>$property->sequence);
 			}
 		}
 		return $result;
@@ -284,12 +284,14 @@ class FormController extends BaseController {
 			}
 		}
 		if (isset($properties['validations'])) {
+			//$max_sequence = -1;
 			foreach ($properties['validations'] as $validation_sequence => $validation) {
-				$property = $item->properties()->where(array('sequence' => $validation_sequence, 'group' => 'validations'))->first();
+				// $property = $item->properties()->where(array('sequence' => $validation_sequence, 'group' => 'validations'))->first();
+				$property = $item->properties()->where(array('name' => $validation['name'], 'group' => 'validations'))->first();
 				if (empty($property)) {
 					$property = new \App\Models\ItemProperties();
+					$property->name = generateRandomString();
 				}
-				$property->name = '';
 				$property->group = 'validations';
 				$property->rule = $validation['rule'];
 				$property->value = $validation['message'];
@@ -298,6 +300,16 @@ class FormController extends BaseController {
 				$property->status = STATUS_ACTIVE;
 				
 				$new_properties[] = $property;
+				//$max_sequence = $validation_sequence;
+			}
+			
+			foreach ($item->properties as $property) {
+				if ($property->group == 'validations'){
+					if (!in_array($property, $new_properties)){
+						$property->status = STATUS_DELETED;
+						$new_properties[] = $property;
+					}
+				}
 			}
 		}
 		$item->properties()->saveMany($new_properties);
