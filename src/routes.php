@@ -161,6 +161,17 @@ $app->get('/form/{id}/edit', function ($request, $response, $args) use ($app, $c
 	}
 })->setName("form.edit");
 
+$app->get('/form/{id}/modify', function ($request, $response, $args) use ($app, $container)  {
+	$id = (isset($args['id'])) ? $args['id'] : '';
+	$can_update = has_form_permission($id, PERMISSION_UPDATE);
+	if ($can_update) {
+		return $this->view->render($response, 'form.modify.html', $args);
+	} else {
+		$url = $container->router->pathFor('dashboard');
+		return $response->withRedirect($url);
+	}
+})->setName("form.modify");
+
 $app->get('/form/view/{id}/[{data_id}]', function ($request, $response, $args) use ($app, $container)  {
 	$id = (isset($args['id'])) ? $args['id'] : '';
 	$data_id = (isset($args['data_id'])) ? $args['data_id'] : '';

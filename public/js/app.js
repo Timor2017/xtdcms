@@ -112,6 +112,20 @@ $(document).ready(function () {
 	}
 	executeDocumentReady();
 	$("#loading").hide();
+	
+	XTD.gate = XTD.gate || {};
+	XTD.gate.logic = XTD.gate.logic || {};
+	XTD.gate.logic['EQ'] = 'equals to';
+	XTD.gate.logic['NE'] = 'not equals to';
+	XTD.gate.logic['LT'] = 'less than';
+	XTD.gate.logic['GT'] = 'greater than';
+	XTD.gate.logic['LE'] = 'less or equals to';
+	XTD.gate.logic['GE'] = 'greater or equals to';
+	XTD.gate.logic['NOT'] = 'not';
+	XTD.gate.logic['BW'] = 'between';
+	XTD.gate.logic['NBW'] = 'not between';
+	XTD.gate.logic['CT'] = 'contains';
+	XTD.gate.logic['NCT'] = 'not contains';
 });
 	
 var signout = function () {
@@ -278,3 +292,4 @@ var generatePaging = function (options) {
 function padLeft(nr, n, str){
     return Array(n-String(nr).length+1).join(str||'0')+nr;
 }
+

@@ -25,6 +25,7 @@ return [
 		//	'username' => 'root',
 		//	'password' => '',
         //],
+		
 		'db' => [
 			'driver' => 'mysql',
 			'host' => 'localhost',

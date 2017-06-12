@@ -4,7 +4,12 @@ namespace App\Models;
 class FormItems extends BaseModel {
 	protected $connection = 'form_definition';
 	protected $table = 'form_items';
-	
+			
+	public function form()
+	{
+		return $this->belongsTo('App\Models\Forms', 'form_id', 'id')->where('forms.status', STATUS_ACTIVE);
+	}	
+
 	public function permissions()
 	{
 		return $this->morphMany('\App\Models\Permissions', 'target')->where('status',STATUS_ACTIVE);

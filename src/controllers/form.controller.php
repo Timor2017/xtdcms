@@ -60,6 +60,7 @@ class FormController extends BaseController {
 				$result['items'] = $this->generateItems($form);
 				$result['properties'] = $this->generateProperties($form);
 				$result['validations'] = $this->generateValidations($form);
+				$result['processes'] = $this->generateProcesses($form);
 			}
 		} else {
 			$form = new \App\Models\Forms();
@@ -82,7 +83,8 @@ class FormController extends BaseController {
 			foreach ($data->items as $item) {
 				$properties = $this->generateProperties($item);
 				$validations = $this->generateValidations($item);
-				$result[] = array('properties'=>$properties, 'validations'=>$validations, 'id'=>$item->id, 'name'=>$item->id, 'type'=>$item->type, 'value_type'=>$item->value_type);
+				$processes = $this->generateProcesses($item);
+				$result[] = array('properties'=>$properties, 'validations'=>$validations, 'processes'=>$processes, 'id'=>$item->id, 'name'=>$item->id, 'type'=>$item->type, 'value_type'=>$item->value_type);
 			}
 		}
 		return $result;
@@ -119,6 +121,31 @@ class FormController extends BaseController {
 		return $result;
 	}
 	
+	private function generateProcesses($data) {
+		$result = [];
+		//echo get_class($data); exit;
+		$rules = \App\Models\RuleTriggers::where('trigger_type','=', get_class($data))->where('trigger_id','=',$data->id)->where('handler','=','client')->get();
+		$loaded_rule = [];
+		$rule = [];
+		foreach ($rules as $base_rule) {
+			if (in_array($base_rule->rule->id, $loaded_rule)) {
+				continue;
+			}
+			foreach ($base_rule->rule->triggers as $trigger) {
+				$rule['triggers'][$trigger->id] = array('source'=>$trigger->trigger_id, 'event'=>$trigger->event, 'depends'=>$trigger->dependency_id);
+				foreach ($trigger->logics as $logic) {
+					$rule['triggers'][$trigger->id]['logics'][$logic->id] = array('type'=>$logic->logic_type, 'id'=>$logic->logic_id, 'source'=>$logic->source, 'gate'=>$logic->gate, 'value'=>$logic->value);
+				}
+			}
+			foreach ($base_rule->rule->results as $rresult) {
+				$rule['results'][$rresult->id] = array('type'=>$rresult->target_type, 'target'=>$rresult->target_id, 'handler'=>$rresult->handler, 'parameters'=>$rresult->parameters);
+			}
+			$loaded_rule[] = $base_rule->rule->id;
+			//$result[$property->group][$property->name] = array('group'=>$property->group, 'name'=>$property->name,'type'=>$property->type,'value'=>$value);
+			$result[$base_rule->rule->id] = $rule;
+		}
+		return $result;
+	}
 	public function createForm($request, $response, $args) {
 		$folder_id = (isset($args['folder_id'])) ? $args['folder_id'] : '';
 		$parsedBody = $request->getParsedBody();

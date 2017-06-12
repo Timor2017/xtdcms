@@ -148,7 +148,11 @@
 							.click(function () {
 								$("tr.selected").removeClass("selected");
 								$(this).addClass("selected");
-								$(".translate-content").html(translate.content).val(translate.content);
+								var content = translate.glossaries[$("#translate-language").val()];
+								if (content == '' || content == null) {
+									content = translate.content;
+								}
+								$(".translate-content").html(content).val(content);
 								$(".translate-id").val(translate.id);
 								$('html, body').animate({
 									scrollTop: 0

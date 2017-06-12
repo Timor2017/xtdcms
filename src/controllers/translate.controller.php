@@ -22,6 +22,19 @@ class TranslateController extends BaseController{
 	public function getStaticWords($request, $response, $args)  {
 		$words = \App\Models\StaticContents::orderby('content')->get();
 		if (!empty($words)) {
+			foreach ($words as $word) {
+				unset($word->concurrent_id);
+				unset($word->created_by);
+				unset($word->created_date);
+				unset($word->last_modified_by);
+				unset($word->last_modified_date);
+				$glossaries = array();
+				foreach ($word->glossaries as $glossary) {
+					$glossaries[$glossary->language] = $glossary->content;
+				}
+				unset($word->glossaries);
+				$word->glossaries = $glossaries;
+			}
 			return $this->toJSON($words);
 		} else {
 			return $this->toJSON(false, ERR_INVALID_USER, ERR_INVALID_USER);

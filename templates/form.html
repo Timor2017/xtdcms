@@ -113,7 +113,7 @@
 {% endif %}
 {% if can_modify %}
 	$("#btn-modify").click(function () { 
-		History.pushState(null, 'edit', '{{ path_for('form.edit', {id: id}) }}');
+		History.pushState(null, 'modify', '{{ path_for('form.modify', {id: id}) }}');
 	});
 {% endif %}
 {% if can_delete %}

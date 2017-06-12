@@ -1,0 +1,311 @@
+{% extends "layout.html" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box box-success">
+				<div class="box-header with-border"><h1 id="form_title" style="display:inline-block"></h1></div>
+				<form action="" method="post">
+					<div id="form-items-container" class="form-items-container edit-mode box-body">
+					</div>
+					<div id="new-items-container" class="form-items-container edit-mode box-body">
+						<div class="rule buttons">
+							<div class="title multi-lang"><input type="button" value="Add New" class="multi-lang btn btn-success btn-add-new" onclick="addNewItem();" /></div>
+						</div>
+					</div>
+					<div class="box-footer">
+						<button type="button" class="btn btn-success multi-lang" onclick="serializeItem();">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+<script id="tpl_display" type="x-javascript-template">
+<div>
+	<div class="rule triggers">
+		<div class="title multi-lang">When </div>
+		<div class="message"></div>
+	</div>
+	<div class="rule logics">
+		<div class="title multi-lang">If </div>
+		<div class="message"></div>
+	</div>
+	<div class="rule results">
+		<div class="title multi-lang">Then </div>
+		<div class="message"></div>
+	</div>
+</div>
+</script>
+<script id="tpl_input" type="x-javascript-template">
+</script>
+<script>
+	var isWorking = false;
+	var selectingIndex = '';
+	var fda = {};
+	var fd = {};
+	var fo = {};
+	var ro = {};
+	var documentReady = function () {
+		XTD.api('/form/def/{{id}}', function (data) {
+			if (data.result) {
+				fo = data.result;
+				$("#form_title").html(fo.properties.common.display.value);
+				$control = $(".control");
+				$.each (fo.items, function (i, item) {
+					fd[item.id.toString()] = fd[item.id.toString()] || {};
+					fd[item.id.toString()].name = item.properties.common.display.value;
+					fd[item.id.toString()].type = item.type;
+					
+					$.each(item.processes, function (idx, process) {
+						ro[idx] = process;
+					});
+					
+					$control.append($("<option />").html(item.properties.common.display.value).val(item.id));
+				});
+				$event = $(".event");
+				$event.append($("<option />").html(XTD.__("input")).val("input"));
+				$event.append($("<option />").html(XTD.__("change")).val("change"));
+				
+				$gate = $(".gate");
+				$.each(XTD.gate.logic, function (key, value) {
+					$gate.append($("<option />").html(XTD.__(value)).val(key));
+				});
+				
+				$handler = $(".handler");
+				$.each(XTD.handlers, function (key, value) {
+					$handler.append($("<option />").html(XTD.__(value.display)).val(key));
+				});
+				
+				renderExistingList(ro);
+			}
+		});
+		
+		 //$('.control-sidebar').addClass('control-sidebar-open');
+		 
+		 $(".nav-tabs a:first").tab('show');
+	};
+	function renderExistingList(ro) {
+		$("#form-items-container").empty();
+		$.each(ro, function (idx, process) {
+			$content = $($("#tpl_display").html());
+			$content.attr('data-id', idx);
+			$.each(process.triggers, function (index, trigger) {
+				var message = $("<div />");
+				message.append(
+					$("<span />").addClass("control").html(fd[trigger.source.toString()].name)
+				);
+				message.append(" has been ");
+				message.append(
+					$("<span />").addClass("event").html(trigger.event)
+				);
+				$content.find(".rule.triggers .message").append(message);
+				$.each(trigger.logics, function (lid, logic) {
+					var message = $("<div />");
+					message.append(
+						$("<span />").addClass("control").html(fd[logic.id.toString()].name)
+					);
+					 message.append("'s ");
+					 message.append(
+						$("<span />").addClass("source").html(logic.source)
+					);
+					message.append(" ");
+					message.append(
+						$("<span />").addClass("gate").html(XTD.__(XTD.gate.logic[logic.gate]))
+					);
+					message.append(" ");
+					message.append(
+						$("<span />").addClass("value").html(logic.value == "" ? "empty" : logic.value)
+					);
+					$content.find(".rule.logics .message").append(message);
+				});
+			});
+			$.each(process.results, function (index, result) {
+				var message = $("<div />");
+				message.append(
+					$("<span />").addClass("handler").html(XTD.handlers[result.handler].display)
+				);
+				message.append(
+					$("<span />").addClass("control").html(XTD.__(fd[result.target.toString()].name))
+				);
+				$content.find(".rule.results .message").append(message);
+			});
+			$content.click(function () {
+				selectingIndex = $(this).attr('data-id');
+				$.each(ro[selectingIndex].results, function (i, r) {
+					console.log(r.target);
+					$("#result-control").val(r.target); 
+					$("#result-handler").val(r.handler);
+				});
+				$.each(ro[selectingIndex].triggers, function (i, r) {
+					$("#trigger-control").val(r.source);
+					$("#trigger-event").val(r.event);
+					$.each(r.logics, function (idx, l) {
+						$("#logic-control").val(l.id);
+						$("#logic-source").val(l.source);
+						$("#logic-gate").val(l.gate);
+						$("#logic-value").val(l.value);
+					});
+				});
+				if (!$('.control-sidebar').hasClass('control-sidebar-open')) {
+					$('.control-sidebar').addClass('control-sidebar-open');
+				}
+			});
+			//$("#form-items-container").append(XTD.translate($content));
+			$("#form-items-container").append($content);
+		});
+	}
+
+	var addItem = function () {
+		console.log($("#result-control").val() );
+		if (
+		($("#result-control").val() == '' || $("#result-control").val() == null) ||
+		($("#result-handler").val() == '' || $("#result-handler").val() == null) ||
+		($("#trigger-control").val() == '' || $("#trigger-control").val() == null) ||
+		($("#trigger-event").val() == '' || $("#trigger-event").val() == null) ||
+		($("#logic-control").val() == '' || $("#logic-control").val() == null) ||
+		($("#logic-gate").val() == '' || $("#logic-gate").val() == null)
+		) {
+			alert(XTD.__('cannot be empty'));
+			return;
+		}
+	
+		var key = (selectingIndex	== '') ? (Object.keys(ro).length * -1).toString() : selectingIndex;
+		ro[key] = ro[key] || {
+							results: {
+								'-1': {
+									type: "App\Models\FormItems", 
+									target: $("#result-control").val(), 
+									handler: $("#result-handler").val(), 
+									parameters: ""
+								}
+							},
+							triggers: {
+								'-1': {
+									source: $("#trigger-control").val(),
+									depends: null,
+									event: $("#trigger-event").val(),
+									logics: {
+										'-1': {
+											type: "App\Models\FormItems", 
+											id: $("#logic-control").val(), 
+											source: $("#logic-source").val(), 
+											gate: $("#logic-gate").val(), 
+											value: $("#logic-value").val()
+										}
+									}
+								}
+							}
+						};
+		var k = '';
+		var l = '';
+		k = Object.keys(ro[key].results)[0];
+		ro[key].results[k].target = $("#result-control").val();
+		ro[key].results[k].handler = $("#result-handler").val();
+		
+		k = Object.keys(ro[key].triggers)[0];
+		ro[key].triggers[k].source = $("#trigger-control").val();
+		ro[key].triggers[k].event = $("#trigger-event").val();
+		l = Object.keys(ro[key].triggers[k].logics)[0];
+		ro[key].triggers[k].logics[l].id = $("#logic-control").val(), 
+		ro[key].triggers[k].logics[l].source = $("#logic-source").val(), 
+		ro[key].triggers[k].logics[l].gate = $("#logic-gate").val(), 
+		ro[key].triggers[k].logics[l].value = $("#logic-value").val()
+		
+		
+		renderExistingList(ro);
+		$('.control-sidebar').removeClass('control-sidebar-open');
+	};
+	var addNewItem = function () { 
+		selectingIndex = '';
+		$("#result-control").val(''); 
+		$("#result-handler").val('');
+		$("#trigger-control").val('');
+		$("#trigger-event").val('');
+		$("#logic-control").val('');
+		$("#logic-source").val('');
+		$("#logic-gate").val('');
+		$("#logic-value").val('');
+		if (!$('.control-sidebar').hasClass('control-sidebar-open')) {
+			$('.control-sidebar').addClass('control-sidebar-open');
+		}
+	};
+
+	function serializeItem() {
+		if (!isWorking) {
+			isWorking = true;
+			XTD.api('/rule/form/{{id}}', 'PUT', ro, function (data) 
+			{
+				if (data.result) {
+					alert(XTD.__("Form submitted successfully. the page will redirect to the previous section."));
+					generateGroups(true);
+					History.back();
+				}
+				isWorking = false;
+			});
+		}
+
+	}
+
+	function remove(item) {
+		for (var i = 0; i < fda.definition.items.length; i++) {
+			if (fda.definition.items[i].name == $(item).data('id')) {
+				var result = confirm(XTD.__('Are you sure to remove this control?'));
+				if (result) {
+					fda.removeItem(i);
+					fda.renderAll();
+				}
+				break;
+			}
+		}
+	}
+	
+	var debug = 0;
+	function consolelog(msg) {
+		if (debug) {
+			console.log(msg);
+		}
+	}
+</script>
+{% endblock %}
+
+{% block sidebar %}
+	<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+		<li><a href="#control-sidebar-rules-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+	</ul>
+    <div class="tab-content">
+		<div class="tab-pane" id="control-sidebar-rules-tab">
+			<h3 class="control-sidebar-heading multi-lang">Rules</h3>
+			<div id="form-controls-container" class="form">
+					<div id="new-items-container" class="form-items-container edit-mode box-body">
+						<div class="rule triggers">
+							<div class="title multi-lang">When </div>
+							<div class="message"> <select id="trigger-control" class="control"></select> <span class="multi-lang">has been</span> <select id="trigger-event" class="event"></select> </div>
+						</div>
+						<div class="rule logics">
+							<div class="title multi-lang">If </div>
+							<div class="message"> <select id="logic-control" class="control"></select> <span class="multi-lang">'s</span> <input type="text" id="logic-source" /> <select id="logic-gate" class="gate"></select> <input type="text" id="logic-value" /> </div>
+						</div>
+						<div class="rule results">
+							<div class="title multi-lang">Then </div>
+							<div class="message"> <select id="result-handler" class="handler"></select> <select id="result-control" class="control"></select> </div>
+						</div>
+						<div class="rule buttons">
+							<div class="title multi-lang"><input type="button" value="Add" class="multi-lang btn btn-success btn-add" onclick="addItem();" /></div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+		
+	
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

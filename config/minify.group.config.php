@@ -37,6 +37,7 @@ return array(
 		,'//js/xtd/xtd.validators.mandatory.js'
 		,'//js/xtd/xtd.validators.checkexists.js'
 		,'//js/xtd/xtd.validators.checknotexists.js'
+		,'//js/xtd/xtd.handlers.displayhandler.js'
 	),
 	'js'=>array(
 		//'//plugins/jquery/jquery-2.2.4.min.js'

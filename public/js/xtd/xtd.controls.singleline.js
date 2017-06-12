@@ -128,7 +128,8 @@ try {
 					break;
 				}
 			}
-			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
+			//var $id = this.__id;
+			var control = $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 								.append($('<label />').html(mandatory).addClass("lbl-mandatory"))
@@ -167,6 +168,88 @@ try {
 										.attr('data-valid', true)
 								)
 							);
+			this.handleProcess(this.definition, control, this.__id);
+			//if ( this.definition.processes && this.definition.processes.length > 0 ) {
+			//	$.each ( this.definition.processes, function ( i, rule ) {
+			//		$.each ( rule.triggers, function ( idx, trigger ) {
+			//			control.find("#"+$id).on( trigger.event, function () {
+			//				var continueEvent = false;
+			//				$.each ( trigger.logics, function ( index, logic ) {
+			//					if (logic.gate == "NE") {
+			//						if ($( "#"+logic.id ).val() != logic.value) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "EQ") {
+			//						if ($( "#"+logic.id ).val() == logic.value) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "LT") {
+			//						if ($( "#"+logic.id ).val() < logic.value) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "GT") {
+			//						if ($( "#"+logic.id ).val() > logic.value) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "LE") {
+			//						if ($( "#"+logic.id ).val() <= logic.value) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "GE") {
+			//						if ($( "#"+logic.id ).val() >= logic.value) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "NOT") {
+			//						if ($( "#"+logic.id ).val() != logic.value) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "BW") {
+			//						var s = logic.value.split(',');
+			//						if (s[0] <= $( "#"+logic.id ).val() && $( "#"+logic.id ).val() <= s[1]) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "NBW") {
+			//						if ($( "#"+logic.id ).val() <= s[0] || s[1] <= $( "#"+logic.id ).val()) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "CT") {
+			//						if ($( "#"+logic.id ).val().indexOf(logic.value) >= 0) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+			//					if (logic.gate == "NCT") {
+			//						if ($( "#"+logic.id ).val().indexOf(logic.value) < 0) {
+			//							continueEvent |= true;
+			//						}
+			//					}
+            //
+			//					if (!continueEvent) {
+			//						return false;
+			//					}
+			//				});
+			//				if (continueEvent) {
+			//					$.each ( rule.results, function ( index, result ) {
+			//						XTD.handlers[result.handler].fire(result.target, result.parameters);
+			//					});
+			//				} else {
+			//					$.each ( rule.results, function ( index, result ) {
+			//						XTD.handlers[result.handler].revise(result.target, result.parameters);
+			//					});
+			//				}
+			//			});
+			//		});
+			//	});
+			//}
+			return control;
 		};
 		
 		//this.serialize = function () {

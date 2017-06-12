@@ -63,6 +63,16 @@ if (XTD) {
 				$('#' + $this.__itemContainerId).append(
 					$("<div />").addClass("empty_control_hints").html(XTD.__("Please drag control from right hand side into here"))
 				);
+			} else {
+				$this.form.items.each(function (item) {
+					if ( item.definition.processes && item.definition.processes.length > 0 ) {
+						$.each ( item.definition.processes, function ( i, rule ) {
+							$.each ( rule.results, function ( index, result ) {
+								XTD.handlers[result.handler].revise(result.target, result.parameters);
+							});
+						});
+					}
+				});
 			}
 		};
 		

@@ -123,7 +123,7 @@ try {
 					break;
 				}
 			}
-			return $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
+			var control = $('<div />').attr('id', 'container_'+this.__id).addClass("item-container")
 							.append(
 								$('<label />').attr('id', 'lbl_'+this.__id).html(this.properties.get('common.display').getValue()) 
 								.append($('<label />').html(mandatory).addClass("lbl-mandatory"))
@@ -152,6 +152,8 @@ try {
 										.css('font-style', this.properties.get('text.style').getValue())
 								)
 							);
+			this.handleProcess(this.definition, control, this.__id);
+			return control;
 		};
 		
 		//this.serialize = function () {

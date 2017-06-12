@@ -163,12 +163,24 @@ footer {
 .item-container {
 	border: 1px solid transparent;
 	padding: 5px;
+	visibility: visible;
+	opacity: 1;
+}
+
+div.item-container {
+	-webkit-transition: opacity 600ms, visibility 600ms;
+	transition: opacity 600ms, visibility 600ms;
 }
 
 .item-container.selected {
 	border: 1px dashed #ccc;
 	background-color: #ffd;
 	padding: 5px;
+}
+
+.item-container.disappear {
+	visibility: hidden;
+	opacity: 0;
 }
 
 .form-list-item h1 {
@@ -184,7 +196,7 @@ tr.selected {
 }
 
 #loading {
-	position: absolute;
+	position: fixed;
 	left: 50%;
 	top: 50%;
 }
@@ -266,6 +278,44 @@ table.form-list {
 .lbl-mandatory {
 	color: #f00;
 }
+
+.rule .title {
+	display: inline-block;
+	font-size: 11pt;
+}
+.rule .message {
+	display: inline-block;
+}
+.rule .message select, .rule .message input {
+	width: 100%;
+}
+.rule .message .control,
+.rule .message .event,
+.rule .message .source,
+.rule .message .gate,
+.rule .message .value,
+.rule .message .handler {
+	margin: 0 0pt;
+}
+.rule .message .control {
+	color: #0a0;
+}
+.rule .message .event {
+	color: #0a0;
+}
+.rule .message .source {
+	color: #0a0;
+}
+.rule .message .gate {
+	color: #333;
+}
+.rule .message .value {
+	color: #00f;
+}
+.rule .message .handler {
+	color: #f0f;
+}
+
 
 /*
 .scroll::-webkit-scrollbar {

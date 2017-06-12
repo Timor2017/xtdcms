@@ -18,6 +18,7 @@ class ApiController extends BaseController {
 		$this->app->group('/translate', '\App\Controllers\TranslateController:definition');
 		$this->app->group('/search', '\App\Controllers\SearchController:search');
 		$this->app->group('/validate', '\App\Controllers\ValidateController:definition');
+		$this->app->group('/rule', '\App\Controllers\RuleController:definition');
 		$this->app->post('/test[/]','App\Controllers\ApiController:testFunction');
 	}
 	

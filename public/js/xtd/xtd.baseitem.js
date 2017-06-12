@@ -67,6 +67,104 @@ try {
 			return result;
 		};
 		
+		this.handleProcess = function (definition, control, id) {
+			if ( definition.processes && Object.keys(definition.processes).length > 0 ) {
+				console.log(definition.processes);
+				$.each ( definition.processes, function ( i, rule ) {
+					$.each ( rule.triggers, function ( idx, trigger ) {
+						control.find("#"+id).on( trigger.event, function () {
+							var continueEvent = false;
+							$.each ( trigger.logics, function ( index, logic ) {
+								var source = 'value';
+								if (logic.source != '') {
+									source = logic.source;
+								}
+								var value = '';
+								if ($( "#"+logic.id ).size() > 0) {
+									if (source == 'value') {
+										value = $( "#"+logic.id ).val();
+									} else if (source == 'checked') {
+										value = $( "#"+logic.id ).prop('checked').toString();
+									}
+								}
+								if (logic.gate == "NE") {
+									if (value != logic.value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "EQ") {
+									if (value == logic.value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "LT") {
+									if (value < logic.value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "GT") {
+									if (value > logic.value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "LE") {
+									if (value <= logic.value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "GE") {
+									if (value >= logic.value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "NOT") {
+									if (value != logic.value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "BW") {
+									var s = logic.value.split(',');
+									if (s[0] <= value && value <= s[1]) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "NBW") {
+									if (value <= s[0] || s[1] <= value) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "CT") {
+									if (value.indexOf(logic.value) >= 0) {
+										continueEvent |= true;
+									}
+								}
+								if (logic.gate == "NCT") {
+									if (value.indexOf(logic.value) < 0) {
+										continueEvent |= true;
+									}
+								}
+
+								if (!continueEvent) {
+									return false;
+								}
+							});
+							if (continueEvent) {
+								$.each ( rule.results, function ( index, result ) {
+									XTD.handlers[result.handler].fire(result.target, result.parameters);
+								});
+							} else {
+								$.each ( rule.results, function ( index, result ) {
+									XTD.handlers[result.handler].revise(result.target, result.parameters);
+								});
+							}
+						});
+						//control.find("#"+id).trigger( trigger.event );
+					});
+					
+				});
+			}
+		}
+		
 		return this;
 	}
 } catch (e) {
